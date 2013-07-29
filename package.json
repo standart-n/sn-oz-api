@@ -1,0 +1,32 @@
+{
+  "name": "sn-oz-api",
+  "version": "0.0.1",
+  "description": "API for OZ",
+  "main": "server",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-cli": "~0.1.9",
+    "grunt": "~0.4.1",
+    "express": "~3.3.4",
+    "grunt-contrib-coffee": "~0.7.0"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:standart-n/sn-oz-api.git"
+  },
+  "keywords": [
+    "api",
+    "standart",
+    "oz"
+  ],
+  "author": "aleksnick",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "708d83893df76a9e28401eec3a8def7fa885e6b2",
+  "bugs": {
+    "url": "https://github.com/standart-n/sn-oz-api/issues"
+  }
+}
