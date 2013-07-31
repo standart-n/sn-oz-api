@@ -19,14 +19,14 @@ module.exports = (grunt) ->
 						ext:			'.js'
 					}
 				]
-			server:
+			app:
 				options:
 					bare: on
-				src: 'app/server.coffee'
-				dest: 'server'
+				src: 'app/app.coffee'
+				dest: './app.js'
 
 
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	
-	grunt.registerTask 'default', ['coffee:server', 'coffee:sn']
+	grunt.registerTask 'default', ['coffee:app', 'coffee:sn']
 	grunt.registerTask 'all', ['default']

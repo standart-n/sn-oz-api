@@ -1,9 +1,10 @@
 
-express = 		require 'express'
-http = 			require 'http'
-path = 			require 'path'
+express = 		require('express')
+http = 			require('http')
+path = 			require('path')
 # routes = 		require './public/routes'
 
+mongoClient = 	require('mongodb').MongoClient
 
 app = express()
 
@@ -24,8 +25,14 @@ app.all '*', (req,res,next) ->
 	next()
 
 app.put '/registration', (req, res) ->
-	res.jsonp {a:1}
-
+	mongoClient.connect 'mongodb://127.0.0.1:27017/mydb', (err, db) ->
+		throw err if err
+		db.collection('testData').find().toArray (err, doc) ->
+			throw err if err
+			console.log doc
+			res.jsonp {a:1}
+			db.close()
+			console.log 'end'		
 
 
 http.createServer(app).listen app.get('port'), () ->
