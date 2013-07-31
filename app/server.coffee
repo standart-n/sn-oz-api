@@ -4,6 +4,7 @@ http = 			require 'http'
 path = 			require 'path'
 # routes = 		require './public/routes'
 
+
 app = express()
 
 app.configure ->
@@ -13,13 +14,18 @@ app.configure ->
 	app.use express.methodOverride()
 	app.use app.router
 	app.use express.static __dirname
+	app.set app.method, 'PUT'
 
 app.configure 'development', () ->
 	app.use express.errorHandler()
 
+app.all '*', (req,res,next) ->	
+	req.method = req.query._method if req.query._method?
+	next()
 
-app.get '/', () ->
-	console.log 'go!'
+app.put '/registration', (req, res) ->
+	res.jsonp {a:1}
+
 
 
 http.createServer(app).listen app.get('port'), () ->
