@@ -12,8 +12,10 @@ logs
 results
 
 node_modules
-script
+
+/script
+/ozserver
+/store.json
 
 npm-debug.log
 
-/server

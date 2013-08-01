@@ -23,7 +23,7 @@ module.exports = (grunt) ->
 				options:
 					bare: on
 				src: 'app/app.coffee'
-				dest: './app.js'
+				dest: './ozserver'
 
 
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
