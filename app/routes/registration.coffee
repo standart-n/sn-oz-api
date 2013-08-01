@@ -3,7 +3,7 @@
 
 module.exports = (app, options) ->
 
-	app.put '/registration', (req, res) ->
+	app.get '/registration', (req, res) ->
 		registration = require(global.home + '/script/models/registration')(JSON.parse(req.query.model))
 		console.log registration.model
 		res.jsonp registration.model

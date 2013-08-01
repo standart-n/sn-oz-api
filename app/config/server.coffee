@@ -14,6 +14,6 @@ module.exports = (app, options) ->
 	app.configure 'development', () ->
 		app.use express.errorHandler()
 
-	app.all '*', (req,res,next) ->	
+	app.all '*', (req, res, next) ->	
 		req.method = req.query._method if req.query._method?
 		next()
