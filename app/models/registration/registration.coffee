@@ -46,7 +46,7 @@ class Registration
 	emailExists: () ->
 		@model.success = 				false
 		@model.err.field = 				'email'
-		@model.err.description = 		'данный email уже зарегистрирован'
+		@model.err.description = 		'указан адрес, который уже используется'
 
 
 
