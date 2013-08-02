@@ -1,5 +1,6 @@
 
 express = 				require('express')
+mongoose = 				require('mongoose')
 http = 					require('http')
 path = 					require('path')
 colors = 				require('colors')
@@ -46,6 +47,8 @@ class Server
 			@options.mongodb_connection = 		results[1]
 
 			app = express()
+
+			mongoose.connect(@options.mongodb_connection)
 
 			require(global.home + '/script/config/express/server')(app, @options)
 
