@@ -7,13 +7,11 @@ module.exports = (app, options) ->
 	app.get '/registration', (req, res) ->
 		registration = require(global.home + '/script/models/registration/registration')(JSON.parse(req.query.model))
 
-		User = mongoose.model 'People', require(global.home + '/script/views/user')
+		if registration.model.success is true
 
-		user = new User(registration.model)
-
-		user.save()
-
-		console.log user
+			User = mongoose.model 'User', require(global.home + '/script/views/user')
+			user = new User(registration.model)
+			user.save()
 
 		res.jsonp registration.model
 

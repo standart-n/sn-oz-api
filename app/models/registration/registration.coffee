@@ -5,14 +5,20 @@ class Registration
 		@model.valid = {}
 		@model.err = {}
 
+		@check()
 		@validate()
 		@err()
 
-		if @model.err.length > 0 
+		if @model.err.field? and @model.err.description?
 			@model.success = false 
 		else 
 			@model.success = true
 
+	check: () ->
+		@model.lastname = 				@model.lastname.trim()
+		@model.firstname = 				@model.firstname.trim()
+		@model.email = 					@model.email.trim()
+		@model.company = 				@model.company.trim()
 
 	err: () ->
 		if @model.valid? and typeof @model.valid is 'object'
