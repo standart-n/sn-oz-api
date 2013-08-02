@@ -12,18 +12,19 @@ module.exports = (grunt) ->
 					bare: on
 				files: [
 					{
-						expand:			true
-						cwd:			'./app/'
-						src:			'**/*.coffee'
-						dest:			'./script/'
-						ext:			'.js'
+						expand:					true
+						cwd:					'./app/'
+						src:					'**/*.coffee'
+						dest:					'./script/'
+						ext:					'.js'
 					}
 				]
 			app:
 				options:
 					bare: on
-				src: 'app/app.coffee'
-				dest: './ozserver'
+				files:
+					'./ozserver': 				'app/app.coffee'
+					'./ozserver-conf': 			'app/app-conf.coffee'
 
 
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
