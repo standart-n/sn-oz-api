@@ -1,12 +1,26 @@
 
-# mongoClient = require('mongodb').MongoClient
+mongoClient = 		require('mongodb').MongoClient
+colors = 			require('colors')
 
 module.exports = (app, options) ->
 
 	app.get '/registration', (req, res) ->
-		registration = require(global.home + '/script/models/registration')(JSON.parse(req.query.model))
-		console.log registration.model
-		res.jsonp registration.model
+		registration = require(global.home + '/script/models/registration/registration')(JSON.parse(req.query.model))
+
+		if registration.model.success is true
+			mongoClient.connect options.mongodb_connection, (err, db) ->
+				if db?
+					users = db.collection('users')
+					users.insert registration.model, (err, docs) ->
+						db.close()
+						res.jsonp registration.model
+					# db.collection('testData').find().toArray (err, doc) ->
+		else
+			res.jsonp registration.model	
+
+
+		# console.log registration.model.blue
+		# res.jsonp registration.model
 
 
 		# mongoClient.connect options.mongodb_connection, (err, db) ->

@@ -20,7 +20,7 @@ server = 				require(global.home + '/script/controllers/server')				# server.js
 program.version(pkg.version)
 
 # add server fn to program
-require(global.home + '/script/program/server')(program, server)
+require(global.home + '/script/config/program/server')(program, server)
 
 # parse argcv
 program.parse(process.argv)

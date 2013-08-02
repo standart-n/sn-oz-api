@@ -47,7 +47,7 @@ class Server
 
 			app = express()
 
-			require(global.home + '/script/config/server')(app, @options)
+			require(global.home + '/script/config/express/server')(app, @options)
 
 			require(global.home + '/script/routes/registration')(app, @options)
 

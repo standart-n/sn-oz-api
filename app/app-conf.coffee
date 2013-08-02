@@ -22,7 +22,7 @@ storage.store(global.store)
 program.version(pkg.version)
 
 # add storage fn to program
-require(global.home + '/script/program/storage')(program, storage)
+require(global.home + '/script/config/program/storage')(program, storage)
 
 # parse argcv
 program.parse(process.argv)
