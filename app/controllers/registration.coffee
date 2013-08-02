@@ -29,6 +29,7 @@ class Registration extends EventEmitter
 						@mdl.emailExists()
 						@emit 'send'
 					else
+						@mdl.genPwd()
 						@emit 'success'
 						@emit 'send'
 
