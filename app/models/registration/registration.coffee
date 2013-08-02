@@ -35,8 +35,10 @@ class Registration
 		@model.valid.company = 			require(global.home + '/script/models/validate/company')(@model.company)
 
 
-
-
+	emailExists: () ->
+		@model.success = 				false
+		@model.err.field = 				'email'
+		@model.err.description = 		'данный email уже зарегистрирован'
 
 
 
@@ -44,3 +46,4 @@ module.exports = (model = {}) ->
 	new Registration(model)
 
 exports.Registration = Registration
+
