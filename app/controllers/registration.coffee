@@ -1,5 +1,6 @@
 
 mongoose = 			require('mongoose')
+colors = 			require('colors')
 EventEmitter = 		require('events').EventEmitter
 
 class Registration extends EventEmitter
@@ -10,7 +11,7 @@ class Registration extends EventEmitter
 		@mdl = 		require(global.home + '/script/models/registration/registration')(JSON.parse(@req.query.model))
 
 		this.on 'send', () =>
-			console.log 'mdl', @mdl.model
+			console.log JSON.stringify(@mdl.model).cyan
 			@res.jsonp @mdl.model
 
 		
@@ -21,15 +22,10 @@ class Registration extends EventEmitter
 
 		this.on 'check', () =>
 	
-			console.log 'check'			
-
 			if @mdl.model.success is true
-
-				console.log 'success'
 
 				@User.findOne email: @mdl.model.email, (err, exists) =>
 					if exists?
-						console.log 'exists'
 						@mdl.emailExists()
 						@emit 'send'
 					else
