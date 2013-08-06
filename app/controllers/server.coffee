@@ -50,9 +50,12 @@ class Server
 
 			mongoose.connect(@options.mongodb_connection)
 
+			# settings
 			require(global.home + '/script/config/express/server')(app, @options)
 
+			# routes
 			require(global.home + '/script/routes/registration')(app, @options)
+			require(global.home + '/script/routes/signin')(app, @options)
 
 			http.createServer(app).listen app.get('port'), () ->
 				console.log "server work at ".grey + "http://localhost: ".grey + app.get('port').blue
