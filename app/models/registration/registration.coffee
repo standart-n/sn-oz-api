@@ -41,7 +41,7 @@ class Registration
 
 	genPwd: () ->
 		@model.password = 				randomString(length: 5).toLowerCase()
-		@model.password_hash = 			sha1(@model.password).toString()
+		@model.key = 					sha1(@model.password).toString()
 
 	emailExists: () ->
 		@model.success = 				false

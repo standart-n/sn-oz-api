@@ -26,10 +26,10 @@ class Signin extends EventEmitter
 	
 				@User.findOne 
 					email: 					@mdl.model.email
-					password_hash:			@mdl.model.password_hash
+					key:					@mdl.model.key
 				, (err, exists) =>
-					if exists?
-						@mdl.success()
+					if exists?._id?
+						@mdl.success(exists.id)
 						@emit 'send'
 					else
 						@mdl.fail()
