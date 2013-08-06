@@ -29,7 +29,7 @@ class Signin
 		@model.success = 				true
 
 	fail: () ->
-		@model.ket = 					null
+		@model.key = 					null
 		@model.notice = 				'неверно введен логин или пароль'
 
 		
