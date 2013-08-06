@@ -22,7 +22,7 @@ class Signin
 
 	success: () ->
 		@model.notice = 				'авторизация прошла успешно'
-		@model.succes = 				true
+		@model.success = 				true
 
 	fail: () ->
 		@model.notice = 				'неверно введен логин или пароль'
