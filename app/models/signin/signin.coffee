@@ -5,8 +5,10 @@ class Signin
 
 	valid: 								false
 
-	constructor: (@model) ->
+	constructor: (@model = {}) ->
 
+
+	check: () ->
 		if @model.email? and @model.password?
 			@valid = 					true
 
@@ -20,6 +22,7 @@ class Signin
 		else
 			@model.err = 				'отсутствуют данные'
 
+
 	success: (id) ->
 		@model.id = 					id
 		@model.notice = 				'авторизация прошла успешно'
@@ -28,6 +31,8 @@ class Signin
 	fail: () ->
 		@model.ket = 					null
 		@model.notice = 				'неверно введен логин или пароль'
+
+		
 
 module.exports = (model = {}) ->
 	new Signin(model)

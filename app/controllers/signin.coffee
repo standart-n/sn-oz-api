@@ -8,19 +8,18 @@ class Signin extends EventEmitter
 	constructor: (@req, @res) ->
 
 		@User = 	mongoose.model('User', require(global.home + '/script/views/user'))
-		@mdl = 		require(global.home + '/script/models/signin/signin')(JSON.parse(@req.query.model))
 
 		this.on 'send', () =>
 			console.log JSON.stringify(@mdl.model).cyan
 			@res.jsonp @mdl.model
 
-		
-		this.on 'success', () =>
-			user = new @User(@mdl.model)
-			user.save()
-
 
 		this.on 'check', () =>
+
+			model = if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
+
+			@mdl.check()
 
 			if @mdl.valid is true
 	
@@ -30,14 +29,26 @@ class Signin extends EventEmitter
 				, (err, exists) =>
 					if exists?._id?
 						@mdl.success(exists.id)
-						@emit 'send'
 					else
 						@mdl.fail()
-						@emit 'send'
+					@emit 'send'
 
 			else
 				@emit 'send'
 
+
+		this.on 'fetch', () =>
+
+			model = if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
+
+			@User.findOne 
+					_id: 					@req.route.params.id
+					key:					@req.route.params.key
+			, (err, user) =>
+				if user?
+					@mdl.model = 			user
+				@emit 'send'
 
 
 
