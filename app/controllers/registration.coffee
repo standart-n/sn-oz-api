@@ -16,6 +16,8 @@ class Registration extends EventEmitter
 
 		
 		this.on 'success', () =>
+			ObjectId = mongoose.Types.ObjectId
+			@mdl.model.id = new ObjectId
 			user = new @User(@mdl.model)
 			user.save()
 

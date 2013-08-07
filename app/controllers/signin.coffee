@@ -27,7 +27,7 @@ class Signin extends EventEmitter
 					email: 					@mdl.model.email
 					key:					@mdl.model.key
 				, (err, exists) =>
-					if exists?._id?
+					if exists?.id?
 						@mdl.success(exists.id)
 					else
 						@mdl.fail()
@@ -43,7 +43,7 @@ class Signin extends EventEmitter
 			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
 
 			@User.findOne 
-					_id: 					@req.route.params.id
+					id: 					@req.route.params.id
 					key:					@req.route.params.key
 			, (err, user) =>
 				if user?

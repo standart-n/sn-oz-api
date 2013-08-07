@@ -27,9 +27,11 @@ class Signin
 		@model.id = 					id
 		@model.notice = 				'авторизация прошла успешно'
 		@model.success = 				true
+		@model.password = 				null
 
 	fail: () ->
 		@model.key = 					null
+		@model.password = 				null
 		@model.notice = 				'неверно введен логин или пароль'
 
 		

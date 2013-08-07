@@ -1,8 +1,10 @@
 
 Schema = 				require('mongoose').Schema
+ObjectId = 				Schema.ObjectId
 
 module.exports = 		new Schema 
 
+	id:					type: ObjectId
 	firstname:			type: String, index: true
 	lastname:			type: String, index: true
 	email:				type: String, index: true
