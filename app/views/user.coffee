@@ -1,14 +1,13 @@
 
 Schema = 				require('mongoose').Schema
-ObjectId = 				Schema.ObjectId
 
 module.exports = 		new Schema 
 
-	id:					type: ObjectId
-	firstname:			type: String, index: true
-	lastname:			type: String, index: true
-	email:				type: String, index: true
-	company:			type: String, index: true
+	id:					type: Schema.Types.ObjectId
+	firstname:			type: String, trim: true, index: true
+	lastname:			type: String, trim: true, index: true
+	email:				type: String, lowercase: true, trim: true, index: true
+	company:			type: String, trim: true, index: true
 	key:				type: String, index: true
 
 	region:
@@ -17,4 +16,6 @@ module.exports = 		new Schema
 
 
 	reg_dt:				type: Date, default: Date.now
+,
+	_id:				false
 	

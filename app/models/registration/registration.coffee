@@ -21,7 +21,7 @@ class Registration
 	check: () ->
 		@model.firstname = 				@model.firstname.trim()
 		@model.lastname = 				@model.lastname.trim()
-		@model.email = 					@model.email.trim()
+		@model.email = 					@model.email.trim().toLowerCase()
 		@model.company = 				@model.company.trim()
 
 	err: () ->

@@ -1,24 +1,25 @@
 
-mongoose = 			require('mongoose')
-colors = 			require('colors')
-EventEmitter = 		require('events').EventEmitter
+mongoose = 								require('mongoose')
+colors = 								require('colors')
+EventEmitter = 							require('events').EventEmitter
 
 class Registration extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 	mongoose.model('User', require(global.home + '/script/views/user'))
-		@mdl = 		require(global.home + '/script/models/registration/registration')(JSON.parse(@req.query.model))
+		@User = 						mongoose.model('User', require(global.home + '/script/views/user'))
+		model = 						if @req.query?.model? then JSON.parse(@req.query.model) else {}
+		@mdl = 							require(global.home + '/script/models/registration/registration')(model)
 
 		this.on 'send', () =>
-			console.log JSON.stringify(@mdl.model).cyan
-			@res.jsonp @mdl.model
+			console.log 				JSON.stringify(@mdl.model).cyan
+			@res.jsonp 					@mdl.model
 
 		
 		this.on 'success', () =>
-			ObjectId = mongoose.Types.ObjectId
-			@mdl.model.id = new ObjectId
-			user = new @User(@mdl.model)
+			ObjectId = 					mongoose.Types.ObjectId
+			@mdl.model.id = 			new ObjectId
+			user = 						new @User(@mdl.model)
 			user.save()
 
 
@@ -26,7 +27,9 @@ class Registration extends EventEmitter
 	
 			if @mdl.model.success is true
 
-				@User.findOne email: @mdl.model.email, (err, exists) =>
+				@User.findOne 
+					email: 				@mdl.model.email
+				, (err, exists) =>
 					if exists?
 						@mdl.emailExists()
 						@emit 'send'

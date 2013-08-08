@@ -7,30 +7,31 @@ class Signin extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 	mongoose.model('User', require(global.home + '/script/views/user'))
+		@User = 						mongoose.model('User', require(global.home + '/script/views/user'))
 
 		this.on 'send', () =>
-			console.log JSON.stringify(@mdl.model).cyan
-			@res.jsonp @mdl.model
+			console.log 				JSON.stringify(@mdl.model).cyan
+			@res.jsonp 					@mdl.model
 
 
 		this.on 'check', () =>
 
-			model = if @req.query?.model? then JSON.parse(@req.query.model) else {}
-			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
+			model = 					if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 						require(global.home + '/script/models/signin/signin')(model)
 
 			@mdl.check()
 
 			if @mdl.valid is true
 	
 				@User.findOne 
-					email: 					@mdl.model.email
-					key:					@mdl.model.key
+					email: 				@mdl.model.email
+					key:				@mdl.model.key
 				, (err, exists) =>
 					if exists?.id?
 						@mdl.success(exists.id)
 					else
 						@mdl.fail()
+
 					@emit 'send'
 
 			else
@@ -43,11 +44,11 @@ class Signin extends EventEmitter
 			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
 
 			@User.findOne 
-					id: 					@req.route.params.id
-					key:					@req.route.params.key
+					id: 				@req.route.params.id
+					key:				@req.route.params.key
 			, (err, user) =>
 				if user?
-					@mdl.model = 			user
+					@mdl.model = 		user
 				@emit 'send'
 
 
