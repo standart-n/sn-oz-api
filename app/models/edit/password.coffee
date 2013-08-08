@@ -1,44 +1,45 @@
 
 sha1 = 									require('sha1')
+validate = 								require('validate')
+
+Schema = 								require(global.home + '/script/views/validate/security')
 
 class Edit
-
-	valid: 								false
 
 	constructor: (@model = {}) ->
 
 
 	check: () ->
-		if @model.id? isnt '' and @model.key? isnt ''
-			if @model.password_new? isnt '' and @model.password_repeat? isnt ''
-				@valid = 				true
 
-		if @valid isnt true
-			@model.notice = 			'отсутствуют данные'
+		@model.password_change = 		false
+		@model.password_new = 			@model.password_new.trim()
+		@model.password_repeat = 		@model.password_repeat.trim()
 
-		if @valid is true
+		@model.notice = 				validate(Schema, @model)
 
+		if Array.isArray(@model.notice)
+			@model.notice = 			@model.notice[0].toString()
+		else 
 			if @model.password_new is @model.password_repeat
-				
-				@model.key_new = 		sha1(@model.password_new)
-
+				@model.password_change = 	true
+				@model.key_new = 			sha1(@model.password_new)
 			else
-				@valid = 				false
-				@model.notice = 		'пароли не совпадают'
+				@model.notice = 		'Пароли не совпадают'
 
-		@valid
+		@model.password_change
+
 
 	success: () ->
 		@model.key = 					@model.key_new
 		@model.key_new = 				null
 		@model.password_new = 			null
 		@model.password_repeat = 		null
-		@model.notice = 				'пароль успешно изменен'
+		@model.notice = 				'Пароль успешно изменен'
 		@model.password_change = 		true
 
 	fail: () ->
 		@model.password_change = 		false
-		@model.notice = 				'не удалось записать новые даннные'
+		@model.notice = 				'Не удалось изменить пароль'
 		
 
 module.exports = (model = {}) ->

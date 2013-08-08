@@ -2,21 +2,16 @@
 
 randomString =							require('random-string')
 sha1 = 									require('sha1')
+validate = 								require('validate')
+
+Schema = 								require(global.home + '/script/views/validate/registration')
 
 class Registration
 
 	constructor: (@model) ->
-		@model.valid = {}
-		@model.err = {}
 
 		@check()
 		@validate()
-		@err()
-
-		if @model.err.field? and @model.err.description?
-			@model.success = false 
-		else 
-			@model.success = true
 
 	check: () ->
 		@model.firstname = 				@model.firstname.trim()
@@ -24,20 +19,13 @@ class Registration
 		@model.email = 					@model.email.trim().toLowerCase()
 		@model.company = 				@model.company.trim()
 
-	err: () ->
-		if @model.valid? and typeof @model.valid is 'object'
-			for key, value of @model.valid
-				if value isnt true
-					@model.err.field = 			key
-					@model.err.description = 	value
-					break
-
 	validate: () ->
-		@model.valid.firstname = 		require(global.home + '/script/models/validate/firstname')(@model.firstname)
-		@model.valid.lastname = 		require(global.home + '/script/models/validate/lastname')(@model.lastname)
-		@model.valid.email = 			require(global.home + '/script/models/validate/email')(@model.email)
-		@model.valid.company = 			require(global.home + '/script/models/validate/company')(@model.company)
-
+		@model.valid = 					validate(Schema, @model)
+		if Array.isArray(@model.valid)
+			@model.valid = 				@model.valid[0].toString()
+			@model.success = 			false
+		else 
+			@model.success = 			true
 
 	genPwd: () ->
 		@model.password = 				randomString(length: 5).toLowerCase()
@@ -45,8 +33,7 @@ class Registration
 
 	emailExists: () ->
 		@model.success = 				false
-		@model.err.field = 				'email'
-		@model.err.description = 		'указан адрес, который уже используется'
+		@model.valid = 					'Error: данный email-адрес уже используется'
 
 
 

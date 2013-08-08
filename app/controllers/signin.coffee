@@ -7,7 +7,7 @@ class Signin extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 						mongoose.model('User', require(global.home + '/script/views/user'))
+		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan

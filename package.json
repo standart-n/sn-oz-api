@@ -15,7 +15,8 @@
     "async": "~0.2.9",
     "mongoose": "~3.6.15",
     "random-string": "~0.1.1",
-    "sha1": "~1.1.0"
+    "sha1": "~1.1.0",
+    "validate": "~0.2.4"
   },
   "scripts": {
     "test": "test"

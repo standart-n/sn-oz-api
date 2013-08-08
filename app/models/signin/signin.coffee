@@ -20,19 +20,19 @@ class Signin
 			@model.key = 				sha1(@model.password)
 
 		else
-			@model.err = 				'отсутствуют данные'
+			@model.err = 				'Отсутствуют данные'
 
 
 	success: (id) ->
 		@model.id = 					id
-		@model.notice = 				'авторизация прошла успешно'
+		@model.notice = 				'Авторизация прошла успешно'
 		@model.success = 				true
 		@model.password = 				null
 
 	fail: () ->
 		@model.key = 					null
 		@model.password = 				null
-		@model.notice = 				'неверно введен логин или пароль'
+		@model.notice = 				'Вы неверно ввели логин или пароль'
 
 		
 

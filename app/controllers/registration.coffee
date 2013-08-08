@@ -7,9 +7,7 @@ class Registration extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 						mongoose.model('User', require(global.home + '/script/views/user'))
-		model = 						if @req.query?.model? then JSON.parse(@req.query.model) else {}
-		@mdl = 							require(global.home + '/script/models/registration/registration')(model)
+		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan
@@ -24,6 +22,9 @@ class Registration extends EventEmitter
 
 
 		this.on 'check', () =>
+
+			model = 					if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 						require(global.home + '/script/models/registration/registration')(model)
 	
 			if @mdl.model.success is true
 

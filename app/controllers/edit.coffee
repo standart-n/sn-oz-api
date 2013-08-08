@@ -7,7 +7,7 @@ class Edit extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 						mongoose.model('User', require(global.home + '/script/views/user'))
+		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan
@@ -40,16 +40,34 @@ class Edit extends EventEmitter
 					
 					@emit 'send'
 
-					# if exists?
-					# 	@mdl.emailExists()
-					# 	@emit 'send'
-					# else
-					# 	@mdl.genPwd()
-					# 	@emit 'success'
-
 			else
 				@emit 'send'
 
+
+		this.on 'personal', () =>
+
+			model = 					if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 						require(global.home + '/script/models/edit/personal')(model)
+
+			if @mdl.check() is true
+
+				@User.findOne 
+					id: 				@mdl.model.id
+					key:				@mdl.model.key
+				, (err, user) =>
+					if !err
+						user.firstname =	@mdl.model.firstname_new
+						user.lastname =		@mdl.model.lastname_new
+						user.save()
+						@emit 'success'
+					
+					else
+						@emit 'fail'
+					
+					@emit 'send'
+
+			else
+				@emit 'send'
 
 
 
