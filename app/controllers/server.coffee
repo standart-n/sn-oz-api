@@ -57,6 +57,7 @@ class Server
 			require(global.home + '/script/routes/registration')(app, @options)
 			require(global.home + '/script/routes/signin')(app, @options)
 			require(global.home + '/script/routes/edit')(app, @options)
+			require(global.home + '/script/routes/feed')(app, @options)
 
 			http.createServer(app).listen app.get('port'), () ->
 				console.log "server work at ".grey + "http://localhost: ".grey + app.get('port').blue
