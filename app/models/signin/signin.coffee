@@ -32,8 +32,15 @@ class Signin
 	fail: () ->
 		@model.key = 					null
 		@model.password = 				null
+		@model.success = 				false
 		@model.notice = 				'Вы неверно ввели логин или пароль'
 
+
+	userNotFound: () ->
+		@model.key = 					null
+		@model.password = 				null
+		@model.success = 				false
+		@model.notice = 				'Пользователь не найден'
 		
 
 module.exports = (model = {}) ->
