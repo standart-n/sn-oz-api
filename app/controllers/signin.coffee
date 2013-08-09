@@ -1,4 +1,5 @@
 
+_ = 									require('underscore')
 mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
@@ -7,7 +8,7 @@ class Signin extends EventEmitter
 
 	constructor: (@req, @res) ->
 
-		@User = 						mongoose.model('User', require(global.home + '/script/views/db/signin'))
+		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan

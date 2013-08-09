@@ -22,5 +22,5 @@ module.exports = 		new Schema
 
 	post_dt:			type: Date, default: Date.now
 ,
-	_id:				false
+	id:					false
 	

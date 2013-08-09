@@ -15,6 +15,8 @@ module.exports = 		new Schema
 		name:			type: String, index: true
 
 
+	signin:				type: Boolean, default: true
+
 	reg_dt:				type: Date, default: Date.now
 ,
 	_id:				false

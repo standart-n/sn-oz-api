@@ -7,7 +7,6 @@ class Signin
 
 	constructor: (@model = {}) ->
 
-
 	check: () ->
 		if @model.email? and @model.password?
 			@valid = 					true
@@ -29,6 +28,10 @@ class Signin
 		@model.success = 				true
 		@model.password = 				null
 
+	signin: () ->
+		@model.signin = 				true
+		@model.notice = 				'Идентификация прошла успешно'
+
 	fail: () ->
 		@model.key = 					null
 		@model.password = 				null
@@ -38,7 +41,6 @@ class Signin
 
 	userNotFound: () ->
 		@model.key = 					null
-		@model.password = 				null
 		@model.success = 				false
 		@model.notice = 				'Пользователь не найден'
 		
