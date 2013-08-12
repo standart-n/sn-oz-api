@@ -3,7 +3,7 @@ mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
-@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
+User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 class Edit extends EventEmitter
 
@@ -26,7 +26,7 @@ class Edit extends EventEmitter
 	
 			if @mdl.check() is true
 
-				@User.findOne 
+				User.findOne 
 					id: 				@mdl.model.id
 					key:				@mdl.model.key
 				, (err, user) =>
@@ -51,7 +51,7 @@ class Edit extends EventEmitter
 
 			if @mdl.check() is true
 
-				@User.findOne 
+				User.findOne 
 					id: 				@mdl.model.id
 					key:				@mdl.model.key
 				, (err, user) =>

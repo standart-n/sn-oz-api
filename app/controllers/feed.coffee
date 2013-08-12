@@ -3,8 +3,8 @@ mongoose = 										require('mongoose')
 colors = 										require('colors')
 EventEmitter = 									require('events').EventEmitter
 
-@User = 										mongoose.model('User', require(global.home + '/script/views/db/user'))
-@Post = 										mongoose.model('Post', require(global.home + '/script/views/db/post'))
+User = 											mongoose.model('User', require(global.home + '/script/views/db/user'))
+Post = 											mongoose.model('Post', require(global.home + '/script/views/db/post'))
 
 class Feed extends EventEmitter
 
@@ -22,7 +22,7 @@ class Feed extends EventEmitter
 		
 			if @mdl.check()
 	
-				@User.findOne 
+				User.findOne 
 					id: 						@mdl.model.id
 					key:						@mdl.model.key
 				, (err, user) =>
@@ -32,7 +32,7 @@ class Feed extends EventEmitter
 
 						ObjectId = 				mongoose.Types.ObjectId
 
-						post = new @Post
+						post = new Post
 							id:					new ObjectId
 							
 							author:
@@ -41,10 +41,10 @@ class Feed extends EventEmitter
 								lastname:		user.lastname
 								email:			user.email
 								company:		user.company
-
+							
 							message:
 								text:			@mdl.model.message
-
+							
 							region:
 								caption: 		user.region.caption
 								name:			user.region.name
@@ -67,10 +67,15 @@ class Feed extends EventEmitter
 
 		this.on 'get', () =>
 
-			@Post.find (err, posts) =>
+			Post.find {}
+			, null
+			,	
+				limit:							if @req.query?.limit? then @req.query.limit else 100
+				sort:							
+					post_dt:					-1
+			, (err, posts) =>
 
-				posts ?= {}
-
+				posts ?= []
 				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
 				@emit 'send'
 

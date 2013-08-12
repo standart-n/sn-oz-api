@@ -3,7 +3,7 @@ mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
-@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
+User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 class Registration extends EventEmitter
 
@@ -17,7 +17,7 @@ class Registration extends EventEmitter
 		this.on 'success', () =>
 			ObjectId = 					mongoose.Types.ObjectId
 			@mdl.model.id = 			new ObjectId
-			user = 						new @User(@mdl.model)
+			user = 						new User(@mdl.model)
 			user.save()
 
 
@@ -28,7 +28,7 @@ class Registration extends EventEmitter
 	
 			if @mdl.model.success is true
 
-				@User.findOne 
+				User.findOne 
 					email: 				@mdl.model.email
 				, (err, exists) =>
 					if exists?

@@ -4,7 +4,7 @@ mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
-@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
+User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 class Signin extends EventEmitter
 
@@ -24,7 +24,7 @@ class Signin extends EventEmitter
 
 			if @mdl.valid is true
 	
-				@User.findOne 
+				User.findOne 
 					email: 				@mdl.model.email
 					key:				@mdl.model.key
 				, (err, exists) =>
@@ -43,7 +43,7 @@ class Signin extends EventEmitter
 
 			@mdl = 	require(global.home + '/script/models/signin/signin')()
 
-			@User.findOne 
+			User.findOne 
 					id: 				@req.route.params.id
 					key:				@req.route.params.key
 			, (err, user) =>
