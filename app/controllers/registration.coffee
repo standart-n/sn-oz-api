@@ -3,11 +3,11 @@ mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
+@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
+
 class Registration extends EventEmitter
 
 	constructor: (@req, @res) ->
-
-		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan

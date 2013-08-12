@@ -4,11 +4,11 @@ mongoose = 								require('mongoose')
 colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
+@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
+
 class Signin extends EventEmitter
 
 	constructor: (@req, @res) ->
-
-		@User = 						mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 		this.on 'send', () =>
 			console.log 				JSON.stringify(@mdl.model).cyan
@@ -41,8 +41,7 @@ class Signin extends EventEmitter
 
 		this.on 'fetch', () =>
 
-			model = if @req.query?.model? then JSON.parse(@req.query.model) else {}
-			@mdl = 	require(global.home + '/script/models/signin/signin')(model)
+			@mdl = 	require(global.home + '/script/models/signin/signin')()
 
 			@User.findOne 
 					id: 				@req.route.params.id

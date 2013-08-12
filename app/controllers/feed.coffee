@@ -3,12 +3,12 @@ mongoose = 										require('mongoose')
 colors = 										require('colors')
 EventEmitter = 									require('events').EventEmitter
 
+@User = 										mongoose.model('User', require(global.home + '/script/views/db/user'))
+@Post = 										mongoose.model('Post', require(global.home + '/script/views/db/post'))
+
 class Feed extends EventEmitter
 
 	constructor: (@req, @res) ->
-
-		@User = 								mongoose.model('User', require(global.home + '/script/views/db/user'))
-		@Post = 								mongoose.model('Post', require(global.home + '/script/views/db/post'))
 
 		this.on 'send', () =>
 			console.log 						JSON.stringify(@mdl.model).cyan
@@ -62,6 +62,18 @@ class Feed extends EventEmitter
 
 			else
 				@emit 'send'
+
+
+
+		this.on 'get', () =>
+
+			@Post.find (err, posts) =>
+
+				posts ?= {}
+
+				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
+				@emit 'send'
+
 
 
 
