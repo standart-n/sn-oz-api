@@ -1,11 +1,11 @@
 {
   "name": "ozserver",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "API for OZ",
   "main": "ozserver",
   "bin": {
-  	"ozserver": "./bin/ozserver",
-  	"ozserver-conf": "./bin/ozserver-conf"
+  	"ozserver": "./.bin/ozserver",
+  	"ozserver-conf": "./.bin/ozserver-conf"
   },
   "dependencies": {
     "express": "~3.3.4",
