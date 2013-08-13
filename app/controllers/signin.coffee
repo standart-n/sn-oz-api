@@ -56,7 +56,7 @@ class Signin extends EventEmitter
 
 
 
-module.exports = (req, res) ->
+exports = module.exports = (req, res) ->
 	new Signin(req, res)
 
 exports.Signin = Signin

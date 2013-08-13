@@ -3,12 +3,8 @@
   "version": "0.0.1",
   "description": "API for OZ",
   "main": "ozserver",
-  "dependencies": {},
-  "devDependencies": {
-    "grunt-cli": "~0.1.9",
-    "grunt": "~0.4.1",
+  "dependencies": {
     "express": "~3.3.4",
-    "grunt-contrib-coffee": "~0.7.0",
     "underscore": "~1.5.1",
     "colors": "~0.6.1",
     "commander": "~2.0.0",
@@ -16,7 +12,13 @@
     "mongoose": "~3.6.15",
     "random-string": "~0.1.1",
     "sha1": "~1.1.0",
-    "validate": "~0.2.4"
+    "validate": "~0.2.4",
+    "nodemailer": "~0.5.2"
+  },
+  "devDependencies": {
+    "grunt-cli": "~0.1.9",
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0"
   },
   "scripts": {
     "test": "test"

@@ -10,3 +10,9 @@ module.exports = (program, server) ->
 		.action () ->
 			global.command = 'run'
 			server.run()
+
+	program.on '--help', () ->
+		console.log '  Examples:'
+		console.log ''
+		console.log '    $ ozserver run'
+		console.log ''

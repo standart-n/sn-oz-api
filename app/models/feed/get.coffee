@@ -4,13 +4,13 @@ validate = 								require('validate')
 
 class Get
 
-	valid: 								false
 
 	constructor: (@model = {}) ->
 
+		valid = 						false
 
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Get(model)
 
 exports.Get = Get

@@ -6,17 +6,26 @@ _ = 			require('underscore')
 
 class Storage
 
-	options: {}
+	constructor: (attr) ->
 
-	defaults:
-		data: {}
-		path: './settings.json'
+		@options = {}
+
+		@defaults =
+			data: {}
+			path: './settings.json'
+
+		if attr?
+			if typeof attr is 'string' then @options.path = attr
+			if typeof attr is 'object' then @options = attr
+			_.defaults @options, @defaults
 
 	store: (attr) ->
-		if !attr? or attr is '' then attr = @defaults.path
-		if typeof attr is 'string' then @options.path = attr else @options = attr
-		_.defaults @options, @defaults
-		@check()
+		if attr?
+			if typeof attr is 'function' 	then attr = attr()
+			if typeof attr is 'string' 		then @options.path = attr
+			if typeof attr is 'object' 		then @options = attr
+			_.defaults @options, @defaults
+			@check()
 
 	check: () ->
 		@write() if !fs.existsSync(@options.path)
@@ -65,7 +74,10 @@ class Storage
 				callback(value) if callback?
 				#rl.close()
 
-module.exports = new Storage()
+
+exports = module.exports = new Storage()
 
 exports.Storage = Storage
+
+
 

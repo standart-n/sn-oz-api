@@ -37,7 +37,7 @@ class Registration
 
 
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Registration(model)
 
 exports.Registration = Registration

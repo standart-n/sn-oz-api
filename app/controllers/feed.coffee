@@ -83,7 +83,7 @@ class Feed extends EventEmitter
 
 
 
-module.exports = (req, res) ->
+exports = module.exports = (req, res) ->
 	new Feed(req, res)
 
 exports.Feed = Feed

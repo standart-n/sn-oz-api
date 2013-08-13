@@ -71,7 +71,7 @@ class Edit extends EventEmitter
 
 
 
-module.exports = (req, res) ->
+exports = module.exports = (req, res) ->
 	new Edit(req, res)
 
 exports.Edit = Edit

@@ -1,50 +1,63 @@
 
-express = 				require('express')
-mongoose = 				require('mongoose')
-http = 					require('http')
-path = 					require('path')
-colors = 				require('colors')
-readline = 				require('readline')
-async = 				require('async')
-_ = 					require('underscore')
+express = 													require('express')
+mongoose = 													require('mongoose')
+http = 														require('http')
+path = 														require('path')
+colors = 													require('colors')
+readline = 													require('readline')
+async = 													require('async')
+_ = 														require('underscore')
 
-storage = 				require(global.home + '/script/controllers/storage')			# storage.js
+Storage = 													require(global.home + '/script/controllers/storage').Storage
 
-storage.store(global.store)
 
 rl = readline.createInterface
-	input: 	process.stdin
-	output:	process.stdout
+	input: 													process.stdin
+	output:													process.stdout
 
 
 class Server
 
-	options: {}
+	constructor: () ->
+
+		@options =
+			mail: {}
+
+		@store = 											new Storage(global.store)
+		@mail = 											new Storage(global.mail)
+
 
 	configure: (handler) ->
 
 		async.series [
-			(callback) ->
-				if !storage.get('port')
-					storage.question rl, 'port', (value) ->
-						callback null, value
-				else 
-					callback null, storage.get('port')
-			(callback) ->
-				if !storage.get('mongodb_connection')
-					storage.question rl, 'mongodb_connection', (value) ->
-						callback(null, value)
-				else 
-					callback null, storage.get('mongodb_connection')
+
+			(callback) =>									@answer(@store,'port',callback)
+			(callback) =>									@answer(@store,'mongodb_connection',callback)
+			(callback) =>									@answer(@mail,'host',callback)
+			(callback) =>									@answer(@mail,'user',callback)
+			(callback) =>									@answer(@mail,'password',callback)
+
 		], (err, results) ->
 			rl.close()
 			handler(results)
 
+	answer: (conf, key, callback) ->
+		if !conf.get(key)
+			conf.question rl, key, (value) ->
+				callback(null, value)
+		else 
+			callback null, conf.get(key)
+
+
 	run: () ->
 
 		@configure (results) =>
-			@options.port = 					results[0]
-			@options.mongodb_connection = 		results[1]
+			@options.port = 								results[0]
+			@options.mongodb_connection = 					results[1]
+
+			@options.mail.host = 							results[2]
+			@options.mail.user = 							results[3]
+			@options.mail.password = 						results[4]
 
 			app = express()
 
@@ -63,7 +76,7 @@ class Server
 				console.log "server work at ".grey + "http://localhost: ".grey + app.get('port').blue
 
 
-module.exports = new Server()
+exports = module.exports = new Server()
 
 exports.Server = Server
 

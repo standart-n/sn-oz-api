@@ -42,7 +42,7 @@ class Edit
 		@model.notice = 				'Не удалось изменить пароль'
 		
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Edit(model)
 
 exports.Edit = Edit

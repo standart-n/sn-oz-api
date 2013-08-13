@@ -1,4 +1,4 @@
-lib-cov
+
 *.seed
 *.log
 *.csv
@@ -6,17 +6,18 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.git
+*.coffee
 
+app
 pids
 logs
 results
+lib-cov
+Makefile
 
-node_modules
-
-/script
 /store.json
 /mail.json
-/ozserver*
 
 npm-debug.log
 

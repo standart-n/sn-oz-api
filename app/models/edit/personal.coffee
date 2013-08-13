@@ -6,9 +6,9 @@ Schema = 								require(global.home + '/script/views/validate/personal')
 
 class Personal
 
-	valid: 								false
-
 	constructor: (@model = {}) ->
+
+		@valid = 						false
 
 
 	check: () ->
@@ -40,7 +40,9 @@ class Personal
 		@model.notice = 				'Не удалось записать новые даннные'
 		
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Personal(model)
 
 exports.Personal = Personal
+
+

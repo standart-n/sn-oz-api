@@ -3,9 +3,10 @@ sha1 = 									require('sha1')
 
 class Signin
 
-	valid: 								false
 
 	constructor: (@model = {}) ->
+
+		valid = 						false
 
 	check: () ->
 		if @model.email? and @model.password?
@@ -45,7 +46,7 @@ class Signin
 		@model.notice = 				'Пользователь не найден'
 		
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Signin(model)
 
 exports.Signin = Signin

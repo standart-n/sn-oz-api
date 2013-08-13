@@ -45,7 +45,7 @@ class Registration extends EventEmitter
 
 
 
-module.exports = (req, res) ->
+exports = module.exports = (req, res) ->
 	new Registration(req, res)
 
 exports.Registration = Registration

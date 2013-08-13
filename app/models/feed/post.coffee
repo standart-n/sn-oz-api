@@ -6,9 +6,10 @@ Schema = 								require(global.home + '/script/views/validate/post')
 
 class Post
 
-	valid: 								false
 
 	constructor: (@model = {}) ->
+
+		valid =							false
 
 
 	check: () ->
@@ -39,7 +40,7 @@ class Post
 		@model.notice = 				'Пользователь не найден'
 		
 
-module.exports = (model = {}) ->
+exports = module.exports = (model = {}) ->
 	new Post(model)
 
 exports.Post = Post
