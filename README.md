@@ -1,11 +1,28 @@
-## API для Новостей Общего Заказа
+## API сервер для Новостей Общего Заказа
 
 > Внутренняя разработка компании [Стандарт-Н](http://standart-n.ru/)
 
+#### Требования
+
+```
+  * GCC 4.2 or newer
+  * Python 2.6 or 2.7
+  * GNU Make 3.81 or newer
+  * libexecinfo (FreeBSD and OpenBSD only)
+  * Node.js 0.10.10 or newer
+  * NPM.js 1.2.25 or newer
+  * MongoDB 2.4.5 or newer
+```
+
 #### Запуск сервера в терминале
 
-```bash
- 
+```
+  $ ozserver run
+```
+
+
+```
+  
   Usage: ozserver [options] [command]
 
   Commands:
@@ -20,13 +37,21 @@
   Examples:
 
     $ ozserver run
-
 ```
 
 #### Настройка сервера
 
-```bash
+**Текущие настройки:**
 
+ - **port** -  порт, на котором будет работать сервер
+ - **mongodb_connection** - строка подключения к базе данных mongodb
+
+```
+  $ ozserver-conf
+```
+
+
+```
   Usage: ozserver-conf [options] [command]
 
   Commands:
@@ -46,12 +71,11 @@
 
     $ ozserver-conf set port 2244
     $ ozserver-conf get mongodb_connection
-
 ```
 
 #### Установка спомощью npm 
 
-```bash
+```
 	npm install -g ozserver	
 ```
 
@@ -59,36 +83,99 @@
 
 ```bash
 	# скачиваем
-	git clone https://github.com/standart-n/ozserver
+	$ git clone https://github.com/standart-n/ozserver
 	# переходим в папку проекта
-	cd ./ozserver
+	$ cd ./ozserver
 	# устанавливаем необоходимые пакеты
-	make install
+	$ make install
 	# собираем проект 
-	make
+	$ make
 	# запускаем
-	node ozserver
+	$ node ozserver
 ```
 
-#### Запуск сервера как процесс
+#### Запуск сервера спомощью forever
 
-```bash
+```
 	# установка forever
-	npm install forever -g
+	$ npm install forever -g
 	# запуск
-	forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+	$ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
 ```
 
 #### Остановка сервера
 
-```bash
+```
 	# просмотр процессов
-	forever list
+	$ forever list
 	# остановка
-	forever stop ozserver
+	$ forever stop ozserver
 ```
 
-#### License
+### API
+
+
+#### Авторизация пользователя
+
+**Авторизация по e-mail и паролю**
+
+ - GET /signin
+   - email
+   - password
+
+**Авторизация по ключу**
+
+ - GET /signin/:id/:key
+
+
+#### Регистрация пользователя
+  
+**Простая регистрация**  
+
+ - GET /registration
+   - model
+     - firstname
+     - lastname
+     - email
+     - company
+
+#### Редактирование информации о пользователе
+
+**Личные данные**
+
+ - PUT /edit/personal
+   - model
+     - id
+     - key
+     - firstname\_new
+     - lastname\_new
+
+**Смена пароля**
+ - PUT /edit/password
+   - model
+     - id
+     - key
+     - password\_new
+     - password\_repeat
+
+#### Лента новостей
+
+**Получение новостей**
+
+ - GET /feed/post
+   - [limit]
+
+**Добавление новости**
+
+ - PUT /feed/post
+   - model
+     - id (user)
+     - key (user)
+     - message
+
+
+
+### License
 
 The MIT License (MIT)
 
