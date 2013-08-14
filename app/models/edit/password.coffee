@@ -18,7 +18,7 @@ class Edit
 		@model.notice = 				validate(Schema, @model)
 
 		if Array.isArray(@model.notice)
-			@model.notice = 			@model.notice[0].toString()
+			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 		else 
 			if @model.password_new is @model.password_repeat
 				@model.password_change = 	true

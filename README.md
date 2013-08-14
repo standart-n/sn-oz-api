@@ -41,18 +41,18 @@
 
 #### Настройка сервера
 
-**Текущие настройки:**
+**Параметры:**
 
  - **port** -  порт, на котором будет работать сервер
  - **mongodb_connection** - строка подключения к базе данных mongodb
 
 ```
-  $ ozserver-conf
+  $ ozserver-store
 ```
 
 
 ```
-  Usage: ozserver-conf [options] [command]
+  Usage: ozserver-store [options] [command]
 
   Commands:
 
@@ -69,17 +69,54 @@
 
   Examples:
 
-    $ ozserver-conf set port 2244
-    $ ozserver-conf get mongodb_connection
+    $ ozserver-store set port 2244
+    $ ozserver-store get mongodb_connection
 ```
 
-#### Установка спомощью npm 
+#### Настройка почты
+
+**Параметры:**
+
+ - **email** -  адрес с которого будет отправляться почта
+ - **host** -  ip почтового сервера сервер
+ - **user** - пользователь
+ - **password** - пароль
+
+```
+  $ ozserver-mail
+```
+
+
+```
+  Usage: ozserver-mail [options] [command]
+
+  Commands:
+
+    set <key> <value>      set settings
+    get <key>              get settings
+    remove <key>           remove settings
+    import <data>          import data into settings
+    export                 export data from settings
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+
+  Examples:
+
+    $ ozserver-mail set email office@standart-n.ru
+    $ ozserver-mail get host
+```
+
+
+#### Установка сервера спомощью npm 
 
 ```
 	npm install -g ozserver	
 ```
 
-#### Установка с github
+#### Установка из исходного кода
 
 ```bash
 	# скачиваем
@@ -139,6 +176,7 @@
      - email
      - company
 
+
 #### Редактирование информации о пользователе
 
 **Личные данные**
@@ -150,7 +188,9 @@
      - firstname\_new
      - lastname\_new
 
+
 **Смена пароля**
+
  - PUT /edit/password
    - model
      - id
@@ -158,11 +198,21 @@
      - password\_new
      - password\_repeat
 
+
+#### Функция вспомнить пароль
+
+**Смена пароля**
+
+ - GET /remember
+   - model
+     - email
+
+
 #### Лента новостей
 
 **Получение новостей**
 
- - GET /feed/post
+ - GET /feed/post/:region
    - [limit]
 
 **Добавление новости**

@@ -1,0 +1,57 @@
+
+html
+	head
+		title Регистрация в системе Общий Заказ
+
+		style.
+
+			h1 {
+				color: #e95f03;
+				font-family: Arial,Helvetica,sans-serif;
+				padding: 0;
+				margin: 0;
+				font-size: 24px;
+				font-weight: normal;
+				text-align: left;
+			}
+			h2 {
+				color: #e95f03;
+				font-family: Arial,Helvetica,sans-serif;
+				padding: 0;
+				margin: 0;
+				font-size: 18px;
+				font-weight: normal;
+				text-align: left;
+			}
+
+			p {
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 13px;
+				line-height: 20px;
+				text-align: left;
+			}
+
+	body
+
+	table(cellpadding = "0", cellspacing = "0", border = "0", width = "99%")
+		tr
+			td(align = "center")
+				table(cellpadding = "0", cellspacing = "0", border = "0", width = "640")
+					tr
+						td(valign = "bottom", align = "left")							
+
+							p
+								h2 Поздравляем!
+								Вы успешно зарегистрировались в системе Общий Заказ!
+
+							table
+								tr
+									td
+										strong Ваш логин:
+									td 	#{email}
+								tr
+									td
+										strong Ваш пароль:
+									td 	#{password}
+
+

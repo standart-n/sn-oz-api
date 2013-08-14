@@ -1,49 +1,49 @@
 
-module.exports = (program, storage) ->
+module.exports = (program, store) ->
 
 	throw 'program is not exists' if !program?
-	throw 'storage is not exists' if !storage?
+	throw 'store is not exists' if !store?
 
 	program
 		.command('set <key> <value>')
 		.description('set settings')
 		.action (key,value) ->
-			console.log storage.set(key, value)
+			console.log store.set(key, value)
 			process.exit()
 
 	program
 		.command('get <key>')
 		.description('get settings')
 		.action (key) ->
-			console.log storage.get(key)
+			console.log store.get(key)
 			process.exit()
 
 	program
 		.command('remove <key>')
 		.description('remove settings')
 		.action (key) ->
-			console.log storage.remove(key)
+			console.log store.remove(key)
 			process.exit()
 
 	program
 		.command('import <data>')
 		.description('import data into settings')
 		.action (data) ->
-			console.log storage.import(data)
+			console.log store.import(data)
 			process.exit()
 
 	program
 		.command('export')
 		.description('export data from settings')
 		.action () ->
-			console.log storage.export()
+			console.log store.export()
 			process.exit()
 
 	program.on '--help', () ->
 		console.log '  Examples:'
 		console.log ''
-		console.log '    $ ozserver-conf set port 2244'
-		console.log '    $ ozserver-conf get mongodb_connection'
+		console.log '    $ ozserver-mail set email office@standart-n.ru'
+		console.log '    $ ozserver-mail get host'
 		console.log ''
 
 

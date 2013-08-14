@@ -13,8 +13,8 @@ class Signin
 			@valid = 					true
 
 		if @valid is true
-			@model.email = 				@model.email.trim()
-			@model.password = 			@model.password.trim()
+			@model.email = 				@model.email.toString().trim()
+			@model.password = 			@model.password.toString().trim()
 
 			@model.success = 			false
 			@model.key = 				sha1(@model.password)

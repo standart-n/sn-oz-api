@@ -20,7 +20,7 @@ class Post
 		@model.notice = 				validate(Schema, @model)
 
 		if Array.isArray(@model.notice)
-			@model.notice = 			@model.notice[0].toString()
+			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 		else 
 			@model.post_result = 		true
 

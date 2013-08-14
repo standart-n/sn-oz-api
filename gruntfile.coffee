@@ -24,7 +24,8 @@ module.exports = (grunt) ->
 					bare: on
 				files:
 					'./ozserver': 				'app/app.coffee'
-					'./ozserver-conf': 			'app/app-conf.coffee'
+					'./ozserver-mail': 			'app/app-mail.coffee'
+					'./ozserver-store': 		'app/app-store.coffee'
 
 
 	grunt.loadNpmTasks 'grunt-contrib-coffee'

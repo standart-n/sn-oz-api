@@ -44,8 +44,8 @@ class Signin extends EventEmitter
 			@mdl = 	require(global.home + '/script/models/signin/signin')()
 
 			User.findOne 
-					id: 				@req.route.params.id
-					key:				@req.route.params.key
+					id: 				if @req.route.params.id? then @req.route.params.id else ''
+					key:				if @req.route.params.key? then @req.route.params.key else ''
 			, (err, user) =>
 				if user?
 					@mdl.model = 		user

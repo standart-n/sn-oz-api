@@ -6,7 +6,7 @@ module.exports = (app, options) ->
 		require(global.home + '/script/controllers/feed')(req, res).emit('post')
 
 
-	app.get '/feed/post', (req, res) ->
+	app.get '/feed/post/:region', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('get')
 

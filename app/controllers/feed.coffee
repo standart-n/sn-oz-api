@@ -50,7 +50,8 @@ class Feed extends EventEmitter
 
 	get: (callback) ->
 
-		Post.find {}
+		Post.find
+			'region.name':		if @req.route.params.region? then @req.route.params.region else ''
 		, null
 		,
 			limit:				if @req.query?.limit? then @req.query.limit else 100

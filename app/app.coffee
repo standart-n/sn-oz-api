@@ -17,6 +17,10 @@ pkg = 					require(global.home + '/package.json')
 server = 				require(global.home + '/script/controllers/server')				# server.js
 
 
+mailer = 								require(global.home + '/script/controllers/mailer')
+
+mailer.send()
+
 # init program
 program.version(pkg.version)
 

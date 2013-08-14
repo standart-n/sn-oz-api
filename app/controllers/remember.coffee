@@ -8,7 +8,7 @@ mailer = 								require(global.home + '/script/controllers/mailer')
 
 User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
 
-class Registration extends EventEmitter
+class Remember extends EventEmitter
 
 	constructor: (@req, @res) ->
 
@@ -18,47 +18,46 @@ class Registration extends EventEmitter
 
 		
 		this.on 'success', () =>
-			ObjectId = 					mongoose.Types.ObjectId
-			@mdl.model.id = 			new ObjectId
-			user = 						new User(@mdl.model)
-			user.save()
 			@mail()
+			@mdl.success()
+			@emit 'send'
 
 
 		this.on 'check', () =>
 
 			model = 					if @req.query?.model? then JSON.parse(@req.query.model) else {}
-			@mdl = 						require(global.home + '/script/models/registration/registration')(model)
-
-
+			@mdl = 						require(global.home + '/script/models/remember/remember')(model)
+	
 			if @mdl.model.success is true
 
 				User.findOne 
 					email: 				@mdl.model.email
-				, (err, exists) =>
-					if exists?
+				, (err, user) =>
+					if !user?
 						@mdl.emailExists()
 						@emit 'send'
 					else
 						@mdl.genPwd()
+						console.log user.key
+						user.key = @mdl.model.key
+						console.log user.key
+						user.save()
 						@emit 'success'
-						@emit 'send'
 
 			else
 				@emit 'send'
 
 
 	mail: () ->
-		html = jade.renderFile global.home + '/view/mail/registration.jade',
-			email:		@mdl.model.email
+		html = jade.renderFile global.home + '/view/mail/remember.jade',
 			password:	@mdl.model.password
 
-		mailer.send @mdl.model.email, 'Общий Заказ - поздравляем с успешной регистрацией!', html
+		mailer.send @mdl.model.email, 'Общий Заказ - смена пароля', html
 
 
 exports = module.exports = (req, res) ->
-	new Registration(req, res)
+	new Remember(req, res)
 
-exports.Registration = Registration
+exports.Remember = Remember
 
 
