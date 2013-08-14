@@ -28,13 +28,12 @@ class Feed extends EventEmitter
 
 				@findUser (user) =>
 
-					post = @post()
+					post = @post(user)
 					post.save()
 
 					@mdl.success()
 
-			else
-				@emit 'send'
+			@emit 'send'
 
 
 
@@ -64,7 +63,7 @@ class Feed extends EventEmitter
 			callback(posts)  	if callback?
 
 
-	post: () ->
+	post: (user) ->
 
 		ObjectId = 				mongoose.Types.ObjectId
 
