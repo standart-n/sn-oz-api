@@ -14,51 +14,24 @@ class Feed extends EventEmitter
 			console.log 						JSON.stringify(@mdl.model).cyan
 			@res.jsonp 							@mdl.model
 
+		this.on 'fail', () =>
+			@mdl.fail()
+			@emit 'send'
+
 
 		this.on 'post', () =>
 
 			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
 			@mdl = 								require(global.home + '/script/models/feed/post')(model)
 		
-			if @mdl.check()
-	
-				User.findOne 
-					id: 						@mdl.model.id
-					key:						@mdl.model.key
-				, (err, user) =>
-					if err then @mdl.fail()
+			if @mdl.check() is true
 
-					if user?
+				@findUser (user) =>
 
-						ObjectId = 				mongoose.Types.ObjectId
+					post = @post()
+					post.save()
 
-						post = new Post
-							id:					new ObjectId
-							
-							author:
-								id:				user.id
-								firstname:		user.firstname
-								lastname:		user.lastname
-								email:			user.email
-								company:		user.company
-							
-							message:
-								text:			@mdl.model.message
-							
-							region:
-								caption: 		user.region.caption
-								name:			user.region.name
-
-
-						post.save()
-
-						@mdl.success()
-
-					else
-
-						@mdl.userNotFound()
-
-					@emit 'send'
+					@mdl.success()
 
 			else
 				@emit 'send'
@@ -67,19 +40,65 @@ class Feed extends EventEmitter
 
 		this.on 'get', () =>
 
-			Post.find {}
-			, null
-			,	
-				limit:							if @req.query?.limit? then @req.query.limit else 100
-				sort:							
-					post_dt:					-1
-			, (err, posts) =>
+			@get (posts) =>
 
-				posts ?= []
 				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
 				@emit 'send'
 
 
+
+
+	get: (callback) ->
+
+		Post.find {}
+		, null
+		,
+			limit:				if @req.query?.limit? then @req.query.limit else 100
+			sort:							
+				post_dt: -1
+		, (err, posts) =>
+			throw err if err
+
+			posts ?= []
+			callback(posts)  	if callback?
+
+
+	post: () ->
+
+		ObjectId = 				mongoose.Types.ObjectId
+
+		post = new Post
+			id:					new ObjectId
+			
+			author:
+				id:				user.id
+				firstname:		user.firstname
+				lastname:		user.lastname
+				email:			user.email
+				company:		user.company
+			
+			message:
+				text:			@mdl.model.message
+			
+			region:
+				caption: 		user.region.caption
+				name:			user.region.name
+
+		post
+
+
+
+	findUser: (callback) ->
+
+		User.findOne
+			id: 				@mdl.model.id
+			key:				@mdl.model.key
+		, (err, user) =>
+			if err or !user?
+				@emit 'fail'
+
+			else		
+				callback(user)	if callback?
 
 
 

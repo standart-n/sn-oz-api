@@ -1,5 +1,4 @@
 
-
 module.exports = (program, storage) ->
 
 	throw 'program is not exists' if !program?

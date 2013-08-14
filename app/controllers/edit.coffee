@@ -15,9 +15,12 @@ class Edit extends EventEmitter
 
 		this.on 'success', () =>
 			@mdl.success()
+			@emit 'send'
 
 		this.on 'fail', () =>
-			@mdl.success()
+			@mdl.fail()
+			@emit 'send'
+
 
 		this.on 'password', () =>
 
@@ -26,20 +29,11 @@ class Edit extends EventEmitter
 	
 			if @mdl.check() is true
 
-				User.findOne 
-					id: 				@mdl.model.id
-					key:				@mdl.model.key
-				, (err, user) =>
-					if !err
-						user.key =		@mdl.model.key_new
-						user.save()
-						@emit 'success'
+				@findUser (user) =>
+					user.key =				@mdl.model.key_new
+					user.save()
+					@emit 'success'
 					
-					else
-						@emit 'fail'
-					
-					@emit 'send'
-
 			else
 				@emit 'send'
 
@@ -51,23 +45,29 @@ class Edit extends EventEmitter
 
 			if @mdl.check() is true
 
-				User.findOne 
-					id: 				@mdl.model.id
-					key:				@mdl.model.key
-				, (err, user) =>
-					if !err
-						user.firstname =	@mdl.model.firstname_new
-						user.lastname =		@mdl.model.lastname_new
-						user.save()
-						@emit 'success'
-					
-					else
-						@emit 'fail'
-					
-					@emit 'send'
+				@findUser (user) =>
+					user.firstname =		@mdl.model.firstname_new
+					user.lastname =			@mdl.model.lastname_new
+					user.save()
+					@emit 'success'
 
 			else
 				@emit 'send'
+					
+
+
+	findUser: (callback) ->
+
+		User.findOne
+			id: 						@mdl.model.id
+			key:						@mdl.model.key
+		, (err, user) =>
+			if err or !user?
+				@emit 'fail'
+			
+			else
+				callback(user)			if callback?
+
 
 
 

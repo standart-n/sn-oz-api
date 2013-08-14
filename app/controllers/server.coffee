@@ -23,6 +23,9 @@ class Server
 		@options =
 			mail: {}
 
+		throw 'global.store is not exists' 					if !global.store?
+		throw 'global.mail is not exists' 					if !global.mail?
+
 		@store = 											new Storage(global.store)
 		@mail = 											new Storage(global.mail)
 
@@ -43,6 +46,7 @@ class Server
 
 	answer: (conf, key, callback) ->
 		if !conf.get(key)
+			throw 'rl not defined'							if !rl?
 			conf.question rl, key, (value) ->
 				callback(null, value)
 		else 
@@ -62,6 +66,9 @@ class Server
 			app = express()
 
 			mongoose.connect(@options.mongodb_connection)
+
+			mongoose.connection.on 'error', (err) ->
+				throw err if err
 
 			# settings
 			require(global.home + '/script/config/express/server')(app, @options)
