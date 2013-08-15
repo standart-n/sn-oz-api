@@ -5,7 +5,7 @@ path = 					require('path')													# path module
 
 # path to root dir
 global.home = 			__dirname
-global.mail = 			__dirname + '/mail.json'
+global.mail = 			__dirname + '/conf/mail.json'
 
 # default output
 global.command = 		'help'

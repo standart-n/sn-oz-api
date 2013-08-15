@@ -14,8 +14,7 @@ results
 node_modules
 
 /script
-/store.json
-/mail.json
+/conf
 /ozserver*
 
 npm-debug.log

@@ -5,7 +5,7 @@ path = 					require('path')													# path module
 
 # path to root dir
 global.home = 			__dirname
-global.store = 			__dirname + '/store.json'
+global.store = 			__dirname + '/conf/store.json'
 
 # default output
 global.command = 		'help'

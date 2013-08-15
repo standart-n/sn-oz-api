@@ -16,8 +16,8 @@ results
 lib-cov
 Makefile
 
-/store.json
-/mail.json
+/conf/*.json
+
 
 npm-debug.log
 
