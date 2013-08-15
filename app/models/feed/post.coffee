@@ -15,7 +15,7 @@ class Post
 	check: () ->
 
 		@model.post_result = 			false
-		@model.message = 				@model.message.trim()
+		@model.message.text = 			@model.message.text.toString().trim()
 
 		@model.notice = 				validate(Schema, @model)
 

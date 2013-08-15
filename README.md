@@ -217,10 +217,9 @@
 
 **Добавление новости**
 
- - PUT /feed/post
+ - GET /feed/post
    - model
-     - id (user)
-     - key (user)
+     - author (user)
      - message
 
 

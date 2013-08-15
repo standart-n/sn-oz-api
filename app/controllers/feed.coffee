@@ -32,8 +32,11 @@ class Feed extends EventEmitter
 					post.save()
 
 					@mdl.success()
+					@emit 'send'
 
-			@emit 'send'
+			else
+
+				@emit 'send'
 
 
 
@@ -78,7 +81,7 @@ class Feed extends EventEmitter
 				company:		user.company
 			
 			message:
-				text:			@mdl.model.message
+				text:			@mdl.model.message.text
 			
 			region:
 				caption: 		user.region.caption
@@ -91,8 +94,8 @@ class Feed extends EventEmitter
 	findUser: (callback) ->
 
 		User.findOne
-			id: 				@mdl.model.id
-			key:				@mdl.model.key
+			id: 				@mdl.model.author.id
+			key:				@mdl.model.author.key
 		, (err, user) =>
 			if err or !user?
 				@emit 'fail'
