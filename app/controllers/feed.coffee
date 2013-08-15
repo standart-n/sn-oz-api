@@ -1,4 +1,5 @@
 	
+_ = 											require('underscore')
 mongoose = 										require('mongoose')
 colors = 										require('colors')
 EventEmitter = 									require('events').EventEmitter
@@ -13,6 +14,7 @@ class Feed extends EventEmitter
 		this.on 'send', () =>
 			# console.log 						JSON.stringify(@mdl.model).cyan
 			@res.jsonp 							@mdl.model
+
 
 		this.on 'fail', () =>
 			@mdl.fail()
@@ -43,11 +45,9 @@ class Feed extends EventEmitter
 		this.on 'get', () =>
 
 			@get (posts) =>
-
-				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
+		
+				@mdl = 					require(global.home + '/script/models/feed/get')(posts)
 				@emit 'send'
-
-
 
 
 	get: (callback) ->
