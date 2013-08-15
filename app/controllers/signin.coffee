@@ -11,7 +11,7 @@ class Signin extends EventEmitter
 	constructor: (@req, @res) ->
 
 		this.on 'send', () =>
-			console.log 				JSON.stringify(@mdl.model).cyan
+			# console.log 				JSON.stringify(@mdl.model).cyan
 			@res.jsonp 					@mdl.model
 
 
