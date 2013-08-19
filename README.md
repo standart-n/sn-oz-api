@@ -2,7 +2,7 @@
 
 > Внутренняя разработка компании [Стандарт-Н](http://standart-n.ru/)
 
-#### Требования
+#### Требования к серверу
 
 ```
   * GCC 4.2 or newer
@@ -12,6 +12,32 @@
   * Node.js 0.10.10 or newer
   * NPM.js 1.2.25 or newer
   * MongoDB 2.4.5 or newer
+```
+
+
+#### Как привязать сервер к доменному имени в nginx
+
+
+```
+  server {
+    # пор, который слушает nginx
+    listen 8080;
+    # доменные имена
+    server_name api.oz.st-n.ru www.api.oz.st-n.ru;
+    # путь к логам
+    access_log /var/log/nginx/st-n.log;
+
+    location / {
+      # 127.0.0.1 - здесь мб адрес любой машины в сети
+      # 2424 - порт который слушает запущенный нами сервер
+      proxy_pass http://127.0.0.1:2424/;
+      proxy_redirect off;
+      proxy_set_header Host $host;
+      proxy_set_header X-real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+  }
+
 ```
 
 #### Запуск сервера в терминале
@@ -113,7 +139,26 @@
 #### Установка сервера спомощью npm 
 
 ```
-	npm install -g ozserver	
+  # ключ -g указывает что пакет установится глобально
+  # если на машине будет запущен только один сервер
+  # то для установки достаточно ввести следующую команду:
+  $ npm install -g ozserver	
+  # затем можно запустить сервер
+  $ ozserver run
+
+
+  # если необходимо запустить несколько серверов на одной машине,
+  # то следует устанавливать пакеты локально:
+  # создаем каталог, в котором будет располагаться пакет
+  $ mkdir -p /var/www/oz/api/server_1/
+  # переходим в даннный каталог
+  $ cd /var/www/oz/api/server_1
+  # устанавливаем пакет
+  $ npm install ozserver
+  # переходим в ныжный каталог
+  $ cd node_modules/ozserver
+  # запускаем
+  $ node ozserver run
 ```
 
 #### Установка из исходного кода
@@ -128,7 +173,7 @@
 	# собираем проект 
 	$ make
 	# запускаем
-	$ node ozserver
+	$ node ozserver run
 ```
 
 #### Запуск сервера спомощью forever
@@ -137,7 +182,16 @@
 	# установка forever
 	$ npm install forever -g
 	# запуск
+  # -o - путь к обычным логам
+  # -е - путь к логам с ошибками
+  # если сервер был установлен глобально, то: 
 	$ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+  # если сервер был установлен локально, то:
+  # переходим в папку с локальным пакетом
+  $ cd /var/www/oz/api/server_1
+  # указываем forever какой файл требуется запустить
+  $ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
+
 ```
 
 #### Остановка сервера
@@ -149,7 +203,7 @@
 	$ forever stop ozserver
 ```
 
-### API
+### Структура запросов к серверу
 
 
 #### Авторизация пользователя
@@ -222,6 +276,125 @@
      - author (user)
      - message
 
+
+
+### Структура базы данных
+
+
+Коллекция пользователей, **users**
+
+
+```
+  id:           type: Schema.Types.ObjectId
+  firstname:    type: String, trim: true, index: true
+  lastname:     type: String, trim: true, index: true
+  email:        type: String, lowercase: true, trim: true, index: true
+  company:      type: String, trim: true, index: true
+  key:          type: String, index: true
+
+  region:
+    caption:    type: String
+    name:       type: String, index: true
+
+
+  signin:       type: Boolean, default: true
+
+  reg_dt:       type: Date, default: Date.now
+
+```
+
+
+Коллекция новостей, **posts**
+
+```
+  id:             type: Schema.Types.ObjectId
+
+  author:
+    id:           type: Schema.Types.ObjectId
+    firstname:    type: String
+    lastname:     type: String
+    email:        type: String
+    company:      type: String
+
+  message:
+    text:         type: String
+
+  region:
+    caption:      type: String
+    name:         type: String, index: true
+
+
+  post_dt:        type: Date, default: Date.now
+
+```
+
+
+### Валидация данных
+
+
+Регистрация пользователя
+
+```
+  firstname:      
+    type: 'string'
+    required: true
+    minLen: 3
+    maxLen: 20
+    message: 'Неверно заполнено поле Имя'
+    custom: (s) ->
+      s.match(/^([\D]+)$/gi)
+
+  lastname:
+    type: 'string'
+    required: true
+    minLen: 3
+    maxLen: 20
+    message: 'Неверно заполнено поле Фамилия'
+    custom: (s) ->
+      s.match(/^([\D]+)$/gi)
+
+  email:
+    type: 'email'
+    required: true
+    message: 'Неверно заполнено поле Email'
+
+  company:      
+    type: 'string'
+    required: true
+    minLen: 3
+    maxLen: 20
+    message: 'Неверно заполнено поле Компания'
+
+```
+
+
+Отправка сообщения в общую ленту
+
+```
+  author:
+
+    id:
+      type: 'string'
+      len: 24
+      required: true
+      message: 'Пользователь не определен'
+
+    key:
+      type: 'string'
+      len: 40
+      required: true
+      message: 'Пользователь не определен'
+
+  message:
+
+    text:
+      type: 'string'
+      required: true
+      minLen: 3
+      maxLen: 255
+      message: 'Сообщение некорректно'
+
+```
 
 
 ### License
