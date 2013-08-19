@@ -164,28 +164,28 @@
 #### Установка из исходного кода
 
 ```bash
-	# скачиваем
-	$ git clone https://github.com/standart-n/ozserver
-	# переходим в папку проекта
-	$ cd ./ozserver
-	# устанавливаем необоходимые пакеты
-	$ make install
-	# собираем проект 
-	$ make
-	# запускаем
-	$ node ozserver run
+  # скачиваем
+  $ git clone https://github.com/standart-n/ozserver
+  # переходим в папку проекта
+  $ cd ./ozserver
+  # устанавливаем необоходимые пакеты
+  $ make install
+  # собираем проект 
+  $ make
+  # запускаем
+  $ node ozserver run
 ```
 
 #### Запуск сервера спомощью forever
 
 ```
-	# установка forever
-	$ npm install forever -g
-	# запуск
+  # установка forever
+  $ npm install forever -g
+  # запуск
   # -o - путь к обычным логам
   # -е - путь к логам с ошибками
   # если сервер был установлен глобально, то: 
-	$ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+  $ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
   # если сервер был установлен локально, то:
   # переходим в папку с локальным пакетом
   $ cd /var/www/oz/api/server_1
@@ -197,10 +197,10 @@
 #### Остановка сервера
 
 ```
-	# просмотр процессов
-	$ forever list
-	# остановка
-	$ forever stop ozserver
+  # просмотр процессов
+  $ forever list
+  # остановка
+  $ forever stop ozserver
 ```
 
 ### Структура запросов к серверу
