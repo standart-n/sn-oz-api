@@ -13,7 +13,7 @@ class Personal
 
 	check: () ->
 
-		@model.personal_change = 		false
+		@model.success = 				false
 		@model.firstname_new = 			@model.firstname_new.trim()
 		@model.lastname_new = 			@model.lastname_new.trim()
 
@@ -22,21 +22,21 @@ class Personal
 		if Array.isArray(@model.notice)
 			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 		else 
-			@model.personal_change = 	true
+			@model.success = 			true
 
-		@model.personal_change
+		@model.success
 
 
 	success: () ->
+		@model.success = 				true
 		@model.firstname = 				@model.firstname_new
 		@model.lastname = 				@model.lastname_new
 		@model.firstname_new = 			null
 		@model.lastname_new = 			null
 		@model.notice = 				'Данные успешно изменены'
-		@model.personal_change = 		true
 
 	fail: () ->
-		@model.personal_change = 		false
+		@model.success = 				false
 		@model.notice = 				'Не удалось записать новые даннные'
 		
 

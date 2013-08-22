@@ -11,7 +11,7 @@ class Edit
 
 	check: () ->
 
-		@model.password_change = 		false
+		@model.success = 				false
 		@model.password_new = 			@model.password_new.trim()
 		@model.password_repeat = 		@model.password_repeat.trim()
 
@@ -21,24 +21,24 @@ class Edit
 			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 		else 
 			if @model.password_new is @model.password_repeat
-				@model.password_change = 	true
-				@model.key_new = 			sha1(@model.password_new)
+				@model.success = 		true
+				@model.key_new = 		sha1(@model.password_new)
 			else
 				@model.notice = 		'Пароли не совпадают'
 
-		@model.password_change
+		@model.success
 
 
 	success: () ->
+		@model.success = 				true
 		@model.key = 					@model.key_new
 		@model.key_new = 				null
 		@model.password_new = 			null
 		@model.password_repeat = 		null
 		@model.notice = 				'Пароль успешно изменен'
-		@model.password_change = 		true
 
 	fail: () ->
-		@model.password_change = 		false
+		@model.success = 				false
 		@model.notice = 				'Не удалось изменить пароль'
 		
 

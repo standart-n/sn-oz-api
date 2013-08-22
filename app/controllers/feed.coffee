@@ -16,8 +16,20 @@ class Feed extends EventEmitter
 			@res.jsonp 							@mdl.model
 
 
-		this.on 'fail', () =>
-			@mdl.fail()
+		this.on 'userNotFound', () =>
+			@mdl.emit 'userNotFound'
+			@emit 'send'
+
+		this.on 'postNotFound', () =>
+			@mdl.emit 'postNotFound'
+			@emit 'send'
+
+		this.on 'editSuccess', () =>
+			@mdl.emit 'success'
+			@emit 'send'
+
+		this.on 'deleteSuccess', () =>
+			@mdl.emit 'success'
 			@emit 'send'
 
 
@@ -33,7 +45,7 @@ class Feed extends EventEmitter
 					post = @post(user)
 					post.save()
 
-					@mdl.success()
+					@mdl.emit 'success'
 					@emit 'send'
 
 			else
@@ -46,21 +58,62 @@ class Feed extends EventEmitter
 
 			@get (posts) =>
 		
-				@mdl = 					require(global.home + '/script/models/feed/get')(posts)
+				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
 				@emit 'send'
+
+
+
+
+		this.on 'edit', () =>
+
+			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 								require(global.home + '/script/models/feed/edit')(model)
+
+			if @mdl.check() is true
+
+				@findUser (user) =>
+					@findPost (post) =>
+						post.message.text = 	@mdl.model.message.text
+						post.save()
+						@emit 'editSuccess'
+
+			else
+
+				@emit 'send'
+
+
+
+		this.on 'delete', () =>
+
+			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 								require(global.home + '/script/models/feed/delete')(model)
+
+			if @mdl.check() is true
+
+				@findUser (user) =>
+					@findPost (post) =>
+						post.disables = 		true
+						post.save()
+						@emit 'deleteSuccess'
+
+			else
+
+				@emit 'send'
+
 
 
 	get: (callback) ->
 
 		Post.find
 			'region.name':		if @req.route.params.region? then @req.route.params.region else ''
+			# 'disabled':			false
 		, null
 		,
 			limit:				if @req.query?.limit? then @req.query.limit else 100
 			sort:							
 				post_dt: -1
 		, (err, posts) =>
-			throw err if err
+			console.log err if err
 
 			posts ?= []
 			callback(posts)  	if callback?
@@ -84,10 +137,22 @@ class Feed extends EventEmitter
 				text:			@mdl.model.message.text
 			
 			region:
-				caption: 		user.region.caption
-				name:			user.region.name
+				caption: 		@mdl.model.region.caption
+				name:			@mdl.model.region.name
 
 		post
+
+
+	findPost: (callback) ->
+
+		Post.findOne
+			id:					@mdl.model.id
+		, (err, post) =>
+			if err or !post?
+				@emit 'postNotFound'
+
+			else		
+				callback(post)	if callback?
 
 
 
@@ -98,7 +163,7 @@ class Feed extends EventEmitter
 			key:				@mdl.model.author.key
 		, (err, user) =>
 			if err or !user?
-				@emit 'fail'
+				@emit 'userNotFound'
 
 			else		
 				callback(user)	if callback?

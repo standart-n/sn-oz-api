@@ -22,6 +22,8 @@ module.exports = 		new Schema
 
 	post_dt:			type: Date, default: Date.now
 
+	disabled:			type: Boolean, default: false
+
 
 ,
 	id:					false

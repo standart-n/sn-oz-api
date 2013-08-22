@@ -5,20 +5,24 @@ EventEmitter = 							require('events').EventEmitter
 
 Schema = 								require(global.home + '/script/views/validate/post')
 
-class Post extends EventEmitter
+class Edit extends EventEmitter
 
 
 	constructor: (@model = {}) ->
 
 		valid =							false
 
-		this.on 'success', () ->
+		this.on 'success', () =>
 			@model.success = 			true
-			@model.notice = 			'Сообщение успешно добавлено'
+			@model.notice = 			'Сообщение успешно изменено'
 
-		this.on 'userNotFound', () ->
+		this.on 'userNotFound', () =>
 			@model.success = 			false
-			@model.notice = 			'Не удалось добавить комментарий'
+			@model.notice = 			'Не удалось найти информацию об авторе данного поста'
+
+		this.on 'postNotFound', () =>
+			@model.success = 			false
+			@model.notice = 			'Не удалось найти пост, который требуется изменить'
 
 
 	check: () ->
@@ -34,9 +38,9 @@ class Post extends EventEmitter
 			@model.success = 			true
 
 		@model.success
-
+		
 
 exports = module.exports = (model = {}) ->
-	new Post(model)
+	new Edit(model)
 
-exports.Post = Post
+exports.Edit = Edit

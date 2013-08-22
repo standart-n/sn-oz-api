@@ -229,6 +229,7 @@
      - lastname
      - email
      - company
+     - region
 
 
 #### Редактирование информации о пользователе
@@ -275,6 +276,7 @@
    - model
      - author (user)
      - message
+     - region
 
 
 
