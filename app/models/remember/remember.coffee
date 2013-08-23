@@ -17,9 +17,9 @@ class Remember
 		@model.email = 					@model.email.toString().trim().toLowerCase()
 
 	validate: () ->
-		@model.valid = 					validate(Schema, @model)
-		if Array.isArray(@model.valid)
-			@model.valid = 				@model.valid[0].toString().replace('Error: ','')
+		@model.notice = 				validate(Schema, @model)
+		if Array.isArray(@model.notice)
+			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 			@model.success = 			false
 		else 
 			@model.success = 			true
@@ -35,7 +35,7 @@ class Remember
 
 	emailExists: () ->
 		@model.success = 				false
-		@model.valid = 					'Данный email-адрес не найден'
+		@model.notice = 					'Данный email-адрес не найден'
 
 
 

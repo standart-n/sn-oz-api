@@ -92,7 +92,7 @@ class Feed extends EventEmitter
 
 				@findUser (user) =>
 					@findPost (post) =>
-						post.disables = 		true
+						post.disabled = 		true
 						post.save()
 						@emit 'deleteSuccess'
 
@@ -106,7 +106,7 @@ class Feed extends EventEmitter
 
 		Post.find
 			'region.name':		if @req.route.params.region? then @req.route.params.region else ''
-			# 'disabled':			false
+			'disabled':			false
 		, null
 		,
 			limit:				if @req.query?.limit? then @req.query.limit else 100

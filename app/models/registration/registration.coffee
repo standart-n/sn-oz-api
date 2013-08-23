@@ -20,9 +20,9 @@ class Registration
 		@model.company = 				@model.company.toString().trim()
 
 	validate: () ->
-		@model.valid = 					validate(Schema, @model)
-		if Array.isArray(@model.valid)
-			@model.valid = 				@model.valid[0].toString().replace('Error: ','')
+		@model.notice = 				validate(Schema, @model)
+		if Array.isArray(@model.notice)
+			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 			@model.success = 			false
 		else 
 			@model.success = 			true
@@ -33,7 +33,7 @@ class Registration
 
 	emailExists: () ->
 		@model.success = 				false
-		@model.valid = 					'Данный email-адрес уже используется'
+		@model.notice = 					'Данный email-адрес уже используется'
 
 
 

@@ -6,7 +6,7 @@ class Signin
 
 	constructor: (@model = {}) ->
 
-		valid = 						false
+		@valid = 						false
 
 	check: () ->
 		if @model.email? and @model.password?

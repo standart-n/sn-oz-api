@@ -12,11 +12,11 @@ module.exports = (app, options) ->
 		require(global.home + '/script/controllers/feed')(req, res).emit('get')
 
 
-	app.put '/feed/post', (req, res) ->
+	app.put '/feed/post/edit', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('edit')
 
 
-	app.delete '/feed/post', (req, res) ->
+	app.put '/feed/post/delete', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('edit')
+		require(global.home + '/script/controllers/feed')(req, res).emit('delete')

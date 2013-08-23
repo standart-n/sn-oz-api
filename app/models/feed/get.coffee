@@ -7,7 +7,6 @@ class Get
 
 	constructor: (@model = {}) ->
 
-		valid = 						false
 
 
 exports = module.exports = (model = {}) ->

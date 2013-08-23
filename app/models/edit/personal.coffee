@@ -8,9 +8,6 @@ class Personal
 
 	constructor: (@model = {}) ->
 
-		@valid = 						false
-
-
 	check: () ->
 
 		@model.success = 				false

@@ -10,8 +10,6 @@ class Post extends EventEmitter
 
 	constructor: (@model = {}) ->
 
-		valid =							false
-
 		this.on 'success', () ->
 			@model.success = 			true
 			@model.notice = 			'Сообщение успешно добавлено'
