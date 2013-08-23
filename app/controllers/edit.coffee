@@ -4,6 +4,7 @@ colors = 								require('colors')
 EventEmitter = 							require('events').EventEmitter
 
 User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
+Post = 									mongoose.model('Post', require(global.home + '/script/views/db/post'))
 
 class Edit extends EventEmitter
 
@@ -49,6 +50,9 @@ class Edit extends EventEmitter
 					user.firstname =		@mdl.model.firstname_new
 					user.lastname =			@mdl.model.lastname_new
 					user.save()
+
+					@editPosts()
+
 					@emit 'success'
 
 			else
@@ -69,7 +73,18 @@ class Edit extends EventEmitter
 			else
 				callback(user)			if callback?
 
+	
+	editPosts: () ->
 
+		Post.update
+			'author.id':				@mdl.model.id
+		,
+			'author.firstname':			@mdl.model.firstname_new
+			'author.lastname':			@mdl.model.lastname_new
+		,
+			multi:						true
+
+		.exec()
 
 
 exports = module.exports = (req, res) ->
