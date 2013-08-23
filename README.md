@@ -332,6 +332,11 @@ forever stop ozserver
  - **GET** /feed/post/:region
    - [limit]
 
+**Проверка актуальности ленты новостей**
+
+ - **GET** /feed/post/:region/:seria
+   - [limit]
+
 **Добавление новости**
 
  - **GET** /feed/post
@@ -375,8 +380,7 @@ forever stop ozserver
     caption:    type: String
     name:       type: String, index: true
 
-
-  signin:       type: Boolean, default: true
+  disabled:     type: Boolean, default: false
 
   reg_dt:       type: Date, default: Date.now
 
@@ -386,24 +390,20 @@ forever stop ozserver
 Коллекция новостей, **posts**
 
 ```
-  id:             type: Schema.Types.ObjectId
-
-  author:
-    id:           type: Schema.Types.ObjectId
-    firstname:    type: String
-    lastname:     type: String
-    email:        type: String
-    company:      type: String
-
-  message:
-    text:         type: String
+  id:           type: Schema.Types.ObjectId
+  firstname:    type: String, trim: true, index: true
+  lastname:     type: String, trim: true, index: true
+  email:        type: String, lowercase: true, trim: true, index: true
+  company:      type: String, trim: true, index: true
+  key:          type: String, index: true
 
   region:
-    caption:      type: String
-    name:         type: String, index: true
+    caption:    type: String
+    name:       type: String, index: true
 
+  disabled:     type: Boolean, default: false
 
-  post_dt:        type: Date, default: Date.now
+  reg_dt:       type: Date, default: Date.now
 
 ```
 

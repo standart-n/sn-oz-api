@@ -46,9 +46,12 @@ class Signin extends EventEmitter
 			User.findOne 
 					id: 				if @req.route.params.id? then @req.route.params.id else ''
 					key:				if @req.route.params.key? then @req.route.params.key else ''
+					disabled:			false
 			, (err, user) =>
 				if user?
+					user = 				JSON.parse(JSON.stringify(user))
 					@mdl.model = 		user
+					@mdl.signin()
 				else
 					@mdl.userNotFound()
 

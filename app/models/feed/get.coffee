@@ -6,7 +6,11 @@ class Get
 
 
 	constructor: (@model = {}) ->
+		this.update = 					false
 
+
+	needUpdate: () ->
+		@model.update = 				true
 
 
 exports = module.exports = (model = {}) ->

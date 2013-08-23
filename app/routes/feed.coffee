@@ -20,3 +20,8 @@ module.exports = (app, options) ->
 	app.put '/feed/post/delete', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('delete')
+
+	
+	app.get '/feed/post/:region/:seria', (req, res) ->
+
+		require(global.home + '/script/controllers/feed')(req, res).emit('update')

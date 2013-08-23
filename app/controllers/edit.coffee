@@ -61,6 +61,7 @@ class Edit extends EventEmitter
 		User.findOne
 			id: 						@mdl.model.id
 			key:						@mdl.model.key
+			disabled:					false
 		, (err, user) =>
 			if err or !user?
 				@emit 'fail'

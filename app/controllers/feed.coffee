@@ -2,6 +2,7 @@
 _ = 											require('underscore')
 mongoose = 										require('mongoose')
 colors = 										require('colors')
+sha1 = 											require('sha1')
 EventEmitter = 									require('events').EventEmitter
 
 User = 											mongoose.model('User', require(global.home + '/script/views/db/user'))
@@ -57,8 +58,13 @@ class Feed extends EventEmitter
 		this.on 'get', () =>
 
 			@get (posts) =>
-		
+				posts = JSON.parse(JSON.stringify(posts))
+
+				seria  = sha1(JSON.stringify(posts))
+				post.seria = seria for post in posts
+
 				@mdl = 							require(global.home + '/script/models/feed/get')(posts)
+
 				@emit 'send'
 
 
@@ -81,6 +87,24 @@ class Feed extends EventEmitter
 
 				@emit 'send'
 
+
+		this.on 'update', () =>
+
+			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			@mdl = 								require(global.home + '/script/models/feed/get')(model)
+
+			if @req.route.params.seria?
+				@get (posts) =>
+
+					seria  = sha1(JSON.stringify(posts))
+
+					if seria isnt @req.route.params.seria
+						@mdl.needUpdate() 
+
+					@emit 'send'
+
+			else
+				@emit 'send'
 
 
 		this.on 'delete', () =>
@@ -116,6 +140,7 @@ class Feed extends EventEmitter
 			console.log err if err
 
 			posts ?= []
+			
 			callback(posts)  	if callback?
 
 
@@ -161,6 +186,7 @@ class Feed extends EventEmitter
 		User.findOne
 			id: 				@mdl.model.author.id
 			key:				@mdl.model.author.key
+			disabled:			false
 		, (err, user) =>
 			if err or !user?
 				@emit 'userNotFound'

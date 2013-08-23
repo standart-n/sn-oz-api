@@ -14,8 +14,7 @@ module.exports = 		new Schema
 		caption:		type: String
 		name:			type: String, index: true
 
-
-	signin:				type: Boolean, default: true
+	disabled:			type: Boolean, default: false
 
 	reg_dt:				type: Date, default: Date.now
 ,
