@@ -2,6 +2,15 @@
 
 > Внутренняя разработка компании [Стандарт-Н](http://standart-n.ru/)
 
+Данная разработка представляет из себя серверную часть системы Новости Общего Заказа и 
+предназначена для обработки запросов от клиентской части. Сервер работает с базой данных [MongoDB](http://www.mongodb.org/).
+
+  - Пример клиентской части: [http://oz.st-n.ru/publish/](http://oz.st-n.ru/publish/)
+  - Исходный код клиентской части: [https://github.com/standart-n/sn-oz-client](https://github.com/standart-n/sn-oz-client)
+  - Сервер построен на [node.js](http://nodejs.org/) фреймворке [express](http://expressjs.com/)
+  - Работа с базой данных ведется спомощью [mongoose](http://mongoosejs.com/)
+  - Обмен данными между клиентской частью и сервером происходит спомощью [JSONP](http://ru.wikipedia.org/wiki/JSONP) формата
+
 #### Требования к серверу
 
 ```
@@ -20,7 +29,7 @@
 
 ```
   server {
-    # пор, который слушает nginx
+    # порт, который слушает nginx
     listen 8080;
     # доменные имена
     server_name api.oz.st-n.ru www.api.oz.st-n.ru;
@@ -138,69 +147,122 @@
 
 #### Установка сервера спомощью npm 
 
+##### Если на машине будет запущен только один сервер, то пакет можно установить глобально
+ 
+устанавливаем
+
 ```
-  # ключ -g указывает что пакет установится глобально
-  # если на машине будет запущен только один сервер
-  # то для установки достаточно ввести следующую команду:
-  $ npm install -g ozserver	
-  # затем можно запустить сервер
-  $ ozserver run
+  npm install --global ozserver	
+```
+затем можно запустить сервер
+
+```
+  ozserver run
+```
 
 
-  # если необходимо запустить несколько серверов на одной машине,
-  # то следует устанавливать пакеты локально:
-  # создаем каталог, в котором будет располагаться пакет
-  $ mkdir -p /var/www/oz/api/server_1/
-  # переходим в даннный каталог
-  $ cd /var/www/oz/api/server_1
-  # устанавливаем пакет
-  $ npm install ozserver
-  # переходим в ныжный каталог
-  $ cd node_modules/ozserver
-  # запускаем
-  $ node ozserver run
+##### Eсли необходимо запустить несколько серверов на одной машине
+
+создаем каталог, в который установим сервер
+
+```
+  mkdir -p /var/www/oz/api/server_1/
+```
+переходим в даннный каталог
+
+```
+  cd /var/www/oz/api/server_1
+```
+
+устанавливаем пакет
+
+```
+  npm install ozserver
+```
+переходим в нужный каталог
+
+```
+  cd node_modules/ozserver
+```
+запускаем
+
+```
+  node ozserver run
 ```
 
 #### Установка из исходного кода
 
-```bash
-  # скачиваем
-  $ git clone https://github.com/standart-n/ozserver
-  # переходим в папку проекта
-  $ cd ./ozserver
-  # устанавливаем необоходимые пакеты
-  $ make install
-  # собираем проект 
-  $ make
-  # запускаем
-  $ node ozserver run
+скачиваем
+
+```
+  git clone https://github.com/standart-n/ozserver
+```
+переходим в папку проекта
+
+```
+  cd ./ozserver
+```
+устанавливаем необоходимые пакеты
+
+```
+  make install
+```
+собираем проект 
+
+```
+  make
+```
+запускаем
+
+```
+  node ozserver run
 ```
 
 #### Запуск сервера спомощью forever
 
-```
-  # установка forever
-  $ npm install forever -g
-  # запуск
-  # -o - путь к обычным логам
-  # -е - путь к логам с ошибками
-  # если сервер был установлен глобально, то: 
-  $ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
-  # если сервер был установлен локально, то:
-  # переходим в папку с локальным пакетом
-  $ cd /var/www/oz/api/server_1
-  # указываем forever какой файл требуется запустить
-  $ forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
+установка forever
 
 ```
+  npm install forever -g
+```
+параметры:
+  - -o путь к обычным логам
+  - -е путь к логам с ошибками
+
+##### Если сервер был установлен глобально
+
+звпускаем
+
+```
+  forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+```
+
+##### Если сервер был установлен **локально**
+
+переходим в папку с локальным пакетом
+
+```
+  cd /var/www/oz/api/server_1
+```
+
+указываем forever какой файл требуется запустить
+
+```
+  forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
+```
+
 
 #### Остановка сервера
 
+просмотр процессов
+
 ```
-  # просмотр процессов
-  $ forever list
-  # остановка
-  $ forever stop ozserver
+  forever list
+```
+остановка
+
+```
+  forever stop ozserver
 ```
 
 ### Структура запросов к серверу
@@ -210,20 +272,20 @@
 
 **Авторизация по e-mail и паролю**
 
- - GET /signin
+ - **GET** /signin
    - email
    - password
 
 **Авторизация по ключу**
 
- - GET /signin/:id/:key
+ - **GET** /signin/:id/:key
 
 
 #### Регистрация пользователя
   
 **Простая регистрация**  
 
- - GET /registration
+ - **GET** /registration
    - model
      - firstname
      - lastname
@@ -236,7 +298,7 @@
 
 **Личные данные**
 
- - PUT /edit/personal
+ - **PUT** /edit/personal
    - model
      - id
      - key
@@ -246,7 +308,7 @@
 
 **Смена пароля**
 
- - PUT /edit/password
+ - **PUT** /edit/password
    - model
      - id
      - key
@@ -258,7 +320,7 @@
 
 **Смена пароля**
 
- - GET /remember
+ - **GET** /remember
    - model
      - email
 
@@ -267,16 +329,31 @@
 
 **Получение новостей**
 
- - GET /feed/post/:region
+ - **GET** /feed/post/:region
    - [limit]
 
 **Добавление новости**
 
- - GET /feed/post
+ - **GET** /feed/post
    - model
      - author (user)
      - message
      - region
+
+**Редактирование своей новости**
+
+ - **PUT** /feed/post/edit
+   - model
+     - id
+     - author (user)
+     - message
+
+**Удаление своей новости**
+
+ - **PUT** /feed/post/delete
+   - model
+     - id
+     - author (user)
 
 
 
