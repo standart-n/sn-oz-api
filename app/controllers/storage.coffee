@@ -69,7 +69,7 @@ class Storage
 			if typeof answer isnt 'string'
 				callback = answer if answer?
 				answer = 'please input '.grey + key.blue + ': '.grey + '\n'
-			rl.question '2', (value) =>
+			rl.question answer, (value) =>
 				@set key, value
 				callback(value) if callback?
 				#rl.close()
