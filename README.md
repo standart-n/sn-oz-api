@@ -52,7 +52,7 @@
 #### Запуск сервера в терминале
 
 ```
-  $ ozserver run
+ozserver run
 ```
 
 
@@ -82,7 +82,7 @@
  - **mongodb_connection** - строка подключения к базе данных mongodb
 
 ```
-  $ ozserver-store
+ozserver-store
 ```
 
 
@@ -118,7 +118,7 @@
  - **password** - пароль
 
 ```
-  $ ozserver-mail
+ozserver-mail
 ```
 
 
@@ -152,12 +152,12 @@
 устанавливаем
 
 ```
-  npm install --global ozserver	
+npm install --global ozserver	
 ```
 затем можно запустить сервер
 
 ```
-  ozserver run
+ozserver run
 ```
 
 
@@ -166,28 +166,28 @@
 создаем каталог, в который установим сервер
 
 ```
-  mkdir -p /var/www/oz/api/server_1/
+mkdir -p /var/www/oz/api/server_1/
 ```
 переходим в даннный каталог
 
 ```
-  cd /var/www/oz/api/server_1
+cd /var/www/oz/api/server_1
 ```
 
 устанавливаем пакет
 
 ```
-  npm install ozserver
+npm install ozserver
 ```
 переходим в нужный каталог
 
 ```
-  cd node_modules/ozserver
+cd node_modules/ozserver
 ```
 запускаем
 
 ```
-  node ozserver run
+node ozserver run
 ```
 
 #### Установка из исходного кода
@@ -195,27 +195,27 @@
 скачиваем
 
 ```
-  git clone https://github.com/standart-n/ozserver
+git clone https://github.com/standart-n/ozserver
 ```
 переходим в папку проекта
 
 ```
-  cd ./ozserver
+cd ./ozserver
 ```
 устанавливаем необоходимые пакеты
 
 ```
-  make install
+make install
 ```
 собираем проект 
 
 ```
-  make
+make
 ```
 запускаем
 
 ```
-  node ozserver run
+node ozserver run
 ```
 
 #### Запуск сервера спомощью forever
@@ -223,7 +223,7 @@
 установка forever
 
 ```
-  npm install forever -g
+npm install forever -g
 ```
 параметры:
   - -o путь к обычным логам
@@ -234,7 +234,7 @@
 звпускаем
 
 ```
-  forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
 ```
 
 ##### Если сервер был установлен **локально**
@@ -242,13 +242,13 @@
 переходим в папку с локальным пакетом
 
 ```
-  cd /var/www/oz/api/server_1
+cd /var/www/oz/api/server_1
 ```
 
 указываем forever какой файл требуется запустить
 
 ```
-  forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
+forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
 ```
 
 
@@ -257,12 +257,12 @@
 просмотр процессов
 
 ```
-  forever list
+forever list
 ```
 остановка
 
 ```
-  forever stop ozserver
+forever stop ozserver
 ```
 
 ### Структура запросов к серверу
