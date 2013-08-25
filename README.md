@@ -234,7 +234,7 @@ npm install forever -g
 звпускаем
 
 ```
-forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ozserver run
+forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log /usr/local/bin/ozserver run
 ```
 
 ##### Если сервер был установлен **локально**
