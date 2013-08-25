@@ -30,8 +30,8 @@ class Mailer
 			, (err, response) ->
 				if err
 					console.log err
-				else
-					console.log "Message sent: " + response.message
+				# else
+				# 	console.log "Message sent: " + response.message
 
 
 

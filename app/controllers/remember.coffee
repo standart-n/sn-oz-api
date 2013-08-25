@@ -37,9 +37,7 @@ class Remember extends EventEmitter
 						@emit 'send'
 					else
 						@mdl.genPwd()
-						console.log user.key
 						user.key = @mdl.model.key
-						console.log user.key
 						user.save()
 						@emit 'success'
 

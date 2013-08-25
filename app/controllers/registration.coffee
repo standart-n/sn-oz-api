@@ -4,8 +4,6 @@ colors = 								require('colors')
 jade = 									require('jade')
 EventEmitter = 							require('events').EventEmitter
 
-mailer = 								require(global.home + '/script/controllers/mailer')
-
 User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
 
 class Registration extends EventEmitter
@@ -53,6 +51,7 @@ class Registration extends EventEmitter
 			email:		@mdl.model.email
 			password:	@mdl.model.password
 
+		mailer = require(global.home + '/script/controllers/mailer')
 		mailer.send @mdl.model.email, 'Общий Заказ - поздравляем с успешной регистрацией!', html
 
 
