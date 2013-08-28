@@ -21,7 +21,7 @@ module.exports =
 			type: 'string'
 			required: true
 			minLen: 3
-			maxLen: 255
+			maxLen: 100000
 			message: 'Сообщение некорректно'
 
 

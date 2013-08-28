@@ -20,15 +20,6 @@ class Server
 
 	constructor: () ->
 
-		@options =
-			mail: {}
-
-		throw 'global.store is not exists' 					if !global.store?
-		throw 'global.mail is not exists' 					if !global.mail?
-
-		@store = 											new Storage(global.store)
-		@mail = 											new Storage(global.mail)
-
 
 	configure: (handler) ->
 
@@ -46,15 +37,35 @@ class Server
 			handler(results)
 
 	answer: (conf, key, callback) ->
-		if !conf.get(key)
+		if !conf.get(key) and !@options[key]?
 			throw 'rl not defined'							if !rl?
 			conf.question rl, key, (value) ->
 				callback(null, value)
-		else 
-			callback null, conf.get(key)
+		else
+			if !@options[key]
+				callback null, conf.get(key)
+			else 
+				callback null, @options[key]
 
 
-	run: () ->
+
+	run: (special = {}) ->
+
+		@options =
+			mail: {}
+
+		throw 'global.store is not exists' 					if !global.store?
+		throw 'global.mail is not exists' 					if !global.mail?
+
+		# if special.profile? 			
+		# 	global.store = 									"/usr/lib/ozserver/#{special.profile}/store.json"
+		# 	global.mail = 									"/usr/lib/ozserver/#{special.profile}/mail.json"
+
+		@store = 											new Storage(global.store)
+		@mail = 											new Storage(global.mail)
+
+		if special.port? 			then @options.port = special.port
+		if special.connection? 		then @options.mongodb_connection = special.connection
 
 		@configure (results) =>
 			@options.port = 								results[0]

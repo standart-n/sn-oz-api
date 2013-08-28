@@ -2,10 +2,15 @@
 # require
 program = 				require('commander')											# commander.js
 path = 					require('path')													# path module
+fs = 					require('fs')													# fs module
 
 # path to root dir
+if !fs.existsSync("/usr/lib/ozserver")
+	fs.mkdirSync		"/usr/lib/ozserver"
+if !fs.existsSync("/usr/lib/ozserver/default")
+	fs.mkdirSync		"/usr/lib/ozserver/default"
 global.home = 			__dirname
-global.store = 			__dirname + '/conf/store.json'
+global.store = 			"/usr/lib/ozserver/default/store.json"
 
 # default output
 global.command = 		'help'

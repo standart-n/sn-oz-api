@@ -2,11 +2,16 @@
 # require
 program = 				require('commander')											# commander.js
 path = 					require('path')													# path module
+fs = 					require('fs')													# fs module
 
 # path to root dir
+if !fs.existsSync("/usr/lib/ozserver")
+	fs.mkdirSync		"/usr/lib/ozserver"
+if !fs.existsSync("/usr/lib/ozserver/default")
+	fs.mkdirSync		"/usr/lib/ozserver/default"
 global.home = 			__dirname
-global.store = 			__dirname + '/conf/store.json'
-global.mail = 			__dirname + '/conf/mail.json'
+global.store = 			"/usr/lib/ozserver/default/store.json"
+global.mail = 			"/usr/lib/ozserver/default/mail.json"
 
 # default output
 global.command = 		'help'
@@ -16,10 +21,7 @@ pkg = 					require(global.home + '/package.json')
 
 server = 				require(global.home + '/script/controllers/server')				# server.js
 
-
-mailer = 								require(global.home + '/script/controllers/mailer')
-
-mailer.send()
+mailer = 				require(global.home + '/script/controllers/mailer')
 
 # init program
 program.version(pkg.version)

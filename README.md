@@ -11,6 +11,7 @@
   - Работа с базой данных ведется спомощью [mongoose](http://mongoosejs.com/)
   - Обмен данными между клиентской частью и сервером происходит спомощью [JSONP](http://ru.wikipedia.org/wiki/JSONP) формата
 
+
 #### Требования к серверу
 
 ```
@@ -24,37 +25,11 @@
 ```
 
 
-#### Как привязать сервер к доменному имени в nginx
-
-
-```
-  server {
-    # порт, который слушает nginx
-    listen 8080;
-    # доменные имена
-    server_name api.oz.st-n.ru www.api.oz.st-n.ru;
-    # путь к логам
-    access_log /var/log/nginx/st-n.log;
-
-    location / {
-      # 127.0.0.1 - здесь мб адрес любой машины в сети
-      # 2424 - порт который слушает запущенный нами сервер
-      proxy_pass http://127.0.0.1:2424/;
-      proxy_redirect off;
-      proxy_set_header Host $host;
-      proxy_set_header X-real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-  }
-
-```
-
 #### Запуск сервера в терминале
 
 ```
 ozserver run
 ```
-
 
 ```
   
@@ -152,7 +127,7 @@ ozserver-mail
 устанавливаем
 
 ```
-npm install --global ozserver	
+npm install --global ozserver   
 ```
 затем можно запустить сервер
 
@@ -218,52 +193,116 @@ make
 node ozserver run
 ```
 
-#### Запуск сервера спомощью forever
 
-установка forever
+#### Создание сервиса
 
-```
-npm install forever -g
-```
-параметры:
-  - -o путь к обычным логам
-  - -е путь к логам с ошибками
-
-##### Если сервер был установлен глобально
-
-звпускаем
+для этого должен быть установлен ```forever```
 
 ```
-forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log /usr/local/bin/ozserver run
+npm install -g forever
 ```
 
-##### Если сервер был установлен **локально**
-
-переходим в папку с локальным пакетом
+создадим в каталоге ```/etc/init.d``` файл ```ozserver``` и выставим ему права на исполнение
 
 ```
-cd /var/www/oz/api/server_1
+cd /etc/init.d/
+touch ozserver
+chmod 755 ./ozserver
 ```
 
-указываем forever какой файл требуется запустить
+далее откроем файл на редактирование спомощью ```nano``` и вставим в него следующий код
 
 ```
-forever start -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log ./ozserver run
+#!/bin/sh
+#
+### BEGIN INIT INFO
+# Provides:          ozserver
+# Required-Start:    $all
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: oz server api
+# Description:       oz server
+#                    api
+#
+### END INIT INFO
+
+export USER=root
+export PWD=/root
+export HOME=/root
+export PATH=$PATH:/usr/local/bin
+export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+export NODE_ENV=production
+
+case "$1" in
+'start')
+exec forever start -a -l /var/log/ozserver.log -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver run > /var/log/ozserver.init.log
+;;
+'stop')
+exec forever stop --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver > /var/log/ozserver.init.log
+;;
+'restart')
+exec forever restart --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver > /var/log/ozserver.init.log
+;;
+'status')
+exec forever list
+;;
+*)
+echo "Usage: $0 { start | stop | restart | status }"
+exit 1
+;;
+esac
+exit 0
+```
+
+в результате мы получим сервис ```/etc/init.d/ozserver``` 
+
+```
+/etc/init.d/ozserver start
+/etc/init.d/ozserver status
+/etc/init.d/ozserver stop
+```
+
+##### После этого можно добавить сервис в автозагрузку
+
+добавить в автозагрузку
+
+```
+update-rc.d ozserver defaults
+```
+
+убрать запуск сервера из автозагрузки
+
+```
+update-rc.d ozserver remove
 ```
 
 
-#### Остановка сервера
 
-просмотр процессов
+#### Как привязать сервер к доменному имени в nginx
 
-```
-forever list
-```
-остановка
 
 ```
-forever stop ozserver
+  server {
+    # порт, который слушает nginx
+    listen 8080;
+    # доменные имена
+    server_name api.oz.st-n.ru www.api.oz.st-n.ru;
+    # путь к логам
+    access_log /var/log/nginx/st-n.log;
+
+    location / {
+      # 127.0.0.1 - здесь мб адрес любой машины в сети
+      # 2424 - порт который слушает запущенный нами сервер
+      proxy_pass http://127.0.0.1:2424/;
+      proxy_redirect off;
+      proxy_set_header Host $host;
+      proxy_set_header X-real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+  }
 ```
+
 
 ### Структура запросов к серверу
 
@@ -383,7 +422,6 @@ forever stop ozserver
   disabled:     type: Boolean, default: false
 
   reg_dt:       type: Date, default: Date.now
-
 ```
 
 
@@ -404,7 +442,6 @@ forever stop ozserver
   disabled:     type: Boolean, default: false
 
   reg_dt:       type: Date, default: Date.now
-
 ```
 
 
@@ -443,7 +480,6 @@ forever stop ozserver
     minLen: 3
     maxLen: 20
     message: 'Неверно заполнено поле Компания'
-
 ```
 
 
@@ -470,10 +506,26 @@ forever stop ozserver
       type: 'string'
       required: true
       minLen: 3
-      maxLen: 255
+      maxLen: 100000
       message: 'Сообщение некорректно'
-
 ```
+
+
+### Журнал изменений
+
+ - 28 авг 2013г. **v0.1.1**
+
+     - Добавил инструкцию по созданию сервиса для данного сервера. 
+       Это позволяет запускать сервев в качестве демона, а также можно добавить этот 
+       сервис в автозагрузку.
+
+     - Возможность запускать сервер с командами ```--port``` и ```--connection```.
+
+     - Перенес настройки в ```/usr/lib/ozserver```, чтобы они не затирались при обновлении сервера.
+
+     - Увеличил лимит сообщения с ```255``` до ```100000```
+
+
 
 
 ### License
