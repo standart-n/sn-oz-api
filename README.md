@@ -243,10 +243,10 @@ case "$1" in
 exec forever start -a -l /var/log/ozserver.log -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver run > /var/log/ozserver.init.log
 ;;
 'stop')
-exec forever stop --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver > /var/log/ozserver.init.log
+exec forever stop /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
 ;;
 'restart')
-exec forever restart --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver > /var/log/ozserver.init.log
+exec forever restart /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
 ;;
 'status')
 exec forever list
