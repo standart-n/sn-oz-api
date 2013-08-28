@@ -7,7 +7,7 @@ module.exports = (program, server) ->
 	program
 		.option('-c, --connection <string>', 'connection string to mongodb')
 		.option('-p, --port <port>', 'port for server', parseInt)
-		.option('-P, --profile', 'profile for settings in /usr/lib/ozserver')
+		.option('-P, --profile <name>', 'profile for settings in /usr/lib/ozserver')
 
 	program
 		.command('run')

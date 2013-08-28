@@ -1,13 +1,25 @@
 
+mkpath = 							require('mkpath')
+
 module.exports = (program, store) ->
 
-	throw 'program is not exists' if !program?
-	throw 'store is not exists' if !store?
+	throw 'program is not exists' 	if !program?
+	throw 'store is not exists' 	if !store?
+
+	init = (program) ->
+		if program.profile?
+			mkpath.sync 			"/usr/lib/ozserver/#{program.profile}"
+			global.store = 			"/usr/lib/ozserver/#{program.profile}/store.json"
+		store.store(global.store)
+
+	program
+		.option('-P, --profile <name>', 'profile for settings in /usr/lib/ozserver')
 
 	program
 		.command('set <key> <value>')
 		.description('set settings')
 		.action (key,value) ->
+			init(program)
 			console.log store.set(key, value)
 			process.exit()
 
@@ -15,6 +27,7 @@ module.exports = (program, store) ->
 		.command('get <key>')
 		.description('get settings')
 		.action (key) ->
+			init(program)
 			console.log store.get(key)
 			process.exit()
 
@@ -22,6 +35,7 @@ module.exports = (program, store) ->
 		.command('remove <key>')
 		.description('remove settings')
 		.action (key) ->
+			init(program)
 			console.log store.remove(key)
 			process.exit()
 
@@ -29,6 +43,7 @@ module.exports = (program, store) ->
 		.command('import <data>')
 		.description('import data into settings')
 		.action (data) ->
+			init(program)
 			console.log store.import(data)
 			process.exit()
 
@@ -36,6 +51,7 @@ module.exports = (program, store) ->
 		.command('export')
 		.description('export data from settings')
 		.action () ->
+			init(program)
 			console.log store.export()
 			process.exit()
 

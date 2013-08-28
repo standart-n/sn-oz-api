@@ -32,7 +32,6 @@ ozserver run
 ```
 
 ```
-  
   Usage: ozserver [options] [command]
 
   Commands:
@@ -41,8 +40,11 @@ ozserver run
 
   Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help                 output usage information
+    -V, --version              output the version number
+    -c, --connection <string>  connection string to mongodb
+    -p, --port <port>          port for server
+    -P, --profile <name>       profile for settings in /usr/lib/ozserver
 
   Examples:
 
@@ -74,8 +76,9 @@ ozserver-store
 
   Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help            output usage information
+    -V, --version         output the version number
+    -P, --profile <name>  profile for settings in /usr/lib/ozserver
 
   Examples:
 
@@ -110,8 +113,9 @@ ozserver-mail
 
   Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help            output usage information
+    -V, --version         output the version number
+    -P, --profile <name>  profile for settings in /usr/lib/ozserver
 
   Examples:
 
@@ -513,6 +517,10 @@ update-rc.d ozserver remove
 
 ### Журнал изменений
 
+ - 28 авг 2013г. **v0.1.2**
+
+     - Сделал возможность создавать профили настроек через ```--profile```
+
  - 28 авг 2013г. **v0.1.1**
 
      - Добавил инструкцию по созданию сервиса для данного сервера. 
@@ -524,8 +532,6 @@ update-rc.d ozserver remove
      - Перенес настройки в ```/usr/lib/ozserver```, чтобы они не затирались при обновлении сервера.
 
      - Увеличил лимит сообщения с ```255``` до ```100000```
-
-
 
 
 ### License

@@ -1,6 +1,6 @@
 {
   "name": "ozserver",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "API for OZ",
   "main": "ozserver",
   "bin": {
@@ -19,7 +19,8 @@
     "sha1": "~1.1.0",
     "validate": "~0.2.4",
     "nodemailer": "~0.5.2",
-    "jade": "~0.34.1"
+    "jade": "~0.34.1",
+    "mkpath": "~0.1.0"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.9",

@@ -3,6 +3,7 @@ express = 													require('express')
 mongoose = 													require('mongoose')
 http = 														require('http')
 path = 														require('path')
+mkpath = 													require('mkpath')
 colors = 													require('colors')
 readline = 													require('readline')
 async = 													require('async')
@@ -57,9 +58,10 @@ class Server
 		throw 'global.store is not exists' 					if !global.store?
 		throw 'global.mail is not exists' 					if !global.mail?
 
-		# if special.profile? 			
-		# 	global.store = 									"/usr/lib/ozserver/#{special.profile}/store.json"
-		# 	global.mail = 									"/usr/lib/ozserver/#{special.profile}/mail.json"
+		if special.profile? 			
+			mkpath.sync 									"/usr/lib/ozserver/#{special.profile}"
+			global.store = 									"/usr/lib/ozserver/#{special.profile}/store.json"
+			global.mail = 									"/usr/lib/ozserver/#{special.profile}/mail.json"
 
 		@store = 											new Storage(global.store)
 		@mail = 											new Storage(global.mail)
