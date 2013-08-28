@@ -240,7 +240,7 @@ export NODE_ENV=production
 
 case "$1" in
 'start')
-exec forever start -a -l /var/log/ozserver.log -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver run > /var/log/ozserver.init.log
+exec forever start -a -l /var/log/ozserver.forever.log -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log --sourceDir=/usr/local/lib/node_modules/ozserver/ ozserver run > /var/log/ozserver.init.log
 ;;
 'stop')
 exec forever stop /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
@@ -517,9 +517,13 @@ update-rc.d ozserver remove
 
 ### Журнал изменений
 
+ - 28 авг 2013г. **v0.1.3**
+
+     - Добавил вывод даты и времени запроса в логах.
+
  - 28 авг 2013г. **v0.1.2**
 
-     - Сделал возможность создавать профили настроек через ```--profile```
+     - Сделал возможность создавать профили настроек через ```--profile```.
 
  - 28 авг 2013г. **v0.1.1**
 
@@ -531,7 +535,7 @@ update-rc.d ozserver remove
 
      - Перенес настройки в ```/usr/lib/ozserver```, чтобы они не затирались при обновлении сервера.
 
-     - Увеличил лимит сообщения с ```255``` до ```100000```
+     - Увеличил лимит сообщения с ```255``` до ```100000```.
 
 
 ### License
