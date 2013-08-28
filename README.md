@@ -174,12 +174,12 @@ node ozserver run
 скачиваем
 
 ```
-git clone https://github.com/standart-n/ozserver
+git clone https://github.com/standart-n/sn-oz-api
 ```
 переходим в папку проекта
 
 ```
-cd ./ozserver
+cd ./sn-oz-api
 ```
 устанавливаем необоходимые пакеты
 
