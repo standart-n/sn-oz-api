@@ -198,7 +198,7 @@ node ozserver run
 ```
 
 
-#### Создание сервиса
+### Создание сервиса
 
 для этого должен быть установлен ```forever```
 
@@ -246,7 +246,7 @@ exec forever start -a -l /var/log/ozserver.forever.log -o /var/log/ozserver.out.
 exec forever stop /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
 ;;
 'restart')
-exec forever restart /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
+exec forever -a -l /var/log/ozserver.forever.log -o /var/log/ozserver.out.log -e /var/log/ozserver.err.log restart /usr/local/lib/node_modules/ozserver/ozserver > /var/log/ozserver.init.log
 ;;
 'status')
 exec forever list
@@ -279,6 +279,45 @@ update-rc.d ozserver defaults
 
 ```
 update-rc.d ozserver remove
+```
+
+
+##### Как настроить logrotate
+
+создаем файл конфигурации
+
+```
+touch /etc/logrotate.d/ozserver
+```
+
+открываем его спомощью ```nano``` и записываем туда:
+
+```
+/var/log/ozserver*.log {
+    daily
+    rotate 5
+    create 644 root adm
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+      /etc/init.d/ozserver stop
+      /etc/init.d/ozserver start
+    endscript
+}
+```
+
+применяем конфигурацию
+
+```
+logrotate /etc/logrotate.conf
+```
+
+далее можно протестировать
+
+```
+logrotate -f /etc/logrotate.conf
 ```
 
 
