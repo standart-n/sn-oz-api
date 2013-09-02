@@ -24,4 +24,4 @@ module.exports = (token, req, res) ->
 
 	dt = new Date().toString()
 
-	"#{moment().format('HH:mm:ss.SSS').blue} #{moment().format('L').magenta} \x1b[#{color}m#{req.method} \x1b[#{color}m#{res.statusCode} #{tm.cyan} #{len.yellow} #{req.originalUrl.grey}"
+	"#{moment().format('HH:mm:ss.SSS').blue} #{moment().format('DD/MM/YYYY').magenta} \x1b[#{color}m#{req.method} \x1b[#{color}m#{res.statusCode} #{tm.cyan} #{len.yellow} #{req.originalUrl.grey}"
