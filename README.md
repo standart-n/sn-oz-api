@@ -439,143 +439,41 @@ logrotate -f /etc/logrotate.conf
 
 
 
-### Структура базы данных
-
-
-Коллекция пользователей, **users**
-
-
-```
-  id:           type: Schema.Types.ObjectId
-  firstname:    type: String, trim: true, index: true
-  lastname:     type: String, trim: true, index: true
-  email:        type: String, lowercase: true, trim: true, index: true
-  company:      type: String, trim: true, index: true
-  key:          type: String, index: true
-
-  region:
-    caption:    type: String
-    name:       type: String, index: true
-
-  disabled:     type: Boolean, default: false
-
-  reg_dt:       type: Date, default: Date.now
-```
-
-
-Коллекция новостей, **posts**
-
-```
-  id:           type: Schema.Types.ObjectId
-  firstname:    type: String, trim: true, index: true
-  lastname:     type: String, trim: true, index: true
-  email:        type: String, lowercase: true, trim: true, index: true
-  company:      type: String, trim: true, index: true
-  key:          type: String, index: true
-
-  region:
-    caption:    type: String
-    name:       type: String, index: true
-
-  disabled:     type: Boolean, default: false
-
-  reg_dt:       type: Date, default: Date.now
-```
-
-
-### Валидация данных
-
-
-Регистрация пользователя
-
-```
-  firstname:      
-    type: 'string'
-    required: true
-    minLen: 3
-    maxLen: 20
-    message: 'Неверно заполнено поле Имя'
-    custom: (s) ->
-      s.match(/^([\D]+)$/gi)
-
-  lastname:
-    type: 'string'
-    required: true
-    minLen: 3
-    maxLen: 20
-    message: 'Неверно заполнено поле Фамилия'
-    custom: (s) ->
-      s.match(/^([\D]+)$/gi)
-
-  email:
-    type: 'email'
-    required: true
-    message: 'Неверно заполнено поле Email'
-
-  company:      
-    type: 'string'
-    required: true
-    minLen: 3
-    maxLen: 20
-    message: 'Неверно заполнено поле Компания'
-```
-
-
-Отправка сообщения в общую ленту
-
-```
-  author:
-
-    id:
-      type: 'string'
-      len: 24
-      required: true
-      message: 'Пользователь не определен'
-
-    key:
-      type: 'string'
-      len: 40
-      required: true
-      message: 'Пользователь не определен'
-
-  message:
-
-    text:
-      type: 'string'
-      required: true
-      minLen: 3
-      maxLen: 100000
-      message: 'Сообщение некорректно'
-```
-
-
 ### Журнал изменений
 
- - 02 сен 2013г.
+##### 04 сен 2013г. v0.1.4
 
-     - Исправил ошибку с форматом даты в логах.
+  - Загрузка файлов на сервер:
 
-     - Упростил установку с github.
+   - ограничение на 10мб
 
- - 28 авг 2013г. **v0.1.3**
+   - проверка на авторизацию
 
-     - Добавил вывод даты и времени запроса в логах.
+##### 02 сен 2013г.
 
- - 28 авг 2013г. **v0.1.2**
+  - Исправил ошибку с форматом даты в логах.
 
-     - Сделал возможность создавать профили настроек через ```--profile```.
+  - Упростил установку с GitHub.
 
- - 28 авг 2013г. **v0.1.1**
+##### 28 авг 2013г. v0.1.3
 
-     - Добавил инструкцию по созданию сервиса для данного сервера. 
-       Это позволяет запускать сервев в качестве демона, а также можно добавить этот 
-       сервис в автозагрузку.
+  - Добавил вывод даты и времени запроса в логах.
 
-     - Возможность запускать сервер с командами ```--port``` и ```--connection```.
+##### 28 авг 2013г. v0.1.2
 
-     - Перенес настройки в ```/usr/lib/ozserver```, чтобы они не затирались при обновлении сервера.
+  - Сделал возможность создавать профили настроек через ```--profile```.
 
-     - Увеличил лимит сообщения с ```255``` до ```100000```.
+##### 28 авг 2013г. v0.1.1
+
+  - Добавил инструкцию по созданию сервиса для данного сервера. 
+   Это позволяет запускать сервев в качестве демона, а также можно добавить этот 
+   сервис в автозагрузку.
+
+  - Возможность запускать сервер с командами ```--port``` и ```--connection```.
+
+  - Перенес настройки в ```/usr/lib/ozserver```, чтобы они не затирались при обновлении сервера.
+
+  - Увеличил лимит сообщения с ```255``` до ```100000```.
 
 
 ### License

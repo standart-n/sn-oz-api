@@ -1,7 +1,5 @@
 	
-_ = 											require('underscore')
 mongoose = 										require('mongoose')
-colors = 										require('colors')
 sha1 = 											require('sha1')
 EventEmitter = 									require('events').EventEmitter
 
@@ -13,7 +11,7 @@ class Feed extends EventEmitter
 	constructor: (@req, @res) ->
 
 		this.on 'send', () =>
-			# console.log 						JSON.stringify(@mdl.model).cyan
+			# console.log 						JSON.stringify(@mdl.model)
 			@res.jsonp 							@mdl.model
 
 
@@ -79,9 +77,14 @@ class Feed extends EventEmitter
 
 				@findUser (user) =>
 					@findPost (post) =>
-						post.message.text = 	@mdl.model.message.text
-						post.save()
-						@emit 'editSuccess'
+						if user.id.toString() is post.author.id.toString()
+							post.message.text = 	@mdl.model.message.text
+							post.save()
+							@emit 'editSuccess'
+
+						else 
+							# console.log 'diff', user.id, post.author.id
+							@emit 'userNotFound'
 
 			else
 
@@ -116,12 +119,16 @@ class Feed extends EventEmitter
 
 				@findUser (user) =>
 					@findPost (post) =>
-						post.disabled = 		true
-						post.save()
-						@emit 'deleteSuccess'
+						if user.id.toString() is post.author.id.toString()
+							post.disabled = 	true
+							post.save()
+							@emit 'deleteSuccess'
+						
+						else 
+							# console.log 'diff', user.id, post.author.id
+							@emit 'userNotFound'
 
 			else
-
 				@emit 'send'
 
 

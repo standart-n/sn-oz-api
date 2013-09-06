@@ -22,7 +22,8 @@
     "jade": "~0.34.1",
     "mkpath": "~0.1.0",
     "bytes": "~0.2.1",
-    "moment": "~2.1.0"
+    "moment": "~2.1.0",
+    "jquery-file-upload-middleware": "0.0.8"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.9",

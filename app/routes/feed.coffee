@@ -25,3 +25,4 @@ module.exports = (app, options) ->
 	app.get '/feed/post/:region/:seria', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('update')
+
