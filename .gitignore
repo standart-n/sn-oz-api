@@ -15,6 +15,7 @@ node_modules
 
 /script
 /conf
+/public
 /ozserver*
 
 npm-debug.log
