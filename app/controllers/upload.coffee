@@ -6,9 +6,12 @@ upload = 										require('jquery-file-upload-middleware')
 
 User = 											mongoose.model('User', require(global.home + '/script/views/db/user'))
 
+
 class Upload extends EventEmitter
 
 	constructor: (@req, @res, @next) ->
+
+
 
 		this.on 'send', () =>
 			@res.json 							@mdl.model
@@ -24,6 +27,12 @@ class Upload extends EventEmitter
 		
 			@findUser (user) =>
 
+				upload.once 'end', (fileInfo) =>
+					if @req.method is 'POST'
+						console.log @req.method, fileInfo
+						# @req.asfa = fileInfo
+
+
 				upload.fileHandler(
 					# maxFileSize: 				10000000 		# 10mb
 					maxFileSize: 				1000000 		# 1mb
@@ -36,8 +45,8 @@ class Upload extends EventEmitter
 	findUser: (callback) ->
 
 		User.findOne
-			id: 				if @req.query.id? 	then @req.query.id else ''
-			key:				if @req.query.key? 	then @req.query.key else ''
+			id: 				if @req.query.id? 	then @req.query.id 		else ''
+			key:				if @req.query.key? 	then @req.query.key 	else ''
 			disabled:			false
 		, (err, user) =>
 			if err or !user?

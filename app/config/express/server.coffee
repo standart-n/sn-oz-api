@@ -1,6 +1,6 @@
 
-express = 				require('express')
-logger = 				require(global.home + '/script/config/express/logger')
+express = 										require('express')
+logger = 										require(global.home + '/script/config/express/logger')
 
 module.exports = (app, options) ->
 
@@ -12,6 +12,7 @@ module.exports = (app, options) ->
 		app.use '/upload', (req, res, next) ->
 
 			require(global.home + '/script/controllers/upload')(req, res, next).emit('upload')
+
 
 		app.use express.bodyParser()
 
