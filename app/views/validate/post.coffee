@@ -1,19 +1,6 @@
 
 module.exports = 
 
-	author:
-
-		id:
-			type: 'string'
-			len: 24
-			required: true
-			message: 'Пользователь не определен'
-
-		key:
-			type: 'string'
-			len: 40
-			required: true
-			message: 'Пользователь не определен'
 
 	message:
 

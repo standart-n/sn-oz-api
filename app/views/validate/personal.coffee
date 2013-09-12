@@ -7,12 +7,6 @@ module.exports =
 		required: true
 		message: 'Пользователь не определен'
 
-	key:
-		type: 'string'
-		len: 40
-		required: true
-		message: 'Пользователь не определен'
-
 	firstname_new:			
 		type: 'string'
 		required: true

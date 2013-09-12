@@ -16,7 +16,11 @@ module.exports = 		new Schema
 
 	disabled:			type: Boolean, default: false
 
+	token:				type: String, index: true
+
 	reg_dt:				type: Date, default: Date.now
+
+	post_dt:			type: Date, default: Date.now
 ,
 	id:					false
 	

@@ -1,7 +1,7 @@
 
-_ = 									require('underscore')
 mongoose = 								require('mongoose')
 colors = 								require('colors')
+Token = 								require('token')
 EventEmitter = 							require('events').EventEmitter
 
 User = 									mongoose.model('User', require(global.home + '/script/views/db/user'))
@@ -11,8 +11,13 @@ class Signin extends EventEmitter
 	constructor: (@req, @res) ->
 
 		this.on 'send', () =>
-			# console.log 				JSON.stringify(@mdl.model).cyan
+			console.log 				JSON.stringify(@mdl.model).cyan
 			@res.jsonp 					@mdl.model
+
+		this.on 'success', () =>
+			@mdl.signin()
+			@emit 'send'
+
 
 
 		this.on 'check', () =>
@@ -49,13 +54,36 @@ class Signin extends EventEmitter
 					disabled:			false
 			, (err, user) =>
 				if user?
-					user = 				JSON.parse(JSON.stringify(user))
-					@mdl.model = 		user
-					@mdl.signin()
+					# user.save
+					user.token =		this.generateToken(user).toString()
+					user.post_dt =		new Date()
+
+					user.save()
+
+					@mdl.model = 		user.toJSON()
+					@updateSession 		user.toJSON()
+
+					@emit 'success'
+
 				else
 					@mdl.userNotFound()
+					@emit 'send'
 
-				@emit 'send'
+
+	updateSession: (user) ->
+		@req.session.user.id = 			user.id
+		@req.session.user.key = 		user.key
+		@req.session.user.email = 		user.email
+
+
+	generateToken: (user) ->
+		Token.defaults.secret = 		'ozserver'
+		Token.defaults.timeStep = 		24 * 60 * 60
+		Token.generate 					"#{user.id}|#{user.key}"
+
+	verifyToken: () ->
+		console.log 					@req.session.user.token
+		Token.verify 					"#{@req.session.user.id}|#{@req.session.user.key}", @req.session.user.token
 
 
 

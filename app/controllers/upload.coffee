@@ -29,8 +29,8 @@ class Upload extends EventEmitter
 
 				upload.once 'end', (fileInfo) =>
 					if @req.method is 'POST'
-						console.log @req.method, fileInfo
-						# @req.asfa = fileInfo
+						# console.log @req.session
+						console.log fileInfo
 
 
 				upload.fileHandler(

@@ -10,6 +10,8 @@ class Feed extends EventEmitter
 
 	constructor: (@req, @res) ->
 
+		@auth = 								require(global.home + '/script/controllers/auth')(@req, @res)
+
 		this.on 'send', () =>
 			# console.log 						JSON.stringify(@mdl.model)
 			@res.jsonp 							@mdl.model
@@ -39,13 +41,15 @@ class Feed extends EventEmitter
 		
 			if @mdl.check() is true
 
-				@findUser (user) =>
+				@auth.user (err, user) =>
+					if err? or !user?
+						@emit 'userNotFound'
+					else
+						post = @post(user)
+						post.save()
 
-					post = @post(user)
-					post.save()
-
-					@mdl.emit 'success'
-					@emit 'send'
+						@mdl.emit 'success'
+						@emit 'send'
 
 			else
 
@@ -75,16 +79,19 @@ class Feed extends EventEmitter
 
 			if @mdl.check() is true
 
-				@findUser (user) =>
-					@findPost (post) =>
-						if user.id.toString() is post.author.id.toString()
-							post.message.text = 	@mdl.model.message.text
-							post.save()
-							@emit 'editSuccess'
 
-						else 
-							# console.log 'diff', user.id, post.author.id
-							@emit 'userNotFound'
+				@auth.user (err, user) =>
+					if err? or !user?
+						@emit 'userNotFound'
+					else
+						@findPost (post) =>
+							if user.id.toString() is post.author.id.toString()
+								post.message.text = 	@mdl.model.message.text
+								post.save()
+								@emit 'editSuccess'
+
+							else 
+								@emit 'userNotFound'
 
 			else
 
@@ -117,16 +124,20 @@ class Feed extends EventEmitter
 
 			if @mdl.check() is true
 
-				@findUser (user) =>
-					@findPost (post) =>
-						if user.id.toString() is post.author.id.toString()
-							post.disabled = 	true
-							post.save()
-							@emit 'deleteSuccess'
-						
-						else 
-							# console.log 'diff', user.id, post.author.id
-							@emit 'userNotFound'
+				@auth.user (err, user) =>
+					if err? or !user?
+						@emit 'userNotFound'
+					else
+						@findPost (post) =>
+							if user.id.toString() is post.author.id.toString()
+								post.disabled = 	true
+								post.save()
+								@emit 'deleteSuccess'
+							
+							else 
+								# console.log 'diff', user.id, post.author.id
+								@emit 'userNotFound'
+
 
 			else
 				@emit 'send'
@@ -185,21 +196,6 @@ class Feed extends EventEmitter
 
 			else		
 				callback(post)	if callback?
-
-
-
-	findUser: (callback) ->
-
-		User.findOne
-			id: 				@mdl.model.author.id
-			key:				@mdl.model.author.key
-			disabled:			false
-		, (err, user) =>
-			if err or !user?
-				@emit 'userNotFound'
-
-			else		
-				callback(user)	if callback?
 
 
 

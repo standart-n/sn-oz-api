@@ -10,6 +10,8 @@ class Edit extends EventEmitter
 
 	constructor: (@req, @res) ->
 
+		@auth = 						require(global.home + '/script/controllers/auth')(@req, @res)
+
 		this.on 'send', () =>
 			# console.log 				JSON.stringify(@mdl.model).cyan
 			@res.jsonp 					@mdl.model
@@ -30,10 +32,13 @@ class Edit extends EventEmitter
 	
 			if @mdl.check() is true
 
-				@findUser (user) =>
-					user.key =				@mdl.model.key_new
-					user.save()
-					@emit 'success'
+				@auth.user (err, user) =>
+					if err? or !user?
+						@emit 'fail'
+					else
+						user.key = 		@mdl.model.key_new
+						user.save()
+						@emit.success()
 					
 			else
 				@emit 'send'
@@ -46,33 +51,21 @@ class Edit extends EventEmitter
 
 			if @mdl.check() is true
 
-				@findUser (user) =>
-					user.firstname =		@mdl.model.firstname_new
-					user.lastname =			@mdl.model.lastname_new
-					user.save()
+				@auth.user (err, user) =>
+					if err? or !user?
+						@emit 'fail'
+					else
+						user.firstname =		@mdl.model.firstname_new
+						user.lastname =			@mdl.model.lastname_new
+						user.save()
 
-					@editPosts()
+						@editPosts()
 
-					@emit 'success'
+						@emit 'success'
 
 			else
 				@emit 'send'
 					
-
-
-	findUser: (callback) ->
-
-		User.findOne
-			id: 						@mdl.model.id
-			key:						@mdl.model.key
-			disabled:					false
-		, (err, user) =>
-			if err or !user?
-				@emit 'fail'
-			
-			else
-				callback(user)			if callback?
-
 	
 	editPosts: () ->
 

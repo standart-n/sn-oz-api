@@ -13,18 +13,13 @@ class Edit
 
 		@model.success = 				false
 		@model.password_new = 			@model.password_new.trim()
-		@model.password_repeat = 		@model.password_repeat.trim()
-
 		@model.notice = 				validate(Schema, @model)
 
 		if Array.isArray(@model.notice)
 			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
 		else 
-			if @model.password_new is @model.password_repeat
-				@model.success = 		true
-				@model.key_new = 		sha1(@model.password_new)
-			else
-				@model.notice = 		'Пароли не совпадают'
+			@model.success = 			true
+			@model.key_new = 			sha1(@model.password_new)
 
 		@model.success
 
@@ -34,7 +29,6 @@ class Edit
 		@model.key = 					@model.key_new
 		@model.key_new = 				null
 		@model.password_new = 			null
-		@model.password_repeat = 		null
 		@model.notice = 				'Пароль успешно изменен'
 
 	fail: () ->
