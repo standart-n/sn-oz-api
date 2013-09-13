@@ -117,6 +117,28 @@ class Feed extends EventEmitter
 				@emit 'send'
 
 
+
+		this.on 'destroy', () =>
+
+			@mdl = 								require(global.home + '/script/models/feed/destroy')({})
+
+			@auth.user (err, user) =>
+				if err? or !user?
+					@emit 'userNotFound'
+				else
+					@findPost (post) =>
+						if user.id.toString() is post.author.id.toString()
+							post.disabled = 	true
+							post.save()
+							@emit 'deleteSuccess'
+						
+						else 
+							# console.log 'diff', user.id, post.author.id
+							@emit 'userNotFound'
+
+
+
+
 		this.on 'delete', () =>
 
 			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
@@ -189,7 +211,7 @@ class Feed extends EventEmitter
 	findPost: (callback) ->
 
 		Post.findOne
-			id:					@mdl.model.id
+			id:					if @req.route.params.id? then @req.route.params.id else @mdl.model.id
 		, (err, post) =>
 			if err or !post?
 				@emit 'postNotFound'

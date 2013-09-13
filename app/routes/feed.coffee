@@ -12,17 +12,28 @@ module.exports = (app, options) ->
 		require(global.home + '/script/controllers/feed')(req, res).emit('get')
 
 
-	app.put '/feed/post/edit', (req, res) ->
+	app.get '/feed/post/:region/:seria', (req, res) ->
+
+		require(global.home + '/script/controllers/feed')(req, res).emit('update')
+
+
+	app.put '/feed/post', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('edit')
 
+
+	app.delete '/feed/post/:id', (req, res) ->
+
+		require(global.home + '/script/controllers/feed')(req, res).emit('destroy')
+
+	
+
+	# old
 
 	app.put '/feed/post/delete', (req, res) ->
 
 		require(global.home + '/script/controllers/feed')(req, res).emit('delete')
 
-	
-	app.get '/feed/post/:region/:seria', (req, res) ->
+	app.put '/feed/post/edit', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('update')
-
+		require(global.home + '/script/controllers/feed')(req, res).emit('edit')

@@ -11,6 +11,7 @@ class Edit extends EventEmitter
 	constructor: (@req, @res) ->
 
 		@auth = 						require(global.home + '/script/controllers/auth')(@req, @res)
+		@signin = 						require(global.home + '/script/controllers/signin')(@req, @res)
 
 		this.on 'send', () =>
 			# console.log 				JSON.stringify(@mdl.model).cyan
@@ -37,8 +38,12 @@ class Edit extends EventEmitter
 						@emit 'fail'
 					else
 						user.key = 		@mdl.model.key_new
+
+						@signin.updateSession(user)
+
 						user.save()
-						@emit.success()
+
+						@emit 'success'
 					
 			else
 				@emit 'send'

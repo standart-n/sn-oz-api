@@ -81,11 +81,6 @@ class Signin extends EventEmitter
 		Token.defaults.timeStep = 		24 * 60 * 60
 		Token.generate 					"#{user.id}|#{user.key}"
 
-	verifyToken: () ->
-		console.log 					@req.session.user.token
-		Token.verify 					"#{@req.session.user.id}|#{@req.session.user.key}", @req.session.user.token
-
-
 
 exports = module.exports = (req, res) ->
 	new Signin(req, res)
