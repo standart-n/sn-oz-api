@@ -13,10 +13,10 @@ class Feed extends EventEmitter
 		@auth = 								require(global.home + '/script/controllers/auth')(@req, @res)
 
 		this.on 'send', () =>
-			# console.log 						JSON.stringify(@mdl.model)
-			# console.log @req.body.length
-			if @req.body.length
-				@res.json 						@mdl.model
+			if @req.body.model?
+				res.set
+					'Content-Type':  if (req.headers.accept || '').indexOf('application/json') isnt -1 then 'application/json' else 'text/plain'
+				res.json 						@mdl.model
 			else
 				@res.jsonp 						@mdl.model
 
