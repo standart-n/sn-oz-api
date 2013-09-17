@@ -1,6 +1,6 @@
 {
   "name": "ozserver",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "API for OZ",
   "main": "ozserver",
   "bin": {

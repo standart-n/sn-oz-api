@@ -378,7 +378,6 @@ logrotate -f /etc/logrotate.conf
  - **PUT** /edit/personal
    - model
      - id
-     - key
      - firstname\_new
      - lastname\_new
 
@@ -388,9 +387,7 @@ logrotate -f /etc/logrotate.conf
  - **PUT** /edit/password
    - model
      - id
-     - key
      - password\_new
-     - password\_repeat
 
 
 #### Функция вспомнить пароль
@@ -418,28 +415,30 @@ logrotate -f /etc/logrotate.conf
 
  - **GET** /feed/post
    - model
-     - author (user)
      - message
      - region
 
 **Редактирование своей новости**
 
- - **PUT** /feed/post/edit
+ - **PUT** /feed/post
    - model
      - id
-     - author (user)
      - message
 
 **Удаление своей новости**
 
- - **PUT** /feed/post/delete
-   - model
-     - id
-     - author (user)
+ - **DELETE** /feed/post/:id
 
 
 
 ### Журнал изменений
+
+##### 16 сен 2013г. v0.1.4
+
+  - Переход на сессии.
+
+  - Упростил API.
+
 
 ##### 04 сен 2013г. v0.1.4
 
