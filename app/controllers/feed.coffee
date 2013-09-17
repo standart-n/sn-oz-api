@@ -14,7 +14,11 @@ class Feed extends EventEmitter
 
 		this.on 'send', () =>
 			# console.log 						JSON.stringify(@mdl.model)
-			@res.jsonp 							@mdl.model
+			# console.log @req.body.length
+			if @req.body.length
+				@res.json 						@mdl.model
+			else
+				@res.jsonp 						@mdl.model
 
 
 		this.on 'userNotFound', () =>
@@ -36,7 +40,15 @@ class Feed extends EventEmitter
 
 		this.on 'post', () =>
 
-			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			# model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+			if @req.query?.model?
+				model = 						JSON.parse(@req.query.model)
+
+			if @req.body?.model?
+				model = 						JSON.parse(@req.body.model)
+
+			model ?= {}		
+
 			@mdl = 								require(global.home + '/script/models/feed/post')(model)
 		
 			if @mdl.check() is true
@@ -75,6 +87,15 @@ class Feed extends EventEmitter
 		this.on 'edit', () =>
 
 			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
+
+			if @req.query?.model?
+				model = 						JSON.parse(@req.query.model)
+
+			if @req.body?.model?
+				model = 						JSON.parse(@req.body.model)
+
+			model ?= {}		
+			
 			@mdl = 								require(global.home + '/script/models/feed/edit')(model)
 
 			if @mdl.check() is true
