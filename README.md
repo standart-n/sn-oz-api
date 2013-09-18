@@ -392,7 +392,7 @@ logrotate -f /etc/logrotate.conf
 
 #### Функция вспомнить пароль
 
-**Смена пароля**
+**Восстановление пароля**
 
  - **GET** /remember
    - model
@@ -413,7 +413,7 @@ logrotate -f /etc/logrotate.conf
 
 **Добавление новости**
 
- - **GET** /feed/post
+ - **POST** /feed/post
    - model
      - message
      - region
