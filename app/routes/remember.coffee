@@ -1,7 +1,10 @@
 
+Remember = 			require(global.home + '/script/controllers/remember').Remember
+
 module.exports = (app, options) ->
 
 	app.get '/remember', (req, res) ->
 
-		require(global.home + '/script/controllers/remember')(req, res).emit('check')
+		remember = new Remember(req, res)
+		remember.emit('check')
 

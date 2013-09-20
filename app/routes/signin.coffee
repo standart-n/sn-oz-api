@@ -1,11 +1,15 @@
 
+Signin = 			require(global.home + '/script/controllers/signin').Signin
+
 module.exports = (app, options) ->
 
 	app.get '/signin', (req, res) ->
 
-		require(global.home + '/script/controllers/signin')(req, res).emit('check')
+		signin = new Signin(req, res)
+		signin.emit('check')
 
 
 	app.get '/signin/:id/:key', (req, res) ->
 
-		require(global.home + '/script/controllers/signin')(req, res).emit('fetch')
+		signin = new Signin(req, res)
+		signin.emit('fetch')

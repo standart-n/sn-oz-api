@@ -6,6 +6,9 @@ upload = 										require('jquery-file-upload-middleware')
 module.exports = (app, options) ->
 
 	app.configure ->
+
+		# app.set 'trust proxy', true
+
 		app.set 'port', process.env.PORT || options.port.toString()
 
 		app.use express.logger logger
@@ -19,7 +22,6 @@ module.exports = (app, options) ->
 		app.use express.bodyParser()
 
 		app.use express.methodOverride()
-
 
 		app.use express.cookieParser()
 

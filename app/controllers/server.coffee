@@ -2,6 +2,8 @@
 express = 													require('express')
 mongoose = 													require('mongoose')
 http = 														require('http')
+io	 = 														require('socket.io')
+sockjs	 = 													require('sockjs')
 path = 														require('path')
 mkpath = 													require('mkpath')
 colors = 													require('colors')
@@ -10,6 +12,7 @@ async = 													require('async')
 _ = 														require('underscore')
 
 Storage = 													require(global.home + '/script/controllers/storage').Storage
+Middlevent = 												require(global.home + '/script/controllers/middlevent').Middlevent
 
 
 rl = readline.createInterface
@@ -88,25 +91,51 @@ class Server
 				console.log err if err
 
 			# settings
-			require(global.home + '/script/config/express/server')(app, @options)
+			require(global.home + '/script/config/express/server'	)(app, @options)
 
 			# routes
-			require(global.home + '/script/routes/registration')(app, @options)
-			require(global.home + '/script/routes/remember')(app, @options)
-			require(global.home + '/script/routes/signin')(app, @options)
-			require(global.home + '/script/routes/edit')(app, @options)
-			require(global.home + '/script/routes/feed')(app, @options)
+			middlevent = new Middlevent()
+	
+			require(global.home + '/script/routes/registration'		)(app, @options)
+			require(global.home + '/script/routes/remember'			)(app, @options)
+			require(global.home + '/script/routes/signin'			)(app, @options)
+			require(global.home + '/script/routes/edit'				)(app, @options)
+			require(global.home + '/script/routes/feed'				)(app, @options, middlevent)
 
 			if !app.get('port')? or app.get('port') is ''
 				throw 'undefined port'
 
-			http.createServer(app).listen app.get('port'), () ->
-				console.log "server work at ".grey + "http://localhost: ".grey + app.get('port').blue
+
+
+			# sockets = sockjs.createServer
+			# 	sockjs_url: global.home + '/lib/sockjs/sockjs.js'
+			
+
+
+			# sockets.on 'connection', (socket) ->
+
+			# 	socket.on 'data', (s) ->
+			# 		data = JSON.parse(s)
+
+
+			# 		middlevent.on 'feed.update', () ->
+			# 			socket.write JSON.stringify
+			# 				message:	'feed.update'
+
+
+			server = http.createServer(app)
+
+			server.listen app.get('port'), () ->
+				console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
+
+
+			# sockets.installHandlers server,
+			# 	prefix:'/sockets'
+
+			require(global.home + '/script/controllers/sockets')(server, middlevent)
+
 
 
 exports = module.exports = new Server()
 
 exports.Server = Server
-
-
-

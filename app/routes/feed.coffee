@@ -1,49 +1,58 @@
 
-module.exports = (app, options) ->
+Feed = 				require(global.home + '/script/controllers/feed').Feed
 
-
-
+module.exports = (app, options, middlevent) ->
 
 	app.get '/feed/post/:region', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('get')
-
-
-	app.get '/feed/post/:region/:seria', (req, res) ->
-
-		require(global.home + '/script/controllers/feed')(req, res).emit('update')
-
+		feed = new Feed(req, res)
+		feed.emit('get')
 
 
 	app.post '/feed/post', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('post')
-
+		feed = new Feed(req, res)
+		feed.on 'posting', (data) ->
+			middlevent.emit 'feed.update', data
+		feed.emit('post')
 
 
 	app.put '/feed/post', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('edit')
+		feed = new Feed(req, res)
+		feed.emit('edit')
 
 
 	app.delete '/feed/post/:id', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('destroy')
-
+		feed = new Feed(req, res)
+		feed.emit('destroy')
 	
+
+	app.get '/feed/post/:region/:seria', (req, res) ->
+
+		feed = new Feed(req, res)
+		feed.emit('update')
+
+
 
 	# old
 
 	app.get '/feed/post', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('post')
+		feed = new Feed(req, res)
+		feed.emit('post')
 
 
 	app.put '/feed/post/delete', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('delete')
+		feed = new Feed(req, res)
+		feed.emit('delete')
 
 
 	app.put '/feed/post/edit', (req, res) ->
 
-		require(global.home + '/script/controllers/feed')(req, res).emit('edit')
+		feed = new Feed(req, res)
+		feed.emit('edit')
+
+

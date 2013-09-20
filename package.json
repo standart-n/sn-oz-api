@@ -24,7 +24,8 @@
     "bytes": "~0.2.1",
     "moment": "~2.1.0",
     "jquery-file-upload-middleware": "0.0.8",
-    "token": "0.0.0"
+    "token": "0.0.0",
+    "sockjs": "~0.3.7"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.9",

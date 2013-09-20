@@ -15,7 +15,11 @@ class Feed extends EventEmitter
 		this.on 'send', () =>
 			if @req.body.model?
 				res.set
-					'Content-Type':  if (req.headers.accept || '').indexOf('application/json') isnt -1 then 'application/json' else 'text/plain'
+					'Content-Type':  if (req.headers.accept || '').indexOf('application/json') isnt -1 
+										'application/json; charset=utf-8' 
+									else 
+										'text/plain; charset=utf-8'
+	
 				res.json 						@mdl.model
 			else
 				@res.jsonp 						@mdl.model
@@ -27,6 +31,13 @@ class Feed extends EventEmitter
 
 		this.on 'postNotFound', () =>
 			@mdl.emit 'postNotFound'
+			@emit 'send'
+
+
+
+		this.on 'postSuccess', () =>
+			@mdl.emit 'success'
+			@emit 'posting', @mdl.model
 			@emit 'send'
 
 		this.on 'editSuccess', () =>
@@ -60,8 +71,7 @@ class Feed extends EventEmitter
 						post = @post(user)
 						post.save()
 
-						@mdl.emit 'success'
-						@emit 'send'
+						@emit 'postSuccess'
 
 			else
 

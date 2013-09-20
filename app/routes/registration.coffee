@@ -1,7 +1,10 @@
 
+Registration = 		require(global.home + '/script/controllers/registration').Registration
+
 module.exports = (app, options) ->
 
 	app.get '/registration', (req, res) ->
 
-		require(global.home + '/script/controllers/registration')(req, res).emit('check')
+		registration = new Registration(req, res)
+		registration.emit('check')
 
