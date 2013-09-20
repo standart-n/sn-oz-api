@@ -2,8 +2,6 @@
 express = 													require('express')
 mongoose = 													require('mongoose')
 http = 														require('http')
-io	 = 														require('socket.io')
-sockjs	 = 													require('sockjs')
 path = 														require('path')
 mkpath = 													require('mkpath')
 colors = 													require('colors')
