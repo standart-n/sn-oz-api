@@ -11,8 +11,6 @@ class Upload extends EventEmitter
 
 	constructor: (@req, @res, @next) ->
 
-
-
 		this.on 'send', () =>
 			@res.json 							@mdl.model
 
@@ -31,7 +29,6 @@ class Upload extends EventEmitter
 					if @req.method is 'POST'
 						# console.log @req.session
 						console.log fileInfo
-
 
 				upload.fileHandler(
 					# maxFileSize: 				10000000 		# 10mb

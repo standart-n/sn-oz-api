@@ -1,9 +1,10 @@
 
 express = 										require('express')
 logger = 										require(global.home + '/script/config/express/logger')
-upload = 										require('jquery-file-upload-middleware')
+Upload = 										require(global.home + '/script/controllers/upload').Upload
 
-module.exports = (app, options) ->
+
+module.exports = (app, options, middlevent) ->
 
 	app.configure ->
 
@@ -16,7 +17,8 @@ module.exports = (app, options) ->
 		
 		app.use '/upload', (req, res, next) ->
 
-			require(global.home + '/script/controllers/upload')(req, res, next).emit('upload')
+			upload = new Upload(req, res, next)
+			upload.emit('upload')
 
 
 		app.use express.bodyParser()

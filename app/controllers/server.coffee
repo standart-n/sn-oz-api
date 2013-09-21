@@ -89,7 +89,7 @@ class Server
 				console.log err if err
 
 			# settings
-			require(global.home + '/script/config/express/server'	)(app, @options)
+			require(global.home + '/script/config/express/server'	)(app, @options, middlevent)
 
 			# routes
 			middlevent = new Middlevent()
@@ -104,31 +104,11 @@ class Server
 				throw 'undefined port'
 
 
-
-			# sockets = sockjs.createServer
-			# 	sockjs_url: global.home + '/lib/sockjs/sockjs.js'
-			
-
-
-			# sockets.on 'connection', (socket) ->
-
-			# 	socket.on 'data', (s) ->
-			# 		data = JSON.parse(s)
-
-
-			# 		middlevent.on 'feed.update', () ->
-			# 			socket.write JSON.stringify
-			# 				message:	'feed.update'
-
-
 			server = http.createServer(app)
 
 			server.listen app.get('port'), () ->
 				console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
 
-
-			# sockets.installHandlers server,
-			# 	prefix:'/sockets'
 
 			require(global.home + '/script/controllers/sockets')(server, middlevent)
 

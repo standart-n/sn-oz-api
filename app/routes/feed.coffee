@@ -9,11 +9,17 @@ module.exports = (app, options, middlevent) ->
 		feed.emit('get')
 
 
+	app.get '/feed/post/:region/:seria', (req, res) ->
+
+		feed = new Feed(req, res)
+		feed.emit('update')
+
+
 	app.post '/feed/post', (req, res) ->
 
 		feed = new Feed(req, res)
-		feed.on 'posting', (data) ->
-			middlevent.emit 'feed.update', data
+		feed.on 'response', (data) ->
+			middlevent.emit 'feed.post', data
 		feed.emit('post')
 
 
@@ -27,12 +33,6 @@ module.exports = (app, options, middlevent) ->
 
 		feed = new Feed(req, res)
 		feed.emit('destroy')
-	
-
-	app.get '/feed/post/:region/:seria', (req, res) ->
-
-		feed = new Feed(req, res)
-		feed.emit('update')
 
 
 

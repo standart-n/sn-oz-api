@@ -12,7 +12,14 @@ class Feed extends EventEmitter
 
 		@auth = 								require(global.home + '/script/controllers/auth')(@req, @res)
 
-		this.on 'send', () =>
+		this.on 'send', (user) =>
+
+			@emit 'response', 
+				model:	@mdl.model
+				user:	user
+				token:	if @req.body?.token? then @req.body.token else null
+
+
 			if @req.body.model?
 				res.set
 					'Content-Type':  if (req.headers.accept || '').indexOf('application/json') isnt -1 
@@ -25,6 +32,7 @@ class Feed extends EventEmitter
 				@res.jsonp 						@mdl.model
 
 
+
 		this.on 'userNotFound', () =>
 			@mdl.emit 'userNotFound'
 			@emit 'send'
@@ -35,10 +43,10 @@ class Feed extends EventEmitter
 
 
 
-		this.on 'postSuccess', () =>
+		this.on 'postSuccess', (user) =>
 			@mdl.emit 'success'
-			@emit 'posting', @mdl.model
-			@emit 'send'
+			# @emit 'posted', @mdl.model
+			@emit 'send', user
 
 		this.on 'editSuccess', () =>
 			@mdl.emit 'success'
@@ -71,7 +79,7 @@ class Feed extends EventEmitter
 						post = @post(user)
 						post.save()
 
-						@emit 'postSuccess'
+						@emit 'postSuccess', user.toJSON()
 
 			else
 

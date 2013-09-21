@@ -79,7 +79,7 @@ class Signin extends EventEmitter
 	generateToken: (user) ->
 		Token.defaults.secret = 		'ozserver'
 		Token.defaults.timeStep = 		24 * 60 * 60
-		Token.generate 					"#{user.id}|#{user.key}"
+		Token.generate 					"#{@req.session.id}|#{user.id}|#{user.key}"
 
 
 exports = module.exports = (req, res) ->

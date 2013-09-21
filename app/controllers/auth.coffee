@@ -30,7 +30,7 @@ class Auth
 	verifyToken: () ->
 		if @req.session.user? and @req.query.token?
 			if @req.session.user.id? and @req.session.user.key?
-				Token.verify "#{@req.session.user.id}|#{@req.session.user.key}", @req.query.token
+				Token.verify "#{@req.session.id}|{@req.session.user.id}|#{@req.session.user.key}", @req.query.token
 			else false
 		else false
 
