@@ -9,7 +9,9 @@
 *.git
 *.coffee
 
-app
+/app
+/public
+
 pids
 logs
 results

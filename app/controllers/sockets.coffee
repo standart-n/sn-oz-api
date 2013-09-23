@@ -3,8 +3,8 @@ sockjs = 				require('sockjs')
 
 module.exports = (server, middlevent) ->
 
-	sockets = sockjs.createServer
-		sockjs_url: global.home + '/lib/sockjs/sockjs.js'
+	sockets = sockjs.createServer()
+	# sockjs_url: global.home + '/lib/sockjs/sockjs.js'
 	
 
 	sockets.on 'connection', (socket) ->
@@ -34,18 +34,12 @@ module.exports = (server, middlevent) ->
 				if this.isRegionRight(client, data)
 
 					if this.isClientIsAuthorOfPost(client, data)
-						console.log JSON.stringify
-							message:	'feed.post'
-							success:	if data?.model?.success? 		then data.model.success 	else null
-							notice:		if data?.model?.notice? 		then data.model.notice 		else null
 						socket.write JSON.stringify
 							message:	'feed.post'
 							success:	if data?.model?.success? 		then data.model.success 	else null
 							notice:		if data?.model?.notice? 		then data.model.notice 		else null
 					else
 						if this.isPostedSuccess(data)
-							console.log JSON.stringify
-								message:	'feed.update'
 							socket.write JSON.stringify
 								message:	'feed.update'
 
