@@ -3,8 +3,7 @@ sockjs = 				require('sockjs')
 
 module.exports = (server, middlevent) ->
 
-	sockets = sockjs.createServer
-		sockjs_url: global.home + '/lib/sockjs/sockjs.js'
+	sockets = sockjs.createServer()
 	
 
 	sockets.on 'connection', (socket) ->
