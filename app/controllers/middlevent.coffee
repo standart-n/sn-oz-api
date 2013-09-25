@@ -13,8 +13,8 @@ class Middlevent extends EventEmitter
 		return false
 
 	isRegionRight: (client, data) ->
-		if client?.region?.name? and data?.model?.region?.name?
-			if client.region.name is data.model.region.name
+		if client?.region?.name? and data?.post?.region?.name?
+			if client.region.name is data.post.region.name
 				return true
 		return false
 

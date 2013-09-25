@@ -12,11 +12,12 @@ class Feed extends EventEmitter
 
 		@auth = 								require(global.home + '/script/controllers/auth')(@req, @res)
 
-		this.on 'send', (user) =>
+		this.on 'send', (user, post) =>
 
 			@emit 'response', 
 				model:			@mdl.model
 				user:			if user? 				then user 				else {}
+				post:			if post? 				then post 				else {}
 				sessid:			if @req.sessionID? 		then @req.sessionID 	else null
 
 
@@ -28,6 +29,7 @@ class Feed extends EventEmitter
 										'text/plain; charset=utf-8'
 	
 				res.json 						@mdl.model
+
 			else
 				@res.jsonp 						@mdl.model
 
@@ -42,17 +44,17 @@ class Feed extends EventEmitter
 			@emit 'send'
 
 
-		this.on 'postSuccess', (user) =>
+		this.on 'postSuccess', (user, post) =>
 			@mdl.emit 'success'
-			@emit 'send', user
+			@emit 'send', user, post
 
-		this.on 'editSuccess', (user) =>
+		this.on 'editSuccess', (user, post) =>
 			@mdl.emit 'success'
-			@emit 'send', user
+			@emit 'send', user, post
 
-		this.on 'deleteSuccess', () =>
+		this.on 'deleteSuccess', (user, post) =>
 			@mdl.emit 'success'
-			@emit 'send'
+			@emit 'send', user, post
 
 
 		this.on 'post', () =>
@@ -77,7 +79,7 @@ class Feed extends EventEmitter
 						post = @post(user)
 						post.save()
 
-						@emit 'postSuccess', user.toJSON()
+						@emit 'postSuccess', user.toJSON(), post.toJSON()
 
 			else
 
@@ -125,7 +127,7 @@ class Feed extends EventEmitter
 							if user.id.toString() is post.author.id.toString()
 								post.message.text = 	@mdl.model.message.text
 								post.save()
-								@emit 'editSuccess', user.toJSON()
+								@emit 'editSuccess', user.toJSON(), post.toJSON()
 
 							else 
 								@emit 'userNotFound'
@@ -155,9 +157,9 @@ class Feed extends EventEmitter
 
 
 
-		this.on 'destroy', () =>
+		this.on 'delete', () =>
 
-			@mdl = 								require(global.home + '/script/models/feed/destroy')({})
+			@mdl = 								require(global.home + '/script/models/feed/delete')({})
 
 			@auth.user (err, user) =>
 				if err? or !user?
@@ -167,39 +169,12 @@ class Feed extends EventEmitter
 						if user.id.toString() is post.author.id.toString()
 							post.disabled = 	true
 							post.save()
-							@emit 'deleteSuccess', user.toJSON()
+							@emit 'deleteSuccess', user.toJSON(), post.toJSON()
 						
 						else 
 							# console.log 'diff', user.id, post.author.id
 							@emit 'userNotFound'
 
-
-
-
-		this.on 'delete', () =>
-
-			model = 							if @req.query?.model? then JSON.parse(@req.query.model) else {}
-			@mdl = 								require(global.home + '/script/models/feed/delete')(model)
-
-			if @mdl.check() is true
-
-				@auth.user (err, user) =>
-					if err? or !user?
-						@emit 'userNotFound'
-					else
-						@findPost (post) =>
-							if user.id.toString() is post.author.id.toString()
-								post.disabled = 	true
-								post.save()
-								@emit 'deleteSuccess'
-							
-							else 
-								# console.log 'diff', user.id, post.author.id
-								@emit 'userNotFound'
-
-
-			else
-				@emit 'send'
 
 
 

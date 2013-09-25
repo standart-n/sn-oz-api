@@ -60,6 +60,14 @@ module.exports = (server, middlevent) ->
 								message:	'feed.update'
 
 
+		middlevent.on 'feed.delete', (data) ->
+			if this.isSocketReady(socket)
+				if this.isRegionRight(client, data)
+
+					socket.write JSON.stringify
+							message:	'feed.update'
+
+
 	sockets.installHandlers server,
 		prefix:'/sockets'
 

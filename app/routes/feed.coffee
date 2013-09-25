@@ -36,27 +36,5 @@ module.exports = (app, options, middlevent) ->
 		feed = new Feed(req, res)
 		feed.on 'response', (data) ->
 			middlevent.emit 'feed.delete', data
-		feed.emit('destroy')
-
-
-
-	# old
-
-	app.get '/feed/post', (req, res) ->
-
-		feed = new Feed(req, res)
-		feed.emit('post')
-
-
-	app.put '/feed/post/delete', (req, res) ->
-
-		feed = new Feed(req, res)
 		feed.emit('delete')
-
-
-	app.put '/feed/post/edit', (req, res) ->
-
-		feed = new Feed(req, res)
-		feed.emit('edit')
-
 

@@ -21,20 +21,6 @@ class Delete extends EventEmitter
 		this.on 'postNotFound', () =>
 			@model.success = 			false
 			@model.notice = 			'Не удалось найти пост, который требуется изменить'
-
-
-	check: () ->
-
-		@model.success = 				false
-
-		@model.notice = 				validate(Schema, @model)
-
-		if Array.isArray(@model.notice)
-			@model.notice = 			@model.notice[0].toString().replace('Error: ','')
-		else 
-			@model.success = 			true
-
-		@model.success
 		
 
 exports = module.exports = (model = {}) ->
