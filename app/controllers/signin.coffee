@@ -11,7 +11,7 @@ class Signin extends EventEmitter
 	constructor: (@req, @res) ->
 
 		this.on 'send', () =>
-			# console.log 				JSON.stringify(@mdl.model).cyan
+			console.log 				JSON.stringify(@mdl.model).cyan
 			@res.jsonp 					@mdl.model
 
 		this.on 'success', () =>
@@ -54,8 +54,8 @@ class Signin extends EventEmitter
 					disabled:			false
 			, (err, user) =>
 				if user?
-					# user.save
 					user.token =		this.generateToken(user).toString()
+					user.sessid =		@req.sessionID.toString()
 					user.post_dt =		new Date()
 
 					user.save()
@@ -71,11 +71,12 @@ class Signin extends EventEmitter
 
 
 	updateSession: (user) ->
+
 		@req.session.user.id = 			user.id
 		@req.session.user.key = 		user.key
 		@req.session.user.email = 		user.email
 
-
+	
 	generateToken: (user) ->
 		Token.defaults.secret = 		'ozserver'
 		Token.defaults.timeStep = 		24 * 60 * 60

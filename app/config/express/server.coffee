@@ -1,14 +1,15 @@
 
 express = 										require('express')
+session = 										require(global.home + '/script/config/express/session').load
 logger = 										require(global.home + '/script/config/express/logger')
 Upload = 										require(global.home + '/script/controllers/upload').Upload
 
 
 module.exports = (app, options, middlevent) ->
 
-	app.configure ->
+	maxAge = 									365 * 24* 60 * 60 * 1000
 
-		# app.set 'trust proxy', true
+	app.configure ->
 
 		app.set 'port', process.env.PORT || options.port.toString()
 
@@ -24,14 +25,8 @@ module.exports = (app, options, middlevent) ->
 		app.use express.bodyParser()
 
 		app.use express.methodOverride()
-
-		app.use express.cookieParser()
-
-		app.use express.session
-			secret:	'ozserver'
-			cookie:
-				maxAge:	null
-
+		
+		app.use session
 
 		app.use app.router
 
@@ -45,12 +40,7 @@ module.exports = (app, options, middlevent) ->
 			req.method = req.query._method 		if req.query._method?
 			next()
 
+
 		app.all '*', (req, res, next) ->
 			req.session.user = {} 				if !req.session.user?
 			next()
-
-		# app.all '*', (req, res, next) ->
-		# 	require(global.home + '/script/controllers/auth')(req, res, next).emit('check')
-
-
-

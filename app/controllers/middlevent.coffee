@@ -21,12 +21,10 @@ class Middlevent extends EventEmitter
 	isClientIsAuthorOfPost: (client, data) ->
 		if client?.user_id? and data?.user?.id?
 			if client.user_id.toString() is data.user.id.toString()
-				if client.token? and data?.token?
-					if client.token.toString() is data.token.toString()
+				if client.sessid? and data?.sessid?
+					if client.sessid.toString() is data.sessid.toString()
 						return true
-					else
-						return false
-				return true
+
 		return false
 
 	isPostedSuccess: (data) ->

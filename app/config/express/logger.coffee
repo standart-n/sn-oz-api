@@ -26,8 +26,11 @@ module.exports = (token, req, res) ->
 
 	result = "#{moment().format('HH:mm:ss.SSS').blue} #{moment().format('DD/MM/YYYY').magenta} \x1b[#{color}m#{req.method} \x1b[#{color}m#{res.statusCode} #{tm.cyan} #{len.yellow} #{req.originalUrl.grey}"
 
-	if req.session.id? and req.session.user.id? and req.session.user.key?
-		result += "#{req.session.user.id.toString().grey} #{req.session.user.key.toString().grey}"
+	if req.cookies?.user_id? and req.cookies?.user_key?
+		result += " #{req.cookies.user_id.toString().magenta} #{req.cookies.user_key.toString().magenta}"
+
+	if req.session?.id?
+		result += " #{req.session.id.toString().grey}"
 
 	result
 

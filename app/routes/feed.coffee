@@ -26,12 +26,16 @@ module.exports = (app, options, middlevent) ->
 	app.put '/feed/post', (req, res) ->
 
 		feed = new Feed(req, res)
+		feed.on 'response', (data) ->
+			middlevent.emit 'feed.edit', data
 		feed.emit('edit')
 
 
 	app.delete '/feed/post/:id', (req, res) ->
 
 		feed = new Feed(req, res)
+		feed.on 'response', (data) ->
+			middlevent.emit 'feed.delete', data
 		feed.emit('destroy')
 
 

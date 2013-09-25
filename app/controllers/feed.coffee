@@ -15,14 +15,14 @@ class Feed extends EventEmitter
 		this.on 'send', (user) =>
 
 			@emit 'response', 
-				model:	@mdl.model
-				user:	user
-				token:	if @req.body?.token? then @req.body.token else null
+				model:			@mdl.model
+				user:			if user? 				then user 				else {}
+				sessid:			if @req.sessionID? 		then @req.sessionID 	else null
 
 
 			if @req.body.model?
 				res.set
-					'Content-Type':  if (req.headers.accept || '').indexOf('application/json') isnt -1 
+					'Content-Type': if (req.headers.accept || '').indexOf('application/json') isnt -1 
 										'application/json; charset=utf-8' 
 									else 
 										'text/plain; charset=utf-8'
@@ -42,15 +42,13 @@ class Feed extends EventEmitter
 			@emit 'send'
 
 
-
 		this.on 'postSuccess', (user) =>
 			@mdl.emit 'success'
-			# @emit 'posted', @mdl.model
 			@emit 'send', user
 
-		this.on 'editSuccess', () =>
+		this.on 'editSuccess', (user) =>
 			@mdl.emit 'success'
-			@emit 'send'
+			@emit 'send', user
 
 		this.on 'deleteSuccess', () =>
 			@mdl.emit 'success'
@@ -127,7 +125,7 @@ class Feed extends EventEmitter
 							if user.id.toString() is post.author.id.toString()
 								post.message.text = 	@mdl.model.message.text
 								post.save()
-								@emit 'editSuccess'
+								@emit 'editSuccess', user.toJSON()
 
 							else 
 								@emit 'userNotFound'
@@ -169,7 +167,7 @@ class Feed extends EventEmitter
 						if user.id.toString() is post.author.id.toString()
 							post.disabled = 	true
 							post.save()
-							@emit 'deleteSuccess'
+							@emit 'deleteSuccess', user.toJSON()
 						
 						else 
 							# console.log 'diff', user.id, post.author.id
