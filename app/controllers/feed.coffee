@@ -20,7 +20,7 @@ class Feed extends EventEmitter
 				sessid:			if @req.sessionID? 		then @req.sessionID 	else null
 
 
-			if @req.body.model?
+			if @req.body.model? or @req.body.sessid?
 				res.set
 					'Content-Type': if (req.headers.accept || '').indexOf('application/json') isnt -1 
 										'application/json; charset=utf-8' 
