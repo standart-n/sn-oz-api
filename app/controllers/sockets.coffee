@@ -1,9 +1,12 @@
 
 sockjs = 				require('sockjs')
+colors = 				require('colors')
 
 module.exports = (server, middlevent) ->
 
-	sockets = sockjs.createServer()
+	sockets = sockjs.createServer
+		log: (severity, line) ->
+			console.log line.grey
 
 	sockets.on 'connection', (socket) ->
 
