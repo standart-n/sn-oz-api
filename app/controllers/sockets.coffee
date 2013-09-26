@@ -35,40 +35,25 @@ module.exports = (server, streak) ->
 		streak.on 'feed.post', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
-
-					if this.isClientIsAuthorOfPost(client, data)
+					if this.isPostedSuccess(data)
 						socket.write JSON.stringify
-							message:	'feed.post'
-							success:	if data?.model?.success? 		then data.model.success 	else null
-							notice:		if data?.model?.notice? 		then data.model.notice 		else null
-					else
-						if this.isPostedSuccess(data)
-							socket.write JSON.stringify
-								message:	'feed.update'
+							message:	'feed.update'
 
 
 
 		streak.on 'feed.edit', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
-
-					if this.isClientIsAuthorOfPost(client, data)
+					if this.isPostedSuccess(data)
 						socket.write JSON.stringify
-							message:	'feed.edit'
-							success:	if data?.model?.success? 		then data.model.success 	else null
-							notice:		if data?.model?.notice? 		then data.model.notice 		else null
-					else
-						if this.isPostedSuccess(data)
-							socket.write JSON.stringify
-								message:	'feed.update'
+							message:	'feed.update'
 
 
 		streak.on 'feed.delete', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
-
 					socket.write JSON.stringify
-							message:	'feed.update'
+						message:	'feed.update'
 
 
 	sockets.installHandlers server,

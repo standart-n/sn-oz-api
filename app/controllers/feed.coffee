@@ -19,16 +19,17 @@ class Feed extends EventEmitter
 				user:			if user? 				then user 				else {}
 				post:			if post? 				then post 				else {}
 				sessid:			if @req.sessionID? 		then @req.sessionID 	else null
+				aid:			if @req.body.aid?		then @req.body.aid		else null
 
 
 			if @req.body.model? or @req.body.sessid?
-				res.set
+				@res.set
 					'Content-Type': if (req.headers.accept || '').indexOf('application/json') isnt -1 
 										'application/json; charset=utf-8' 
 									else 
 										'text/plain; charset=utf-8'
 	
-				res.json 						@mdl.model
+				@res.json 						@mdl.model
 
 			else
 				@res.jsonp 						@mdl.model

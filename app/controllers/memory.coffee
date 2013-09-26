@@ -27,7 +27,6 @@ module.exports = (connect) ->
 							expires = 		 2 * 24 * 60 * 60 * 1000
 	
 					if session?
-						session.last_dt = 	new Date()
 						session.sess = 		sess
 						
 						session.save () ->

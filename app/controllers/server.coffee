@@ -98,6 +98,7 @@ class Server
 			# routes
 			require(global.home + '/script/routes/registration'		)(app, @options)
 			require(global.home + '/script/routes/remember'			)(app, @options)
+			require(global.home + '/script/routes/action'			)(app, @options)
 			require(global.home + '/script/routes/signin'			)(app, @options)
 			require(global.home + '/script/routes/edit'				)(app, @options)
 			require(global.home + '/script/routes/feed'				)(app, @options, streak)
@@ -112,7 +113,11 @@ class Server
 				console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
 
 
+			# sockets
 			require(global.home + '/script/controllers/sockets')(server, streak)
+			
+			# user actions
+			require(global.home + '/script/controllers/movement')(streak)
 
 
 
