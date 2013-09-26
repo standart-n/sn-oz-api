@@ -1,7 +1,7 @@
 	
 EventEmitter = 									require('events').EventEmitter
 
-class Middlevent extends EventEmitter
+class Streak extends EventEmitter
 
 	constructor: () ->
 
@@ -35,8 +35,8 @@ class Middlevent extends EventEmitter
 
 
 exports = module.exports = () ->
-	new Middlevent()
+	new Streak()
 
-exports.Middlevent = Middlevent
+exports.Streak = Streak
 
 

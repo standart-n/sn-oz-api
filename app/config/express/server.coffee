@@ -5,7 +5,7 @@ logger = 										require(global.home + '/script/config/express/logger')
 Upload = 										require(global.home + '/script/controllers/upload').Upload
 
 
-module.exports = (app, options, middlevent) ->
+module.exports = (app, options, streak) ->
 
 	maxAge = 									365 * 24* 60 * 60 * 1000
 

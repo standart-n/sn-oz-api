@@ -10,7 +10,7 @@ async = 													require('async')
 _ = 														require('underscore')
 
 Storage = 													require(global.home + '/script/controllers/storage').Storage
-Middlevent = 												require(global.home + '/script/controllers/middlevent').Middlevent
+Streak = 													require(global.home + '/script/controllers/streak').Streak
 
 
 rl = readline.createInterface
@@ -88,17 +88,19 @@ class Server
 			mongoose.connection.on 'error', (err) ->
 				console.log err if err
 
-			# settings
-			require(global.home + '/script/config/express/server'	)(app, @options, middlevent)
 
-			# routes
-			middlevent = new Middlevent()
+			# streak between routes and sockeets
+			streak = new Streak()
+
+			# settings
+			require(global.home + '/script/config/express/server'	)(app, @options, streak)
 	
+			# routes
 			require(global.home + '/script/routes/registration'		)(app, @options)
 			require(global.home + '/script/routes/remember'			)(app, @options)
 			require(global.home + '/script/routes/signin'			)(app, @options)
 			require(global.home + '/script/routes/edit'				)(app, @options)
-			require(global.home + '/script/routes/feed'				)(app, @options, middlevent)
+			require(global.home + '/script/routes/feed'				)(app, @options, streak)
 
 			if !app.get('port')? or app.get('port') is ''
 				throw 'undefined port'
@@ -110,7 +112,7 @@ class Server
 				console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
 
 
-			require(global.home + '/script/controllers/sockets')(server, middlevent)
+			require(global.home + '/script/controllers/sockets')(server, streak)
 
 
 

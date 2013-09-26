@@ -2,7 +2,7 @@
 sockjs = 				require('sockjs')
 colors = 				require('colors')
 
-module.exports = (server, middlevent) ->
+module.exports = (server, streak) ->
 
 	sockets = sockjs.createServer
 		log: (severity, line) ->
@@ -32,7 +32,7 @@ module.exports = (server, middlevent) ->
 
 
 
-		middlevent.on 'feed.post', (data) ->
+		streak.on 'feed.post', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
 
@@ -48,7 +48,7 @@ module.exports = (server, middlevent) ->
 
 
 
-		middlevent.on 'feed.edit', (data) ->
+		streak.on 'feed.edit', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
 
@@ -63,7 +63,7 @@ module.exports = (server, middlevent) ->
 								message:	'feed.update'
 
 
-		middlevent.on 'feed.delete', (data) ->
+		streak.on 'feed.delete', (data) ->
 			if this.isSocketReady(socket)
 				if this.isRegionRight(client, data)
 

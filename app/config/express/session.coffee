@@ -1,10 +1,10 @@
 
+express = 						require('express')
 connectSession = 				require('connect-session')
 session = 						connectSession.session
-header = 						connectSession.header
-param = 						connectSession.param
 
-MemoryStore = 					require(global.home + '/node_modules/connect-session/lib/session/memory')
+Memory = 						require(global.home + '/script/controllers/memory')(express)
+
 
 body = (options = {}) ->
 	paramName = if options.param? then options.param else 'sessid'
@@ -23,7 +23,7 @@ loaders = [
 ]
 
 options = 
-	store = new MemoryStore
+	store: new Memory()
 
 
 module.exports.create = 		session loaders, options

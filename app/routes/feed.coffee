@@ -1,7 +1,7 @@
 
 Feed = 				require(global.home + '/script/controllers/feed').Feed
 
-module.exports = (app, options, middlevent) ->
+module.exports = (app, options, streak) ->
 
 	app.get '/feed/post/:region', (req, res) ->
 
@@ -19,7 +19,7 @@ module.exports = (app, options, middlevent) ->
 
 		feed = new Feed(req, res)
 		feed.on 'response', (data) ->
-			middlevent.emit 'feed.post', data
+			streak.emit 'feed.post', data
 		feed.emit('post')
 
 
@@ -27,7 +27,7 @@ module.exports = (app, options, middlevent) ->
 
 		feed = new Feed(req, res)
 		feed.on 'response', (data) ->
-			middlevent.emit 'feed.edit', data
+			streak.emit 'feed.edit', data
 		feed.emit('edit')
 
 
@@ -35,6 +35,6 @@ module.exports = (app, options, middlevent) ->
 
 		feed = new Feed(req, res)
 		feed.on 'response', (data) ->
-			middlevent.emit 'feed.delete', data
+			streak.emit 'feed.delete', data
 		feed.emit('delete')
 
