@@ -1,12 +1,16 @@
 
 sockjs = 				require('sockjs')
 colors = 				require('colors')
+moment = 				require('moment')
 
 module.exports = (server, streak) ->
 
 	sockets = sockjs.createServer
 		log: (severity, line) ->
-			console.log line.grey
+			parse = 		line.match(/^([\w]+)[\s](.*?)$/)
+			method = 		if parse[1]? 	then parse[1].toString() 	else ''
+			comment = 		if parse[2]? 	then parse[2].toString() 	else ''
+			console.log "#{moment().format('HH:mm:ss.SSS').blue} #{moment().format('DD/MM/YYYY').magenta} #{method.green} #{comment.grey}"
 
 	sockets.on 'connection', (socket) ->
 
