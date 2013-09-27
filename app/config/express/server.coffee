@@ -2,6 +2,7 @@
 express = 										require('express')
 session = 										require(global.home + '/script/config/express/session').load
 logger = 										require(global.home + '/script/config/express/logger')
+Feed = 											require(global.home + '/script/controllers/feed').Feed
 Upload = 										require(global.home + '/script/controllers/upload').Upload
 
 
@@ -14,11 +15,12 @@ module.exports = (app, options, streak) ->
 		app.set 'port', process.env.PORT || options.port.toString()
 
 		app.use express.logger logger
-
 		
-		app.use '/upload', (req, res, next) ->
+		app.use '/feed/post/upload', (req, res, next) ->
 
 			upload = new Upload(req, res, next)
+			upload.on 'response', (data) ->
+				streak.emit 'feed.upload', data
 			upload.emit('upload')
 
 

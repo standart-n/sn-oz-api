@@ -1,6 +1,7 @@
 	
 _ = 											require('underscore')
 mongoose = 										require('mongoose')
+bytes = 										require('bytes')
 EventEmitter = 									require('events').EventEmitter
 upload = 										require('jquery-file-upload-middleware')
 
@@ -12,6 +13,10 @@ class Upload extends EventEmitter
 	constructor: (@req, @res, @next) ->
 
 		this.on 'send', () =>
+			@emit 'response', 
+				file:			@mdl.model
+				aid:			if @req.query.aid?		then @req.query.aid		else null
+
 			@res.json 							@mdl.model
 
 		this.on 'userNotFound', () =>
@@ -26,9 +31,18 @@ class Upload extends EventEmitter
 			@findUser (user) =>
 
 				upload.once 'end', (fileInfo) =>
+
+					fileInfo.sizeFormat = 		bytes(fileInfo.size).toString().replace(/([\d]+)(\.[\d]+)([\w]+)/,'$1$3')
+
 					if @req.method is 'POST'
-						# console.log @req.session
-						console.log fileInfo
+						@emit 'response', 
+							file:				fileInfo
+							user:				user
+							aid:				if @req.query.aid?		then @req.query.aid		else null
+						# console.log
+						# 	file:				fileInfo
+						# 	user:				user
+						# 	aid:				if @req.query.aid?		then @req.query.aid		else null
 
 				upload.fileHandler(
 					# maxFileSize: 				10000000 		# 10mb

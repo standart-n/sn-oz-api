@@ -38,3 +38,4 @@ module.exports = (app, options, streak) ->
 			streak.emit 'feed.delete', data
 		feed.emit('delete')
 
+

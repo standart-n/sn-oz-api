@@ -26,7 +26,8 @@
     "jquery-file-upload-middleware": "0.0.8",
     "token": "0.0.0",
     "sockjs": "~0.3.7",
-    "connect-session": "0.0.1"
+    "connect-session": "0.0.1",
+    "formidable": "~1.0.14"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.9",

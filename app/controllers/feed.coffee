@@ -1,6 +1,7 @@
 	
 mongoose = 										require('mongoose')
 sha1 = 											require('sha1')
+formidable = 									require('formidable')
 EventEmitter = 									require('events').EventEmitter
 
 User = 											mongoose.model('User', require(global.home + '/script/views/db/user'))
@@ -177,6 +178,15 @@ class Feed extends EventEmitter
 							@emit 'userNotFound'
 
 
+		this.on 'upload', () =>
+
+			form = new formidable.IncomingForm()
+			form.parse @req, (err, fields, files) =>
+				console.log 'err',		err
+				console.log 'fields',	fields
+				console.log 'files', 	files
+
+				# @res.json
 
 
 	get: (callback) ->
