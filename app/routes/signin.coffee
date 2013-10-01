@@ -1,7 +1,7 @@
 
 Signin = 			require(global.home + '/script/controllers/signin').Signin
 
-module.exports = (app, options) ->
+module.exports = (app, options, streak) ->
 
 	app.get '/signin', (req, res) ->
 

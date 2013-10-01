@@ -18,7 +18,7 @@ module.exports = (app, options, streak) ->
 		
 		app.use '/feed/post/upload', (req, res, next) ->
 
-			upload = new Upload(req, res, next)
+			upload = new Upload(req, res, next, options)
 			upload.on 'response', (data) ->
 				streak.emit 'feed.upload', data
 			upload.emit('upload')

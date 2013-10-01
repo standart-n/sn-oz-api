@@ -1,4 +1,5 @@
 
+_ = 									require('lodash')
 mongoose = 								require('mongoose')
 colors = 								require('colors')
 Token = 								require('token')
@@ -60,7 +61,9 @@ class Signin extends EventEmitter
 
 					user.save()
 
-					@mdl.model = 		user.toJSON()
+					out = 				_.omit user.toJSON(), 'files', 'disabled', 'post_dt', 'reg_dt', '__v', '_id'
+
+					@mdl.model = 		out
 					@updateSession 		user.toJSON()
 
 					@emit 'success'

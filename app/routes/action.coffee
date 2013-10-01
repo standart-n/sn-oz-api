@@ -1,7 +1,7 @@
 
 Actions = 				require(global.home + '/script/controllers/actions').Actions
 
-module.exports = (app, options) ->
+module.exports = (app, options, streak) ->
 
 	app.get '/action/:aid', (req, res) ->
 

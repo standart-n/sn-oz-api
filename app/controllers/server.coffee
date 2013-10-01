@@ -7,7 +7,7 @@ mkpath = 													require('mkpath')
 colors = 													require('colors')
 readline = 													require('readline')
 async = 													require('async')
-_ = 														require('underscore')
+_ = 														require('lodash')
 
 Storage = 													require(global.home + '/script/controllers/storage').Storage
 Streak = 													require(global.home + '/script/controllers/streak').Streak
@@ -27,12 +27,15 @@ class Server
 
 		async.series [
 
-			(callback) =>									@answer(@store,'port',callback)
-			(callback) =>									@answer(@store,'mongodb_connection',callback)
-			(callback) =>									@answer(@mail,'email',callback)
-			(callback) =>									@answer(@mail,'host',callback)
-			(callback) =>									@answer(@mail,'user',callback)
-			(callback) =>									@answer(@mail,'password',callback)
+			(callback) =>									@answer @store, 	'port',						callback
+			(callback) =>									@answer @store, 	'mongodb_connection',		callback
+			(callback) =>									@answer @store, 	'uploads_directory',		callback
+			(callback) =>									@answer @store, 	'uploads_url',				callback
+			(callback) =>									@answer @store, 	'max_user_file_size_mb',	callback
+			(callback) =>									@answer @mail, 		'email',					callback
+			(callback) =>									@answer @mail, 		'host',						callback
+			(callback) =>									@answer @mail, 		'user',						callback
+			(callback) =>									@answer @mail, 		'password',					callback
 
 		], (err, results) ->
 			rl.close()
@@ -71,12 +74,17 @@ class Server
 		if special.connection? 		then @options.mongodb_connection = special.connection
 
 		@configure (results) =>
+
 			@options.port = 								results[0]
 			@options.mongodb_connection = 					results[1]
 
-			@options.mail.host = 							results[2]
-			@options.mail.user = 							results[3]
-			@options.mail.password = 						results[4]
+			@options.uploads_directory = 					results[2]
+			@options.uploads_url = 							results[3]
+			@options.max_user_file_size_mb = 				results[4]
+
+			@options.mail.host = 							results[5]
+			@options.mail.user = 							results[6]
+			@options.mail.password = 						results[7]
 
 			app = express()
 
@@ -96,11 +104,11 @@ class Server
 			require(global.home + '/script/config/express/server'	)(app, @options, streak)
 	
 			# routes
-			require(global.home + '/script/routes/registration'		)(app, @options)
-			require(global.home + '/script/routes/remember'			)(app, @options)
-			require(global.home + '/script/routes/action'			)(app, @options)
-			require(global.home + '/script/routes/signin'			)(app, @options)
-			require(global.home + '/script/routes/edit'				)(app, @options)
+			require(global.home + '/script/routes/registration'		)(app, @options, streak)
+			require(global.home + '/script/routes/remember'			)(app, @options, streak)
+			require(global.home + '/script/routes/action'			)(app, @options, streak)
+			require(global.home + '/script/routes/signin'			)(app, @options, streak)
+			require(global.home + '/script/routes/edit'				)(app, @options, streak)
 			require(global.home + '/script/routes/feed'				)(app, @options, streak)
 
 			if !app.get('port')? or app.get('port') is ''

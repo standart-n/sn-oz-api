@@ -1,7 +1,6 @@
 	
-_ = 											require('underscore')
+_ = 											require('lodash')
 mongoose = 										require('mongoose')
-bytes = 										require('bytes')
 EventEmitter = 									require('events').EventEmitter
 upload = 										require('jquery-file-upload-middleware')
 
@@ -10,12 +9,12 @@ User = 											mongoose.model('User', require(global.home + '/script/views/db
 
 class Upload extends EventEmitter
 
-	constructor: (@req, @res, @next) ->
+	constructor: (@req, @res, @next, @options) ->
 
 		this.on 'send', () =>
 			@emit 'response', 
-				file:			@mdl.model
-				aid:			if @req.query.aid?		then @req.query.aid		else null
+				file:							@mdl.model
+				aid:							if @req.query.aid?		then @req.query.aid		else null
 
 			@res.json 							@mdl.model
 
@@ -32,23 +31,30 @@ class Upload extends EventEmitter
 
 				upload.once 'end', (fileInfo) =>
 
-					fileInfo.sizeFormat = 		bytes(fileInfo.size).toString().replace(/([\d]+)(\.[\d]+)([\w]+)/,'$1$3')
+					ObjectId = 					mongoose.Types.ObjectId
+					fileInfo.id = 				new ObjectId
+
+					if @options.uploads_url.toString().match(/^http/)
+						fileInfo.url = 			"#{@options.uploads_url}/#{user.email}"
+
+					fileInfo.delete_url = 		null
+					fileInfo.delete_type = 		null
 
 					if @req.method is 'POST'
+
+						user.files.push			fileInfo
+						user.save()
+
 						@emit 'response', 
 							file:				fileInfo
 							user:				user
 							aid:				if @req.query.aid?		then @req.query.aid		else null
-						# console.log
-						# 	file:				fileInfo
-						# 	user:				user
-						# 	aid:				if @req.query.aid?		then @req.query.aid		else null
 
 				upload.fileHandler(
 					# maxFileSize: 				10000000 		# 10mb
-					maxFileSize: 				1000000 		# 1mb
-					uploadDir: 					"#{global.home}/public/uploads/#{user.email}"
-					uploadUrl: 					"/uploads/#{user.email}"
+					maxFileSize: 				@options.max_user_file_size_mb * 1024 * 1024
+					uploadDir: 					"#{@options.uploads_directory}/#{user.email}"
+					uploadUrl: 					"#{@options.uploads_url}/#{user.email}"
 				)(@req, @res, @next)
 
 
@@ -68,7 +74,7 @@ class Upload extends EventEmitter
 
 
 
-exports = module.exports = (req, res, next) ->
+exports = module.exports = (req, res, next, options) ->
 	new Upload(req, res, next)
 
 exports.Upload = Upload

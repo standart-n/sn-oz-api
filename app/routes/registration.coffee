@@ -1,7 +1,7 @@
 
 Registration = 		require(global.home + '/script/controllers/registration').Registration
 
-module.exports = (app, options) ->
+module.exports = (app, options, streak) ->
 
 	app.get '/registration', (req, res) ->
 

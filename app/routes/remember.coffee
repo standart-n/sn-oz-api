@@ -1,7 +1,7 @@
 
 Remember = 			require(global.home + '/script/controllers/remember').Remember
 
-module.exports = (app, options) ->
+module.exports = (app, options, streak) ->
 
 	app.get '/remember', (req, res) ->
 

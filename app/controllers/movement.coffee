@@ -21,7 +21,6 @@ module.exports = (streak) ->
 
 
 	streak.on 'feed.upload', (data) ->
-		console.log data
 		if data?.aid?
 			actions.set data.aid,
 				message:	'feed.upload'

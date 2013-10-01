@@ -1,7 +1,7 @@
 
 Edit = 				require(global.home + '/script/controllers/edit').Edit
 
-module.exports = (app, options) ->
+module.exports = (app, options, streak) ->
 
 	app.put '/edit/password', (req, res) ->
 

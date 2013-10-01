@@ -222,11 +222,14 @@ class Feed extends EventEmitter
 				company:		user.company
 			
 			message:
-				text:			@mdl.model.message.text
+				text:			if @mdl.model.message?.text? 		then @mdl.model.message.text 		else ''
+
+			attachments:
+				files:			if @mdl.model.attachments?.files? 	then @mdl.model.attachments.files 	else []
 			
 			region:
-				caption: 		@mdl.model.region.caption
-				name:			@mdl.model.region.name
+				caption: 		if @mdl.model.region?.caption? 		then @mdl.model.region.caption		else ''
+				name:			if @mdl.model.region?.name?			then @mdl.model.region.name 		else ''
 
 		post
 
