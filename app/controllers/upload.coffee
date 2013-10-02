@@ -35,7 +35,7 @@ class Upload extends EventEmitter
 					fileInfo.id = 				new ObjectId
 
 					if @options.uploads_url.toString().match(/^http/)
-						fileInfo.url = 			"#{@options.uploads_url}/#{user.email}"
+						fileInfo.url = 			"#{@options.uploads_url}/#{user.email}/#{fileInfo.name}"
 
 					fileInfo.delete_url = 		null
 					fileInfo.delete_type = 		null
