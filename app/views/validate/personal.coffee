@@ -10,7 +10,7 @@ module.exports =
 	firstname_new:			
 		type: 'string'
 		required: true
-		minLen: 3
+		minLen: 2
 		maxLen: 20
 		message: 'Неверно заполнено поле Имя'
 		custom: (s) ->
@@ -19,7 +19,7 @@ module.exports =
 	lastname_new:
 		type: 'string'
 		required: true
-		minLen: 3
+		minLen: 2
 		maxLen: 20
 		message: 'Неверно заполнено поле Фамилия'
 		custom: (s) ->
