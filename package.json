@@ -27,7 +27,8 @@
     "connect-session": "0.0.1",
     "formidable": "~1.0.14",
     "lodash": "~2.2.0",
-    "bytes": "~0.2.1"
+    "bytes": "~0.2.1",
+    "gm": "~1.13.1"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.9",
