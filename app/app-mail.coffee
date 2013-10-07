@@ -17,8 +17,6 @@ global.command = 		'help'
 # package.json
 pkg = 					require(global.home + '/package.json')
 
-mail = 					require(global.home + '/script/controllers/storage')			# storage.js
-
 # init program
 program.version(pkg.version)
 

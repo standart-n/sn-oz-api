@@ -1,8 +1,8 @@
 
 # require
-program = 				require('commander')											# commander.js
-path = 					require('path')													# path module
-mkpath = 				require('mkpath')												# mkpath module
+program = 				require('commander')
+path = 					require('path')
+mkpath = 				require('mkpath')
 
 # path to root dir
 global.home = 			__dirname
@@ -18,15 +18,11 @@ global.command = 		'help'
 # package.json
 pkg = 					require(global.home + '/package.json')
 
-server = 				require(global.home + '/script/controllers/server')				# server.js
-
-mailer = 				require(global.home + '/script/controllers/mailer')
-
 # init program
 program.version(pkg.version)
 
 # add server fn to program
-require(global.home + '/script/config/program/server')(program, server)
+require(global.home + '/script/config/program/server')(program)
 
 # parse argcv
 program.parse(process.argv)

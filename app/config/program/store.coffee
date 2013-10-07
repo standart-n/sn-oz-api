@@ -1,7 +1,8 @@
 
-mkpath = 							require('mkpath')
+mkpath = 				require('mkpath')
+store = 				require(global.home + '/script/controllers/storage')
 
-module.exports = (program, store) ->
+module.exports = (program) ->
 
 	throw 'program is not exists' 	if !program?
 	throw 'store is not exists' 	if !store?

@@ -17,13 +17,11 @@ global.command = 		'help'
 # package.json
 pkg = 					require(global.home + '/package.json')
 
-store = 				require(global.home + '/script/controllers/storage')			# storage.js
-
 # init program
 program.version(pkg.version)
 
 # add storage fn to program
-require(global.home + '/script/config/program/store')(program, store)
+require(global.home + '/script/config/program/store')(program)
 
 # parse argcv
 program.parse(process.argv)

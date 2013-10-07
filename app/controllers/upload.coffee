@@ -1,5 +1,7 @@
 	
 _ = 											require('lodash')
+fs = 											require('fs')
+gm = 											require('gm')
 mongoose = 										require('mongoose')
 EventEmitter = 									require('events').EventEmitter
 upload = 										require('jquery-file-upload-middleware')
@@ -44,6 +46,16 @@ class Upload extends EventEmitter
 
 						user.files.push			fileInfo
 						user.save()
+
+						if fileInfo.type.match /^image/
+
+							gm("#{@options.uploads_directory}/#{user.email}/#{fileInfo.name}")
+								.resize(200)
+								.stream (err, stdout, stderr) =>
+									console.log err if err
+									writeStream = fs.createWriteStream("#{@options.uploads_directory}/#{user.email}/resize.png")
+									stdout.pipe(writeStream)
+								# .write("resize.png", (err) -> console.log err if err )
 
 						@emit 'response', 
 							file:				fileInfo

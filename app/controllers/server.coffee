@@ -27,22 +27,22 @@ class Server
 
 		async.series [
 
-			(callback) =>									@answer @store, 	'port',						callback
-			(callback) =>									@answer @store, 	'mongodb_connection',		callback
-			(callback) =>									@answer @store, 	'uploads_directory',		callback
-			(callback) =>									@answer @store, 	'uploads_url',				callback
-			(callback) =>									@answer @store, 	'max_user_file_size_mb',	callback
-			(callback) =>									@answer @mail, 		'email',					callback
-			(callback) =>									@answer @mail, 		'host',						callback
-			(callback) =>									@answer @mail, 		'user',						callback
-			(callback) =>									@answer @mail, 		'password',					callback
+			(callback) =>									@answer 	@store, 	'port',						callback
+			(callback) =>									@answer 	@store, 	'mongodb_connection',		callback
+			(callback) =>									@answer 	@store, 	'uploads_directory',		callback
+			(callback) =>									@answer 	@store, 	'uploads_url',				callback
+			(callback) =>									@answer 	@store, 	'max_user_file_size_mb',	callback
+			(callback) =>									@answer 	@mail, 		'email',					callback
+			(callback) =>									@answer 	@mail, 		'host',						callback
+			(callback) =>									@answer 	@mail, 		'user',						callback
+			(callback) =>									@answer 	@mail, 		'password',					callback
 
 		], (err, results) ->
 			rl.close()
 			handler(results)
 
 	answer: (conf, key, callback) ->
-		if !conf.get(key) and !@options[key]?
+		if !@options[key]? and !conf.get(key)
 			throw 'rl not defined'							if !rl?
 			conf.question rl, key, (value) ->
 				callback(null, value)
@@ -70,8 +70,10 @@ class Server
 		@store = 											new Storage(global.store)
 		@mail = 											new Storage(global.mail)
 
-		if special.port? 			then @options.port = special.port
-		if special.connection? 		then @options.mongodb_connection = special.connection
+		# if special.port? 			then @options.port = special.port
+		# if special.connection? 		then @options.mongodb_connection = special.connection
+
+		@options = _.extend {}, @options, special		
 
 		@configure (results) =>
 
@@ -115,17 +117,21 @@ class Server
 				throw 'undefined port'
 
 
-			server = http.createServer(app)
-
-			server.listen app.get('port'), () ->
-				console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
-
+			# server = http.createServer(app)
 
 			# sockets
-			require(global.home + '/script/controllers/sockets')(server, streak)
+			# require(global.home + '/script/controllers/sockets')(server, streak)
 			
-			# user actions
-			require(global.home + '/script/controllers/movement')(streak)
+			# # user actions
+			# require(global.home + '/script/controllers/movement')(streak)
+
+			
+			if typeof @options.create is 'function'
+				@options.create(app, @options)
+
+
+			# server.listen app.get('port'), () ->
+			# 	console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue
 
 
 
