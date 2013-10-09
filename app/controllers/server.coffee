@@ -7,23 +7,40 @@ mkpath = 													require('mkpath')
 colors = 													require('colors')
 readline = 													require('readline')
 async = 													require('async')
+cluster = 													require('cluster')
 _ = 														require('lodash')
 
 Storage = 													require(global.home + '/script/controllers/storage').Storage
 Streak = 													require(global.home + '/script/controllers/streak').Streak
 
-
-rl = readline.createInterface
-	input: 													process.stdin
-	output:													process.stdout
-
-
 class Server
 
 	constructor: () ->
 
+	configure: (special = {}, handler) ->
 
-	configure: (handler) ->
+		@options =
+			mail: {}
+
+		throw 'global.store is not exists' 					if !global.store?
+		throw 'global.mail is not exists' 					if !global.mail?
+
+		if special.profile? 			
+			mkpath.sync 									"/usr/lib/ozserver/#{special.profile}"
+			global.store = 									"/usr/lib/ozserver/#{special.profile}/store.json"
+			global.mail = 									"/usr/lib/ozserver/#{special.profile}/mail.json"
+
+
+		@options = _.extend {}, @options, special
+
+		@store = 											new Storage(global.store)
+		@mail = 											new Storage(global.mail)
+
+		if cluster.isMaster
+
+			@rl = readline.createInterface
+				input: 										process.stdin
+				output:										process.stdout
 
 		async.series [
 
@@ -37,14 +54,14 @@ class Server
 			(callback) =>									@answer 	@mail, 		'user',						callback
 			(callback) =>									@answer 	@mail, 		'password',					callback
 
-		], (err, results) ->
-			rl.close()
-			handler(results)
+		], (err, results) =>
+			@rl.close() 									if cluster.isMaster
+			handler(results)								if typeof handler is 'function'
 
 	answer: (conf, key, callback) ->
 		if !@options[key]? and !conf.get(key)
-			throw 'rl not defined'							if !rl?
-			conf.question rl, key, (value) ->
+			throw 'rl not defined'							if !@rl?
+			conf.question @rl, key, (value) ->
 				callback(null, value)
 		else
 			if !@options[key]
@@ -54,28 +71,9 @@ class Server
 
 
 
-	run: (special = {}) ->
+	run: (special = {}, handler) ->
 
-		@options =
-			mail: {}
-
-		throw 'global.store is not exists' 					if !global.store?
-		throw 'global.mail is not exists' 					if !global.mail?
-
-		if special.profile? 			
-			mkpath.sync 									"/usr/lib/ozserver/#{special.profile}"
-			global.store = 									"/usr/lib/ozserver/#{special.profile}/store.json"
-			global.mail = 									"/usr/lib/ozserver/#{special.profile}/mail.json"
-
-		@store = 											new Storage(global.store)
-		@mail = 											new Storage(global.mail)
-
-		# if special.port? 			then @options.port = special.port
-		# if special.connection? 		then @options.mongodb_connection = special.connection
-
-		@options = _.extend {}, @options, special		
-
-		@configure (results) =>
+		@configure special, (results) =>
 
 			@options.port = 								results[0]
 			@options.mongodb_connection = 					results[1]
@@ -117,18 +115,14 @@ class Server
 				throw 'undefined port'
 
 
-			# server = http.createServer(app)
+			server = http.createServer(app)
 
-			# sockets
-			# require(global.home + '/script/controllers/sockets')(server, streak)
+			# if cluster.isWorker and cluster.worker.id is 1
+			require(global.home + '/script/controllers/sockets')(server, streak)
 			
-			# # user actions
-			# require(global.home + '/script/controllers/movement')(streak)
+			require(global.home + '/script/controllers/movement')(streak)
 
-			
-			if typeof @options.create is 'function'
-				@options.create(app, @options)
-
+			handler(server, @options) if typeof handler is 'function'
 
 			# server.listen app.get('port'), () ->
 			# 	console.log "server work at ".grey + "http://localhost:#{app.get('port').toString()}".blue

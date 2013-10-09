@@ -1,10 +1,8 @@
 
-# require
-program = 				require('commander')											# commander.js
-path = 					require('path')													# path module
-mkpath = 				require('mkpath')												# mkpath module
+program = 				require('commander')
+path = 					require('path')
+mkpath = 				require('mkpath')
 
-# path to root dir
 global.home = 			__dirname
 
 mkpath.sync				"/usr/lib/ozserver/default"
@@ -21,7 +19,7 @@ pkg = 					require(global.home + '/package.json')
 program.version(pkg.version)
 
 # add storage fn to program
-require(global.home + '/script/config/program/mail')(program, mail)
+require(global.home + '/script/config/program/mail')(program)
 
 # parse argcv
 program.parse(process.argv)
