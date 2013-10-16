@@ -15,7 +15,6 @@ module.exports = (program) ->
 		.option('-c, --connection <string>', 'connection string to mongodb')
 		.option('-p, --port <port>', 'port for server', parseInt)
 		.option('-P, --profile <name>', 'profile for settings in /usr/lib/ozserver')
-		.option('-w, --worker <number>', 'number of workers', parseInt)
 
 	program
 		.command('run')
@@ -62,6 +61,9 @@ module.exports = (program) ->
 
 
 			if cluster.isWorker
+
+				process.on 'uncaughtException', (err) ->
+					console.error 'Caught exception:'.red, JSON.stringify(err).blue
 
 				server.run
 					port: 					if program.port? 		then program.port 			else null

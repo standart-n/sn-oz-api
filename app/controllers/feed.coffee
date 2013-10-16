@@ -200,7 +200,7 @@ class Feed extends EventEmitter
 			sort:							
 				post_dt: -1
 		, (err, posts) =>
-			console.log err if err
+			throw err if err
 
 			posts ?= []
 			

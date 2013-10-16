@@ -24,6 +24,11 @@ module.exports = 				new Schema
 			url: 				type: String
 			size: 				type: Number
 			group:				type: String
+			thumbnail:			type: String
+			preview:			type: String
+			resolution:
+				width:			type: Number
+				height:			type: Number
 			type: 				type: String, default: 'file'
 			disabled: 			type: Boolean, default: false
 		]

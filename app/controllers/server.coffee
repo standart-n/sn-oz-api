@@ -94,7 +94,7 @@ class Server
 			mongoose.connect(@options.mongodb_connection)
 
 			mongoose.connection.on 'error', (err) ->
-				console.log err if err
+				throw err if err
 
 
 			# streak between routes and sockeets

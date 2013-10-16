@@ -17,10 +17,11 @@ class Auth
 				disabled:			false
 		, (err, user) =>
 
+			throw err if err
+
 			error = 				null
 			error = 				'Пользователь не найден'	if !user?
 			error = 				'Cессия не активна'			if !@req.session.user.id? or !@req.session.user.key?
-			error = 				err 						if err?
 
 			user ?= 				{}
 

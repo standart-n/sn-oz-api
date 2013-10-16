@@ -22,6 +22,7 @@
   * Node.js 0.10.10 or newer
   * NPM.js 1.2.25 or newer
   * MongoDB 2.4.5 or newer
+  * GraphicsMagick 1.3.12 2010-03-08 or newer
 ```
 
 
@@ -29,26 +30,6 @@
 
 ```
 ozserver run
-```
-
-```
-  Usage: ozserver [options] [command]
-
-  Commands:
-
-    run                    run server
-
-  Options:
-
-    -h, --help                 output usage information
-    -V, --version              output the version number
-    -c, --connection <string>  connection string to mongodb
-    -p, --port <port>          port for server
-    -P, --profile <name>       profile for settings in /usr/lib/ozserver
-
-  Examples:
-
-    $ ozserver run
 ```
 
 #### Настройка сервера
@@ -63,64 +44,17 @@ ozserver-store
 ```
 
 
-```
-  Usage: ozserver-store [options] [command]
-
-  Commands:
-
-    set <key> <value>      set settings
-    get <key>              get settings
-    remove <key>           remove settings
-    import <data>          import data into settings
-    export                 export data from settings
-
-  Options:
-
-    -h, --help            output usage information
-    -V, --version         output the version number
-    -P, --profile <name>  profile for settings in /usr/lib/ozserver
-
-  Examples:
-
-    $ ozserver-store set port 2244
-    $ ozserver-store get mongodb_connection
-```
-
 #### Настройка почты
 
 **Параметры:**
 
  - **email** -  адрес с которого будет отправляться почта
- - **host** -  ip почтового сервера сервер
+ - **host** -  ip почтового сервера
  - **user** - пользователь
  - **password** - пароль
 
 ```
 ozserver-mail
-```
-
-
-```
-  Usage: ozserver-mail [options] [command]
-
-  Commands:
-
-    set <key> <value>      set settings
-    get <key>              get settings
-    remove <key>           remove settings
-    import <data>          import data into settings
-    export                 export data from settings
-
-  Options:
-
-    -h, --help            output usage information
-    -V, --version         output the version number
-    -P, --profile <name>  profile for settings in /usr/lib/ozserver
-
-  Examples:
-
-    $ ozserver-mail set email office@standart-n.ru
-    $ ozserver-mail get host
 ```
 
 

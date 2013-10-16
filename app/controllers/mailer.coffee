@@ -28,10 +28,7 @@ class Mailer
 				subject: 	subject
 				html: 		html
 			, (err, response) ->
-				if err
-					console.log err
-				# else
-				# 	console.log "Message sent: " + response.message
+				throw err if err
 
 
 
